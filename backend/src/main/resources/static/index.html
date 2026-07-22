@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusAI - Smart College Assistant</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom Glassmorphic Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="dark">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-spinner"></div>
+        <h4 class="text-white font-outfit mb-0 tracking-wide">CampusAI</h4>
+        <span class="text-secondary small mt-1">Initializing AI environment...</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center text-white font-outfit fw-bold fs-4" href="#" onclick="window.location.reload();">
+                <i class="bi bi-cpu text-purple me-2"></i>Campus<span class="text-gradient">AI</span>
+            </a>
+            <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" data-target="landing-page">Home</a>
+                    </li>
+                    <li class="nav-item student-only d-none">
+                        <a class="nav-link nav-link-custom" data-target="student-dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item admin-only d-none">
+                        <a class="nav-link nav-link-custom" data-target="admin-panel">Admin Panel</a>
+                    </li>
+                    <!-- General Navigation Links (Mock routing in single-page format) -->
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" data-scroll="about-section">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" data-scroll="departments-section">Departments</a>
+                    </li>
+                    <!-- Auth Actions -->
+                    <li class="nav-item anon-only">
+                        <a class="btn btn-glow-primary ms-lg-2 px-4" href="#" onclick="document.getElementById('student-login-btn').click();">Login</a>
+                    </li>
+                    <li class="nav-item auth-only d-none">
+                        <a class="btn btn-outline-danger ms-lg-2 px-4 logout-btn" href="#">Logout</a>
+                    </li>
+                    <!-- Theme Toggle -->
+                    <li class="nav-item ms-lg-3">
+                        <button class="btn btn-sm btn-outline-secondary border-0 text-white fs-5" id="theme-toggle" title="Toggle Light/Dark Theme">
+                            <i class="bi bi-sun-fill" id="theme-icon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: LANDING PAGE -->
+    <!-- ========================================== -->
+    <div id="landing-page" class="view-section active animate-fade-in">
+        <!-- Hero Section -->
+        <header class="py-5">
+            <div class="container">
+                <div class="row align-items-center min-vh-75">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <span class="badge bg-purple-glow font-medium mb-3 px-3 py-2">Futuristic College Portal</span>
+                        <h1 class="hero-title text-white mb-3">Your Smart<br>Campus <span class="text-gradient">Assistant</span></h1>
+                        <p class="text-secondary fs-5 mb-4 col-md-10">Ask anything about your college courses, attendance, fees, exams, and placements with AI-powered instant assistance.</p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <button id="student-login-btn" class="btn btn-glow-primary px-4 py-3">
+                                <i class="bi bi-person-workspace me-2"></i>Student Portal
+                            </button>
+                            <button id="explore-btn" class="btn btn-outline-secondary text-white px-4 py-3 border-secondary border-opacity-40">
+                                Explore College<i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center hero-image-container">
+                        <!-- Futuristic AI College Chatbot SVG Illustration -->
+                        <svg class="img-fluid" width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Outer Orbiting Circles -->
+                            <circle cx="250" cy="250" r="180" stroke="url(#orbitGradient)" stroke-width="2" stroke-dasharray="10 15" />
+                            <circle cx="250" cy="250" r="140" stroke="url(#orbitGradient2)" stroke-width="1.5" />
+                            
+                            <!-- Glowing Core Background -->
+                            <circle cx="250" cy="250" r="80" fill="url(#coreGlow)" opacity="0.4" />
+                            
+                            <!-- Floating Data Nodes -->
+                            <circle cx="120" cy="180" r="12" fill="#3b82f6" opacity="0.8" />
+                            <path d="M120 180L210 210" stroke="#3b82f6" stroke-width="1.5" opacity="0.6" />
+                            <text x="120" y="155" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Inter">FEES</text>
+
+                            <circle cx="380" cy="160" r="14" fill="#a855f7" opacity="0.8" />
+                            <path d="M380 160L280 220" stroke="#a855f7" stroke-width="1.5" opacity="0.6" />
+                            <text x="380" y="135" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Inter">PLACEMENTS</text>
+
+                            <circle cx="150" cy="340" r="10" fill="#ec4899" opacity="0.8" />
+                            <path d="M150 340L220 280" stroke="#ec4899" stroke-width="1.5" opacity="0.6" />
+                            <text x="150" y="370" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Inter">EXAMS</text>
+
+                            <circle cx="340" cy="350" r="12" fill="#10b981" opacity="0.8" />
+                            <path d="M340 350L290 290" stroke="#10b981" stroke-width="1.5" opacity="0.6" />
+                            <text x="340" y="380" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Inter">COURSES</text>
+                            
+                            <!-- Center Assistant Character -->
+                            <g transform="translate(200, 190)">
+                                <!-- Robot Body -->
+                                <rect x="15" y="55" width="70" height="50" rx="15" fill="url(#botBodyGradient)" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+                                <rect x="35" y="105" width="30" height="15" rx="5" fill="#1e293b" />
+                                
+                                <!-- Robot Head -->
+                                <rect x="10" y="10" width="80" height="60" rx="20" fill="url(#botHeadGradient)" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
+                                
+                                <!-- Screen Display -->
+                                <rect x="20" y="20" width="60" height="40" rx="10" fill="#0f172a" />
+                                
+                                <!-- Animated Eyes -->
+                                <ellipse cx="38" cy="40" rx="8" ry="4" fill="#3b82f6">
+                                    <animate attributeName="ry" values="4;0;4" dur="4s" repeatCount="indefinite" />
+                                </ellipse>
+                                <ellipse cx="62" cy="40" rx="8" ry="4" fill="#3b82f6">
+                                    <animate attributeName="ry" values="4;0;4" dur="4s" repeatCount="indefinite" />
+                                </ellipse>
+                                
+                                <!-- Robot Antennas -->
+                                <line x1="50" y1="10" x2="50" y2="2" stroke="#a855f7" stroke-width="3" />
+                                <circle cx="50" cy="2" r="5" fill="#ec4899" />
+                            </g>
+                            
+                            <!-- SVG Definitions -->
+                            <defs>
+                                <linearGradient id="orbitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
+                                    <stop offset="100%" stop-color="#a855f7" stop-opacity="0.8"/>
+                                </linearGradient>
+                                <linearGradient id="orbitGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ec4899" stop-opacity="0.5"/>
+                                    <stop offset="100%" stop-color="#10b981" stop-opacity="0.1"/>
+                                </linearGradient>
+                                <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#a855f7" stop-opacity="0.6"/>
+                                    <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+                                </radialGradient>
+                                <linearGradient id="botHeadGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#3b82f6"/>
+                                    <stop offset="100%" stop-color="#1e3a8a"/>
+                                </linearGradient>
+                                <linearGradient id="botBodyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#1e1b4b"/>
+                                    <stop offset="100%" stop-color="#a855f7"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- About / Features Section -->
+        <section id="about-section" class="py-5 border-top border-secondary border-opacity-10">
+            <div class="container">
+                <!-- Institution Profile (Arts & Science) -->
+                <div class="row align-items-center mb-5 animate-fade-in">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <span class="badge bg-purple-glow font-medium mb-3 px-3 py-2">About Our Institution</span>
+                        <h2 class="font-outfit text-white fw-bold mb-3">CampusAI Arts & Science College</h2>
+                        <p class="text-secondary mb-3">Established in 2010, CampusAI Arts & Science College is a leading institution of higher learning dedicated to fostering academic excellence, critical thinking, and innovation in human sciences, commerce, and technology.</p>
+                        <p class="text-secondary">With a state-of-the-art campus, experienced professors, and a strong focus on holistic development, we prepare students to meet the challenges of the modern world. Our placement cell works tirelessly to bridge the gap between classroom learning and global industry demands.</p>
+                    </div>
+                    <div class="col-lg-6 ps-lg-5">
+                        <div class="glass-card p-4">
+                            <div class="row g-4 text-center">
+                                <div class="col-6 border-end border-bottom border-secondary border-opacity-20 pb-3">
+                                    <h3 class="text-gradient font-bold mb-1">5000+</h3>
+                                    <small class="text-secondary">Active Students</small>
+                                </div>
+                                <div class="col-6 border-bottom border-secondary border-opacity-20 pb-3">
+                                    <h3 class="text-gradient font-bold mb-1">150+</h3>
+                                    <small class="text-secondary">Expert Faculty</small>
+                                </div>
+                                <div class="col-6 border-end border-secondary border-opacity-20 pt-3">
+                                    <h3 class="text-gradient font-bold mb-1">95%</h3>
+                                    <small class="text-secondary">Placement Rate</small>
+                                </div>
+                                <div class="col-6 pt-3">
+                                    <h3 class="text-gradient font-bold mb-1">A++</h3>
+                                    <small class="text-secondary">NAAC Grade</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mb-5">
+                    <h2 class="font-outfit text-white fw-bold">Futuristic Campus Experience</h2>
+                    <p class="text-secondary col-md-6 mx-auto">Explore features designed to make college information retrieval instant, academic tracking simple, and career paths clear.</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="glass-card text-center p-4">
+                            <div class="fs-1 text-primary mb-3"><i class="bi bi-chat-cpu-fill"></i></div>
+                            <h5 class="text-white font-semibold mb-2">AI Campus Chatbot</h5>
+                            <p class="text-secondary small">Get 24/7 answers regarding fee structures, exam dates, syllabus details, hostels, and course schedules instantly.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="glass-card text-center p-4">
+                            <div class="fs-1 text-purple mb-3"><i class="bi bi-mic-fill"></i></div>
+                            <h5 class="text-white font-semibold mb-2">Voice Activation</h5>
+                            <p class="text-secondary small">Talk directly with the digital chatbot using your voice, allowing seamless access for all types of campus visitors.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="glass-card text-center p-4">
+                            <div class="fs-1 text-pink mb-3"><i class="bi bi-speedometer2"></i></div>
+                            <h5 class="text-white font-semibold mb-2">Notice Board Summaries</h5>
+                            <p class="text-secondary small">Don't read long notice circulars. Let the notice analyzer extract critical dates and details into a bulleted summary.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Departments Section -->
+        <section id="departments-section" class="py-5 border-top border-secondary border-opacity-10">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="font-outfit text-white fw-bold">Academic Departments</h2>
+                    <p class="text-secondary col-md-6 mx-auto">Our campus hosts 6 specialized departments equipped with research libraries and modern computational learning labs.</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="cs">
+                            <div class="fs-2 text-primary bg-primary bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-pc-display"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">Computer Science & BCA</h6>
+                                <small class="text-muted">B.Sc CS, BCA. Focus on Web Dev, Software, & Apps.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="english">
+                            <div class="fs-2 text-purple bg-purple bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-journal-text"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">English Literature</h6>
+                                <small class="text-muted">B.A, M.A English. Focus on linguistics, drama, & poetry.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="physics">
+                            <div class="fs-2 text-info bg-info bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-radioactive"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">Physics</h6>
+                                <small class="text-muted">B.Sc Physics. Focus on quantum mechanics & astrophysics.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="chemistry">
+                            <div class="fs-2 text-success bg-success bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-droplet-fill"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">Chemistry</h6>
+                                <small class="text-muted">B.Sc Chemistry. Focus on organic & polymer synthesis.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="math">
+                            <div class="fs-2 text-warning bg-warning bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-calculator-fill"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">Mathematics</h6>
+                                <small class="text-muted">B.Sc Math. Focus on statistics, calculus, & operations.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="commerce">
+                            <div class="fs-2 text-danger bg-opacity-10 text-danger px-3 py-2 rounded-3"><i class="bi bi-cash-coin"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">Commerce & BBA</h6>
+                                <small class="text-muted">B.Com, BBA. Focus on accounting, finance, & marketing.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="biotech">
+                            <div class="fs-2 text-success bg-success bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-dna"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">Biotechnology & Microbiology</h6>
+                                <small class="text-muted">B.Sc Biotech, Microbiology. Focus on genetics, immunology, & lab biochemistry.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="economics">
+                            <div class="fs-2 text-info bg-info bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-graph-up-arrow"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">Economics & Political Science</h6>
+                                <small class="text-muted">B.A Economics, Political Science. Focus on macroeconomics & policy.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="viscom">
+                            <div class="fs-2 text-warning bg-warning bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-camera-reels"></i></div>
+                            <div>
+                                <h6 class="mb-1 text-white font-semibold">Visual Communication & Media</h6>
+                                <small class="text-muted">B.Sc VisCom. Focus on graphic design, filmmaking, & 3D animation.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-4 border-top border-secondary border-opacity-10 text-center text-secondary small">
+            <div class="container">
+                <p class="mb-1">© 2026 CampusAI - Smart Arts & Science College Assistant.</p>
+                <div class="d-flex justify-content-center gap-3 mt-2">
+                    <a href="#" class="text-secondary text-decoration-none">Terms</a>
+                    <span>•</span>
+                    <a href="#" class="text-secondary text-decoration-none">Privacy Policy</a>
+                    <span>•</span>
+                    <a href="#" class="text-secondary text-decoration-none" onclick="currentUser ? (currentUser.role === 'ROLE_ADMIN' ? navigateTo('admin-panel') : navigateTo('student-dashboard')) : navigateTo('login-page');">Admin Login</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: STUDENT LOGIN PAGE -->
+    <!-- ========================================== -->
+    <div id="login-page" class="view-section animate-fade-in">
+        <div class="container">
+            <div class="login-container glass-card">
+                <div class="text-center mb-4">
+                    <div class="fs-1 text-purple mb-2"><i class="bi bi-cpu"></i></div>
+                    <h3 class="text-white font-outfit fw-bold">Sign In to CampusAI</h3>
+                    <p class="text-secondary small">Access student profiles, grade books, placement schedules, and noticed analyzers.</p>
+                </div>
+                
+                <div id="login-error" class="alert alert-danger d-none small"></div>
+
+                <form id="login-form">
+                    <div class="form-floating-custom">
+                        <label for="login-username">Username or Student ID</label>
+                        <input type="text" id="login-username" placeholder="e.g., STUDENT001 or admin" required autocomplete="username">
+                    </div>
+                    <div class="form-floating-custom">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4 small">
+                        <div class="form-check m-0">
+                            <input class="form-check-input" type="checkbox" id="remember-me">
+                            <label class="form-check-label text-secondary" for="remember-me">Remember me</label>
+                        </div>
+                        <a href="#" class="text-primary text-decoration-none" onclick="alert('Demo Mode: Try default credentials listed in the README file (e.g. STUDENT001 / password123).');">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-glow-primary w-100 py-3">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Access Portal
+                    </button>
+                </form>
+
+                <div class="mt-4 border-top border-secondary border-opacity-10 pt-3 text-center small text-secondary">
+                    <p class="mb-1"><b>Demo Credentials:</b></p>
+                    <p class="mb-0 text-muted">Student Portal: <code>STUDENT001</code> / <code>password123</code></p>
+                    <p class="mb-0 text-muted">Admin Portal: <code>admin</code> / <code>admin123</code></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: STUDENT DASHBOARD -->
+    <!-- ========================================== -->
+    <div id="student-dashboard" class="view-section animate-fade-in">
+        <div class="container py-4">
+            <div class="row">
+                <!-- Profile Left Column -->
+                <div class="col-lg-4 mb-4">
+                    <div class="glass-card text-center mb-4">
+                        <div class="position-relative d-inline-block mb-3">
+                            <div class="rounded-circle border border-purple border-opacity-40 p-1" style="width: 100px; height: 100px; margin: 0 auto; overflow: hidden; background: rgba(255,255,255,0.05);">
+                                <i class="bi bi-person-fill text-secondary" style="font-size: 5rem;"></i>
+                            </div>
+                        </div>
+                        <h5 id="stud-name" class="text-white font-outfit fw-bold mb-1">-</h5>
+                        <p id="stud-id" class="text-muted small mb-3">-</p>
+                        
+                        <div class="border-top border-secondary border-opacity-20 pt-3 text-start small">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-secondary">Department:</span>
+                                <span id="stud-dept" class="text-white font-semibold text-end">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-secondary">Year:</span>
+                                <span id="stud-year" class="text-white font-semibold">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-secondary">Email:</span>
+                                <span id="stud-email" class="text-white font-semibold">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-secondary">Phone:</span>
+                                <span id="stud-phone" class="text-white font-semibold">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Card -->
+                    <div class="glass-card mb-4">
+                        <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-calendar-check text-primary me-2"></i>Attendance</h5>
+                        <div class="row align-items-center mb-4">
+                            <div class="col-5">
+                                <div class="radial-container">
+                                    <svg class="radial-svg" width="100" height="100">
+                                        <defs>
+                                            <linearGradient id="attendanceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#3b82f6"/>
+                                                <stop offset="100%" stop-color="#a855f7"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <circle class="radial-bg" cx="50" cy="50" r="40" />
+                                        <circle id="attendance-circle" class="radial-progress" cx="50" cy="50" r="40" />
+                                    </svg>
+                                    <div id="attendance-percentage" class="radial-text text-white">-</div>
+                                </div>
+                            </div>
+                            <div class="col-7 small">
+                                <p class="text-secondary mb-1">Current Standing: <b>Good</b></p>
+                                <p class="text-muted mb-0 small">Maintain above 75% to prevent internal exam blockages.</p>
+                            </div>
+                        </div>
+                        <div id="attendance-subject-list">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Middle/Right Column -->
+                <div class="col-lg-8">
+                    <!-- Nav Tabs for Academics and Career Guides -->
+                    <ul class="nav nav-pills mb-4 gap-2 border-bottom border-secondary border-opacity-10 pb-3" id="dashboard-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="btn btn-outline-primary active" id="academics-tab" data-bs-toggle="pill" data-bs-target="#pills-academics" type="button" role="tab"><i class="bi bi-journal-text me-2"></i>Academics</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="btn btn-outline-primary" id="career-tab" data-bs-toggle="pill" data-bs-target="#pills-career" type="button" role="tab"><i class="bi bi-compass me-2"></i>AI Career Guide</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="btn btn-outline-primary" id="notices-tab" data-bs-toggle="pill" data-bs-target="#pills-notices" type="button" role="tab"><i class="bi bi-bell me-2"></i>Notice Board</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="dashboard-tabContent">
+                        <!-- Academics Pill -->
+                        <div class="tab-pane fade show active" id="pills-academics" role="tabpanel">
+                            <!-- Performance Predictor Widget (Futuristic Element) -->
+                            <div class="glass-card mb-4" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);">
+                                <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-cpu-fill text-purple me-2"></i>AI Performance Predictor</h5>
+                                <div id="performance-predictor-content">
+                                    <!-- Injected dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- CGPA and marks Card -->
+                            <div class="glass-card mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="text-white font-outfit fw-bold m-0"><i class="bi bi-mortarboard text-purple me-2"></i>Academic Summary</h5>
+                                    <div>
+                                        <span class="text-secondary small">Cumulative CGPA: </span>
+                                        <span id="student-cgpa" class="badge bg-purple-glow font-bold fs-6">-</span>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject Name</th>
+                                                <th class="text-center">Test 1 (100)</th>
+                                                <th class="text-center">Test 2 (100)</th>
+                                                <th class="text-center">Model Exam (100)</th>
+                                                <th class="text-center">Grade (Est.)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="student-marks-body">
+                                            <!-- Injected dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Placements & Events Split -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="glass-card h-100">
+                                        <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-briefcase text-primary me-2"></i>Placements</h5>
+                                        <div id="student-placements-list">
+                                            <!-- Injected dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="glass-card h-100">
+                                        <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-calendar-event text-purple me-2"></i>Events Calendar</h5>
+                                        <div id="dashboard-events-list">
+                                            <!-- Injected dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Career Pill -->
+                        <div class="tab-pane fade" id="pills-career" role="tabpanel">
+                            <div class="glass-card">
+                                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                                    <div>
+                                        <h5 class="text-white font-outfit fw-bold mb-1"><i class="bi bi-robot text-purple me-2"></i>AI Career Assistant</h5>
+                                        <p class="text-secondary small mb-0">Select your specialization interests to map skills roadmaps and relevant resources.</p>
+                                    </div>
+                                    <div class="form-floating-custom m-0" style="min-width: 200px;">
+                                        <select id="career-select" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                            <option value="webdev">Full-Stack Web Dev</option>
+                                            <option value="aiml">AI / Machine Learning</option>
+                                            <option value="cloud">Cloud Solutions</option>
+                                            <option value="cybersec">Cybersecurity</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="border-top border-secondary border-opacity-20 pt-3">
+                                    <h4 id="career-title" class="text-white font-outfit fw-bold mb-3">-</h4>
+                                    
+                                    <div class="mb-4">
+                                        <h6 class="text-secondary small font-semibold mb-2">Core Skills Matrix Required:</h6>
+                                        <div id="career-skills" class="d-flex flex-wrap gap-1">
+                                            <!-- Injected dynamically -->
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <h6 class="text-secondary small font-semibold mb-2">Recommended Online Courses:</h6>
+                                        <ul id="career-courses" class="list-unstyled mb-0">
+                                            <!-- Injected dynamically -->
+                                        </ul>
+                                    </div>
+
+                                    <div id="career-roadmap">
+                                        <!-- Injected dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notice Board Pill -->
+                        <div class="tab-pane fade" id="pills-notices" role="tabpanel">
+                            <div id="dashboard-notice-list">
+                                <!-- Injected dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: ADMIN PANEL -->
+    <!-- ========================================== -->
+    <div id="admin-panel" class="view-section">
+        <div class="container-fluid p-0">
+            <div class="row g-0">
+                <!-- Admin Sidebar -->
+                <div class="col-md-3 col-lg-2 admin-sidebar">
+                    <div class="py-3 px-4 border-bottom border-secondary border-opacity-10">
+                        <small class="text-secondary uppercase font-semibold">Campus Admin</small>
+                        <h6 id="admin-sidebar-name" class="text-white font-outfit fw-bold mb-0">Rishi</h6>
+                    </div>
+                    <div class="nav flex-column mt-3">
+                        <a href="#" class="admin-sidebar-link active" data-admin-target="admin-students">
+                            <i class="bi bi-people"></i>Students
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-notices">
+                            <i class="bi bi-megaphone"></i>Notices
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-events">
+                            <i class="bi bi-calendar-event"></i>Events
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-analytics">
+                            <i class="bi bi-bar-chart-line"></i>Chatbot Analytics
+                        </a>
+                        <a href="#" class="admin-sidebar-link logout-btn text-danger">
+                            <i class="bi bi-box-arrow-right"></i>Sign Out
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Admin Main View -->
+                <div class="col-md-9 col-lg-10 p-4">
+                    <!-- Subview 1: Students Management -->
+                    <div id="admin-students" class="admin-subview active animate-fade-in">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-people me-2"></i>Student Management</h4>
+                            <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddStudent">
+                                <i class="bi bi-plus-lg me-1"></i>Enroll Student
+                            </button>
+                        </div>
+
+                        <!-- Add Student Form Collapse -->
+                        <div class="collapse mb-4" id="collapseAddStudent">
+                            <div class="glass-card p-4">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Add New Student Profile</h5>
+                                <form id="add-student-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-stud-id">Register Number (Student ID)</label>
+                                                <input type="text" id="add-stud-id" placeholder="e.g. STUDENT004" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-stud-name">Full Name</label>
+                                                <input type="text" id="add-stud-name" placeholder="e.g. Anand Kumar" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-stud-email">Email Address</label>
+                                                <input type="email" id="add-stud-email" placeholder="anand.k@campusai.edu" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-stud-phone">Phone Number</label>
+                                                <input type="text" id="add-stud-phone" placeholder="+91 99999 88888" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-stud-dept">Department</label>
+                                                <select id="add-stud-dept" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                                    <option>Computer Science & Engineering</option>
+                                                    <option>Information Technology</option>
+                                                    <option>Electronics & Communication</option>
+                                                    <option>Electrical & Electronics</option>
+                                                    <option>Mechanical Engineering</option>
+                                                    <option>Civil Engineering</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-stud-year">Academic Year</label>
+                                                <select id="add-stud-year" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                                    <option value="1">1st Year</option>
+                                                    <option value="2">2nd Year</option>
+                                                    <option value="3">3rd Year</option>
+                                                    <option value="4">4th Year</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-floating-custom">
+                                                <label for="add-stud-cgpa">CGPA</label>
+                                                <input type="number" step="0.01" min="0" max="10" id="add-stud-cgpa" placeholder="8.5" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-floating-custom">
+                                                <label for="add-stud-attendance">Attendance (%)</label>
+                                                <input type="number" step="0.1" min="0" max="100" id="add-stud-attendance" placeholder="85.0" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 justify-content-end mt-3">
+                                        <button type="button" class="btn btn-outline-secondary text-white border-secondary border-opacity-35" data-bs-toggle="collapse" data-bs-target="#collapseAddStudent">Cancel</button>
+                                        <button type="submit" class="btn btn-glow-primary">Enroll Student</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Students List Table -->
+                        <div class="glass-card">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Register No</th>
+                                            <th>Student Name</th>
+                                            <th>Department</th>
+                                            <th class="text-center">Year</th>
+                                            <th class="text-center">Attendance</th>
+                                            <th class="text-center">CGPA</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-students-table-body">
+                                        <!-- Injected dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subview 2: Notices Management -->
+                    <div id="admin-notices" class="admin-subview animate-fade-in">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-megaphone me-2"></i>Manage Notice Board</h4>
+                            <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddNotice">
+                                <i class="bi bi-plus-lg me-1"></i>Publish Announcement
+                            </button>
+                        </div>
+
+                        <div class="collapse mb-4" id="collapseAddNotice">
+                            <div class="glass-card p-4">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Publish Notice Board Announcement</h5>
+                                <form id="add-notice-form">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-floating-custom">
+                                                <label for="add-notice-title">Notice Title</label>
+                                                <input type="text" id="add-notice-title" placeholder="e.g. Semester Fee Extension Notice" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-notice-category">Notice Category</label>
+                                                <select id="add-notice-category" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                                    <option>Exams</option>
+                                                    <option>Placements</option>
+                                                    <option>Events</option>
+                                                    <option>General</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating-custom">
+                                        <label for="add-notice-content">Announcement Details (Full text for AI Analyzer)</label>
+                                        <textarea id="add-notice-content" rows="4" placeholder="Write full details about tuition fee amounts, deadlines, fine structures, etc..." required></textarea>
+                                    </div>
+                                    <div class="d-flex gap-2 justify-content-end mt-3">
+                                        <button type="button" class="btn btn-outline-secondary text-white border-secondary border-opacity-35" data-bs-toggle="collapse" data-bs-target="#collapseAddNotice">Cancel</button>
+                                        <button type="submit" class="btn btn-glow-primary">Publish Announcement</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <p class="text-secondary small">Published notices will show up in the Student Portal, equipped with dynamic Summarize tools.</p>
+                    </div>
+
+                    <!-- Subview 3: Events Management -->
+                    <div id="admin-events" class="admin-subview animate-fade-in">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-calendar-event me-2"></i>Manage College Calendar</h4>
+                            <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddEvent">
+                                <i class="bi bi-plus-lg me-1"></i>Create Event
+                            </button>
+                        </div>
+
+                        <div class="collapse mb-4" id="collapseAddEvent">
+                            <div class="glass-card p-4">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Add Event to Calendar</h5>
+                                <form id="add-event-form">
+                                    <div class="form-floating-custom">
+                                        <label for="add-event-title">Event Title</label>
+                                        <input type="text" id="add-event-title" placeholder="e.g. Annual Sports Day Meet" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-event-date">Date</label>
+                                                <input type="date" id="add-event-date" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-event-time">Time</label>
+                                                <input type="text" id="add-event-time" placeholder="e.g., 09:30 AM" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-event-location">Venue / Location</label>
+                                                <input type="text" id="add-event-location" placeholder="e.g., Sports Complex Arena" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating-custom">
+                                        <label for="add-event-desc">Description</label>
+                                        <textarea id="add-event-desc" rows="3" placeholder="Brief event summary and coordinator contacts..." required></textarea>
+                                    </div>
+                                    <div class="d-flex gap-2 justify-content-end mt-3">
+                                        <button type="button" class="btn btn-outline-secondary text-white border-secondary border-opacity-35" data-bs-toggle="collapse" data-bs-target="#collapseAddEvent">Cancel</button>
+                                        <button type="submit" class="btn btn-glow-primary">Create Event</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subview 4: Chatbot Analytics -->
+                    <div id="admin-analytics" class="admin-subview animate-fade-in">
+                        <h4 class="text-white font-outfit fw-bold mb-4"><i class="bi bi-bar-chart-line me-2"></i>CampusAI Usage Analytics</h4>
+                        
+                        <div class="row">
+                            <div class="col-lg-6 mb-4">
+                                <div class="glass-card">
+                                    <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-pie-chart text-primary me-2"></i>Queries by Category Topic</h5>
+                                    <div class="d-flex justify-content-center">
+                                        <canvas id="chart-topic-analytics" width="300" height="280"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="glass-card">
+                                    <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-graph-up text-purple me-2"></i>Chat Volume History</h5>
+                                    <div class="d-flex justify-content-center">
+                                        <canvas id="chart-activity-analytics" width="400" height="280"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FLOATING AI CHATBOT INTERFACE -->
+    <!-- ========================================== -->
+    <div class="chat-widget-container">
+        <!-- Chat Bubble Toggle -->
+        <button id="chat-toggle" class="chat-bubble-toggle" title="Open CampusAI Chatbot">
+            <i class="bi bi-robot"></i>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="chat-widget" class="chat-window">
+            <div class="chat-header">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle bg-success" style="width: 8px; height: 8px;"></div>
+                    <div>
+                        <h6 class="mb-0 font-outfit fw-bold">CampusAI Assistant</h6>
+                        <small class="text-light text-opacity-80" style="font-size: 0.65rem;">Active & Ready</small>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-light border-0 text-white" id="chat-volume" title="Toggle voice output">
+                        <i class="bi bi-volume-mute-fill"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light border-0 text-white" id="chat-close" title="Minimize Chat">
+                        <i class="bi bi-dash-lg"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="chat-body" id="chat-body">
+                <!-- Chat Bubbles dynamically injected -->
+            </div>
+
+            <!-- Quick replies -->
+            <div class="px-3 py-2 border-top border-secondary border-opacity-10 overflow-x-auto d-flex gap-2 bg-dark bg-opacity-20" style="white-space: nowrap;">
+                <button class="btn btn-xs btn-outline-secondary text-white border-secondary border-opacity-35 quick-reply font-medium small px-2 py-1">College timings</button>
+                <button class="btn btn-xs btn-outline-secondary text-white border-secondary border-opacity-35 quick-reply font-medium small px-2 py-1">Departments</button>
+                <button class="btn btn-xs btn-outline-secondary text-white border-secondary border-opacity-35 quick-reply font-medium small px-2 py-1">Admission process</button>
+                <button class="btn btn-xs btn-outline-secondary text-white border-secondary border-opacity-35 quick-reply font-medium small px-2 py-1">Exam dates</button>
+                <button class="btn btn-xs btn-outline-secondary text-white border-secondary border-opacity-35 quick-reply font-medium small px-2 py-1">Placement details</button>
+            </div>
+
+            <div class="chat-footer">
+                <input type="text" id="chat-input" placeholder="Ask anything about your college...">
+                <!-- Microphone trigger button -->
+                <button id="chat-mic" class="text-primary" title="Speak to Assistant">
+                    <i class="bi bi-mic-fill"></i>
+                </button>
+                <button id="chat-send" class="bg-primary text-white border-0" title="Send message">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- NOTICE BOARD ANALYSIS MODAL -->
+    <!-- ========================================== -->
+    <div class="modal fade" id="noticeModal" tabindex="-1" aria-labelledby="noticeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content glass-card p-0 overflow-hidden" style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <div class="modal-header border-bottom border-secondary border-opacity-25 px-4 py-3 bg-gradient">
+                    <h5 class="modal-title text-white font-outfit fw-bold" id="noticeModalLabel">Notice Analyzer</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-white">
+                    <div class="row g-4">
+                        <div class="col-md-6 border-end border-secondary border-opacity-25">
+                            <h6 class="text-secondary small font-semibold mb-3">Original Announcement Content:</h6>
+                            <div id="notice-original-text" class="small text-secondary-emphasis" style="max-height: 250px; overflow-y: auto;">
+                                <!-- Content injected -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="notice-summary-text">
+                                <!-- AI Content injected -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-secondary border-opacity-25 px-4 py-3 bg-dark bg-opacity-20">
+                    <button type="button" class="btn btn-secondary text-white border-secondary border-opacity-35" data-bs-dismiss="modal">Close Analysis</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- DEPARTMENT DETAILS MODAL -->
+    <!-- ========================================== -->
+    <div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content glass-card p-0 overflow-hidden" style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <div class="modal-header border-bottom border-secondary border-opacity-25 px-4 py-3 bg-gradient">
+                    <h5 class="modal-title text-white font-outfit fw-bold" id="departmentModalLabel">Department Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-white">
+                    <div class="row g-4">
+                        <!-- Left Column: Basic Info and Sections -->
+                        <div class="col-md-6 border-end border-secondary border-opacity-25">
+                            <div class="d-flex align-items-center gap-3 mb-4">
+                                <div id="dept-modal-icon" class="fs-1 px-3 py-2 rounded-3">
+                                    <i class="bi bi-pc-display"></i>
+                                </div>
+                                <div>
+                                    <h4 id="dept-modal-title" class="font-outfit fw-bold mb-0">-</h4>
+                                    <small id="dept-modal-subtitle" class="text-secondary">-</small>
+                                </div>
+                            </div>
+                            
+                            <h6 class="text-secondary small font-semibold mb-2">Offered Programs / Degrees:</h6>
+                            <ul id="dept-modal-programs" class="list-unstyled mb-4 text-secondary-emphasis">
+                                <!-- Injected -->
+                            </ul>
+
+                            <h6 class="text-secondary small font-semibold mb-2">Student Enrollments:</h6>
+                            <div class="glass-card p-3 mb-4 border-secondary border-opacity-20" style="background: rgba(255, 255, 255, 0.02);">
+                                <div class="row text-center align-items-center">
+                                    <div class="col-6 border-end border-secondary border-opacity-20">
+                                        <h5 id="dept-modal-total-students" class="text-gradient font-bold mb-0">-</h5>
+                                        <small class="text-secondary">Active Students</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h5 id="dept-modal-sections" class="text-gradient font-bold mb-0">-</h5>
+                                        <small class="text-secondary">Class Sections</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Fee Structure and Details -->
+                        <div class="col-md-6">
+                            <h5 class="font-outfit fw-bold mb-3 text-purple"><i class="bi bi-cash-coin me-2"></i>Annual Fee Structure</h5>
+                            <div class="table-responsive mb-4">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-secondary px-0">Tuition Fee</td>
+                                            <td id="dept-modal-tuition-fee" class="text-end font-semibold px-0">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary px-0">Laboratory & Library Fee</td>
+                                            <td id="dept-modal-lab-fee" class="text-end font-semibold px-0">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-secondary px-0">Exam & Sports Fee</td>
+                                            <td id="dept-modal-exam-fee" class="text-end font-semibold px-0">-</td>
+                                        </tr>
+                                        <tr class="border-top border-secondary border-opacity-50">
+                                            <td class="text-white font-bold px-0 pt-2">Total Annual Fee</td>
+                                            <td id="dept-modal-total-fee" class="text-end text-gradient font-bold px-0 pt-2">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h6 class="text-secondary small font-semibold mb-2">Facilities & Infrastructure:</h6>
+                            <p id="dept-modal-facilities" class="text-secondary small mb-0">
+                                -
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-secondary border-opacity-25 px-4 py-3 bg-dark bg-opacity-20">
+                    <button type="button" class="btn btn-secondary text-white border-secondary border-opacity-35" data-bs-dismiss="modal">Close Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Application Scripts -->
+    <script src="js/mockData.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
