@@ -303,6 +303,53 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Google Sign-In Handler
+    const googleLoginBtn = document.getElementById("google-login-btn");
+    const googleLoginModalEl = document.getElementById("googleLoginModal");
+    let googleLoginModal = null;
+    if (googleLoginModalEl && googleLoginBtn) {
+        googleLoginModal = new bootstrap.Modal(googleLoginModalEl);
+        googleLoginBtn.addEventListener("click", () => {
+            googleLoginModal.show();
+        });
+
+        const googleAccountOptions = googleLoginModalEl.querySelectorAll(".google-account-option");
+        googleAccountOptions.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const username = btn.getAttribute("data-username");
+                const users = window.MockDB.getUsers();
+                const matchedUser = users.find(u => u.username === username);
+                
+                if (matchedUser) {
+                    const sessionUser = {
+                        success: true,
+                        username: matchedUser.username,
+                        role: matchedUser.role,
+                        refId: matchedUser.refId,
+                        name: matchedUser.name || (matchedUser.role === 'ROLE_STUDENT' ? window.MockDB.getStudentById(matchedUser.refId).name : "Admin User")
+                    };
+                    currentUser = sessionUser;
+                    showToast(`Signed in via Google as ${sessionUser.name}!`, "success");
+                    
+                    // Adjust Nav UI
+                    adjustNavForRole(sessionUser.role);
+
+                    // Redirection
+                    if (sessionUser.role === "ROLE_STUDENT") {
+                        currentStudent = window.MockDB.getStudentById(sessionUser.refId);
+                        navigateTo("student-dashboard");
+                    } else if (sessionUser.role === "ROLE_ADMIN") {
+                        navigateTo("admin-panel");
+                    }
+                    
+                    googleLoginModal.hide();
+                } else {
+                    showToast("Google Authentication failed. Mock User not found.", "danger");
+                }
+            });
+        });
+    }
+
     function logout() {
         showToast("Logged out successfully.", "info");
         currentUser = null;
