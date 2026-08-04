@@ -567,3 +567,27 @@ body[data-theme="light"] .table-custom td {
 body[data-theme="light"] .progress-custom {
     background: rgba(0,0,0,0.05);
 }
+
+/* Google Account Chooser Buttons */
+.google-account-btn {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--text-primary) !important;
+    transition: all 0.2s ease-in-out !important;
+    text-align: left;
+}
+.google-account-btn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--secondary-color) !important;
+    transform: translateY(-2px);
+}
+body[data-theme="light"] .google-account-btn {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: var(--text-primary) !important;
+}
+body[data-theme="light"] .google-account-btn:hover {
+    background: rgba(0, 0, 0, 0.06) !important;
+    border-color: var(--primary-color) !important;
+}
+
