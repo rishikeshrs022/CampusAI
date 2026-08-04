@@ -591,3 +591,26 @@ body[data-theme="light"] .google-account-btn:hover {
     border-color: var(--primary-color) !important;
 }
 
+/* Custom Google Button */
+.google-btn-custom {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--text-primary) !important;
+    transition: all 0.2s ease-in-out !important;
+}
+.google-btn-custom:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--secondary-color) !important;
+}
+body[data-theme="light"] .google-btn-custom {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    color: #374151 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+body[data-theme="light"] .google-btn-custom:hover {
+    background: #f9fafb !important;
+    border-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+

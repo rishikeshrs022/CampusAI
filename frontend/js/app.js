@@ -321,14 +321,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 const matchedUser = users.find(u => u.username === username);
                 
                 if (matchedUser) {
+                    const email = btn.getAttribute("data-email") || "rishikeshrs022@gmail.com";
                     // Personalize Student Profile if logging in as STUDENT001 via Google
                     if (username === "STUDENT001") {
                         const student = window.MockDB.getStudentById("STUDENT001");
                         if (student) {
                             student.name = "Rishi";
-                            student.email = "rishikeshrs022@gmail.com";
+                            student.email = email;
                             window.MockDB.saveStudent(student);
                         }
+                    } else if (matchedUser.role === "ROLE_ADMIN") {
+                        matchedUser.email = email;
+                        window.MockDB.saveUser(matchedUser);
                     }
 
                     const sessionUser = {
@@ -336,7 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         username: matchedUser.username,
                         role: matchedUser.role,
                         refId: matchedUser.refId,
-                        name: matchedUser.role === 'ROLE_STUDENT' ? "Rishi" : (matchedUser.name || "Admin User")
+                        name: "Rishi"
                     };
                     currentUser = sessionUser;
                     showToast(`Signed in via Google as ${sessionUser.name}!`, "success");
