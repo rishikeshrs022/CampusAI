@@ -51,6 +51,11 @@ body[data-theme="light"] select.bg-dark {
     border-color: rgba(0, 0, 0, 0.15) !important;
 }
 
+/* Theme-aware overrides for Bootstrap text helper classes */
+.text-secondary, .text-muted {
+    color: var(--text-secondary) !important;
+}
+
 /* Core Settings */
 body {
     font-family: 'Inter', sans-serif;
