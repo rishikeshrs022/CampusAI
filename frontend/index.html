@@ -1074,7 +1074,7 @@
                         </button>
 
                         <!-- Use another account -->
-                        <button class="btn google-account-row w-100 py-3 text-start d-flex align-items-center gap-3 border-top border-secondary border-opacity-10" onclick="alert('Google Auth Demo: Please choose one of the available accounts above.');">
+                        <button type="button" id="google-use-another-btn" class="btn google-account-row w-100 py-3 text-start d-flex align-items-center gap-3 border-top border-secondary border-opacity-10">
                             <div class="d-flex align-items-center justify-content-center text-secondary" style="width: 32px; height: 32px; min-width: 32px; font-size: 1.2rem;">
                                 <i class="bi bi-person-circle"></i>
                             </div>
@@ -1117,6 +1117,41 @@
 
                     <button type="button" class="btn btn-link text-secondary text-decoration-none small" id="google-role-back-btn">
                         <i class="bi bi-arrow-left me-1"></i>Back to account selection
+                    </button>
+                </div>
+
+                <!-- STEP 3: ADD CUSTOM ACCOUNT -->
+                <div id="google-step-custom" class="p-4 d-none">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <svg width="24" height="24" viewBox="0 0 18 18">
+                            <path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.47h4.84a4.14 4.14 0 0 1-1.8 2.71v2.26h2.91c1.7-1.56 2.69-3.86 2.69-6.6z"/>
+                            <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.2l-2.91-2.26a5.64 5.64 0 0 1-8.52-3.04H.51v2.33A9 9 0 0 0 9 18z"/>
+                            <path fill="#FBBC05" d="M3.53 10.5a5.41 5.41 0 0 1 0-3v-2.33H.51a9 9 0 0 0 0 7.66l3.02-2.33z"/>
+                            <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35L15 2.4A9 9 0 0 0 .51 5.17l3.02 2.33A5.64 5.64 0 0 1 9 3.58z"/>
+                        </svg>
+                        <span class="text-white font-outfit fw-bold" style="font-size: 0.95rem;">Sign in with Google</span>
+                    </div>
+
+                    <h3 class="text-white font-outfit fw-normal mb-1" style="font-size: 1.5rem; letter-spacing: -0.5px;">Add an account</h3>
+                    <p class="text-secondary small mb-4" style="font-size: 0.88rem;">Enter your Google account details</p>
+
+                    <div class="d-flex flex-column gap-3 mb-4">
+                        <div class="text-start">
+                            <label class="form-label text-secondary small" for="google-custom-name">Full Name</label>
+                            <input type="text" id="google-custom-name" class="form-control bg-dark bg-opacity-40 border border-secondary border-opacity-20 text-white rounded-3 py-2" placeholder="e.g. Rishikesh RS">
+                        </div>
+                        <div class="text-start">
+                            <label class="form-label text-secondary small" for="google-custom-email">Google Email Address</label>
+                            <input type="email" id="google-custom-email" class="form-control bg-dark bg-opacity-40 border border-secondary border-opacity-20 text-white rounded-3 py-2" placeholder="name@gmail.com">
+                        </div>
+                        
+                        <button id="google-custom-continue-btn" class="btn btn-glow-primary py-2.5 w-100 mt-2">
+                            Next
+                        </button>
+                    </div>
+
+                    <button type="button" class="btn btn-link text-secondary text-decoration-none small" id="google-custom-back-btn">
+                        <i class="bi bi-arrow-left me-1"></i>Back
                     </button>
                 </div>
 

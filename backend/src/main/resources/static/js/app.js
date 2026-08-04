@@ -312,10 +312,17 @@ document.addEventListener("DOMContentLoaded", () => {
         
         const stepAccount = document.getElementById("google-step-account");
         const stepRole = document.getElementById("google-step-role");
+        const stepCustom = document.getElementById("google-step-custom");
         const selectedEmailDisplay = document.getElementById("google-selected-email-display");
         const roleStudentBtn = document.getElementById("google-role-student-btn");
         const roleAdminBtn = document.getElementById("google-role-admin-btn");
         const roleBackBtn = document.getElementById("google-role-back-btn");
+
+        const useAnotherBtn = document.getElementById("google-use-another-btn");
+        const customNameInput = document.getElementById("google-custom-name");
+        const customEmailInput = document.getElementById("google-custom-email");
+        const customContinueBtn = document.getElementById("google-custom-continue-btn");
+        const customBackBtn = document.getElementById("google-custom-back-btn");
 
         let selectedEmail = "";
         let selectedName = "";
@@ -325,6 +332,9 @@ document.addEventListener("DOMContentLoaded", () => {
             // Reset to step 1
             stepAccount.classList.remove("d-none");
             stepRole.classList.add("d-none");
+            stepCustom.classList.add("d-none");
+            customNameInput.value = "";
+            customEmailInput.value = "";
             googleLoginModal.show();
         });
 
@@ -342,10 +352,53 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
+        // Step 1: Click "Use another account"
+        if (useAnotherBtn) {
+            useAnotherBtn.addEventListener("click", () => {
+                stepAccount.classList.add("d-none");
+                stepCustom.classList.remove("d-none");
+            });
+        }
+
+        // Step 3: Back button
+        if (customBackBtn) {
+            customBackBtn.addEventListener("click", () => {
+                stepAccount.classList.remove("d-none");
+                stepCustom.classList.add("d-none");
+            });
+        }
+
+        // Step 3: Continue button
+        if (customContinueBtn) {
+            customContinueBtn.addEventListener("click", () => {
+                const nameVal = customNameInput.value.trim();
+                const emailVal = customEmailInput.value.trim();
+
+                if (!nameVal || !emailVal) {
+                    showToast("Please enter both Name and Email address", "warning");
+                    return;
+                }
+
+                selectedName = nameVal;
+                selectedEmail = emailVal;
+
+                // Transition to Step 2 (Select Role)
+                selectedEmailDisplay.textContent = `to continue to CampusAI as ${selectedName} (${selectedEmail})`;
+                stepCustom.classList.add("d-none");
+                stepRole.classList.remove("d-none");
+            });
+        }
+
         // Step 2: Back button
         roleBackBtn.addEventListener("click", () => {
-            stepAccount.classList.remove("d-none");
-            stepRole.classList.add("d-none");
+            // If we came from custom input, go back to custom input. Else go to account select.
+            if (customNameInput.value.trim() !== "") {
+                stepCustom.classList.remove("d-none");
+                stepRole.classList.add("d-none");
+            } else {
+                stepAccount.classList.remove("d-none");
+                stepRole.classList.add("d-none");
+            }
         });
 
         // Step 2: Select Student Portal
