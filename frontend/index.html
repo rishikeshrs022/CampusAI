@@ -1032,72 +1032,94 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- GOOGLE SIGN-IN MODAL (MOCK OAUTH CHOOSE ACCOUNT) -->
+    <!-- GOOGLE SIGN-IN MODAL (EXACT GOOGLE ACCOUNT CHOOSER) -->
     <!-- ========================================== -->
     <div class="modal fade" id="googleLoginModal" tabindex="-1" aria-labelledby="googleLoginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
-            <div class="modal-content glass-card border-secondary border-opacity-25 shadow-lg p-0 overflow-hidden">
-                <div class="modal-header border-bottom border-secondary border-opacity-10 px-4 py-3 bg-dark bg-opacity-20 d-flex flex-column align-items-center text-center w-100">
-                    <svg width="24" height="24" class="mb-2" viewBox="0 0 18 18">
-                        <path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.47h4.84a4.14 4.14 0 0 1-1.8 2.71v2.26h2.91c1.7-1.56 2.69-3.86 2.69-6.6z"/>
-                        <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.2l-2.91-2.26a5.64 5.64 0 0 1-8.52-3.04H.51v2.33A9 9 0 0 0 9 18z"/>
-                        <path fill="#FBBC05" d="M3.53 10.5a5.41 5.41 0 0 1 0-3v-2.33H.51a9 9 0 0 0 0 7.66l3.02-2.33z"/>
-                        <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35L15 2.4A9 9 0 0 0 .51 5.17l3.02 2.33A5.64 5.64 0 0 1 9 3.58z"/>
-                    </svg>
-                    <h5 class="modal-title font-outfit text-white fw-bold" id="googleLoginModalLabel">Sign in with Google</h5>
-                    <p class="text-secondary small mb-0">to continue to CampusAI</p>
-                </div>
-                <div class="modal-body p-4" style="max-height: 400px; overflow-y: auto;">
-                    <div class="d-flex flex-column gap-2">
-                        <!-- Account 1: Rishi (Admin - 022) -->
-                        <button class="btn google-btn-custom w-100 p-3 text-start d-flex align-items-center gap-3 rounded-3 transition google-account-option" data-username="admin" data-email="rishikeshrs022@gmail.com">
-                            <div class="rounded-circle bg-purple bg-opacity-20 text-purple d-flex align-items-center justify-content-center fw-bold fs-5" style="width: 42px; height: 42px; min-width: 42px;">R</div>
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+            <div class="modal-content border-0 shadow-lg overflow-hidden" style="background: #0a0a0a; border-radius: 8px;">
+                
+                <!-- STEP 1: CHOOSE AN ACCOUNT -->
+                <div id="google-step-account" class="p-4">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <svg width="24" height="24" viewBox="0 0 18 18">
+                            <path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.47h4.84a4.14 4.14 0 0 1-1.8 2.71v2.26h2.91c1.7-1.56 2.69-3.86 2.69-6.6z"/>
+                            <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.2l-2.91-2.26a5.64 5.64 0 0 1-8.52-3.04H.51v2.33A9 9 0 0 0 9 18z"/>
+                            <path fill="#FBBC05" d="M3.53 10.5a5.41 5.41 0 0 1 0-3v-2.33H.51a9 9 0 0 0 0 7.66l3.02-2.33z"/>
+                            <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35L15 2.4A9 9 0 0 0 .51 5.17l3.02 2.33A5.64 5.64 0 0 1 9 3.58z"/>
+                        </svg>
+                        <span class="text-white font-outfit fw-bold" style="font-size: 0.95rem;">Sign in with Google</span>
+                    </div>
+
+                    <h2 class="text-white font-outfit fw-normal mb-1" style="font-size: 1.8rem; letter-spacing: -0.5px;">Choose an account</h2>
+                    <p class="text-secondary small mb-4" style="font-size: 0.88rem;">to continue to <span class="text-white">CampusAI</span></p>
+
+                    <!-- Accounts List -->
+                    <div class="d-flex flex-column mb-4 border-bottom border-secondary border-opacity-10">
+                        <!-- Account 1: Rishikesh RS -->
+                        <button class="btn google-account-row w-100 py-3 text-start d-flex align-items-center gap-3 border-top border-secondary border-opacity-10 google-oauth-btn" data-name="Rishikesh RS" data-email="rishikeshrs022@gmail.com">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; min-width: 32px; background: #0f766e; font-size: 0.9rem;">R</div>
                             <div class="flex-grow-1">
-                                <div class="fw-semibold font-outfit text-white">Rishi</div>
-                                <div class="text-secondary small">rishikeshrs022@gmail.com (Administrator)</div>
+                                <div class="fw-semibold text-white" style="font-size: 0.92rem; line-height: 1.2;">Rishikesh RS</div>
+                                <div class="text-secondary" style="font-size: 0.82rem;">rishikeshrs022@gmail.com</div>
                             </div>
                         </button>
                         
-                        <!-- Account 2: Rishi (Student - 022) -->
-                        <button class="btn google-btn-custom w-100 p-3 text-start d-flex align-items-center gap-3 rounded-3 transition google-account-option" data-username="STUDENT001" data-email="rishikeshrs022@gmail.com">
-                            <div class="rounded-circle bg-primary bg-opacity-20 text-primary d-flex align-items-center justify-content-center fw-bold fs-5" style="width: 42px; height: 42px; min-width: 42px;">RS</div>
+                        <!-- Account 2: Rishikesh Rs -->
+                        <button class="btn google-account-row w-100 py-3 text-start d-flex align-items-center gap-3 border-top border-secondary border-opacity-10 google-oauth-btn" data-name="Rishikesh Rs" data-email="sivakumarr027@gmail.com">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; min-width: 32px; background: #ea580c; font-size: 0.9rem;">R</div>
                             <div class="flex-grow-1">
-                                <div class="fw-semibold font-outfit text-white">Rishi (Student)</div>
-                                <div class="text-secondary small">rishikeshrs022@gmail.com (Student)</div>
+                                <div class="fw-semibold text-white" style="font-size: 0.92rem; line-height: 1.2;">Rishikesh Rs</div>
+                                <div class="text-secondary" style="font-size: 0.82rem;">sivakumarr027@gmail.com</div>
                             </div>
                         </button>
 
-                        <!-- Account 3: Rishi (Admin - 922) -->
-                        <button class="btn google-btn-custom w-100 p-3 text-start d-flex align-items-center gap-3 rounded-3 transition google-account-option" data-username="admin" data-email="rishikeshrs922@gmail.com">
-                            <div class="rounded-circle bg-purple bg-opacity-20 text-purple d-flex align-items-center justify-content-center fw-bold fs-5" style="width: 42px; height: 42px; min-width: 42px;">R</div>
-                            <div class="flex-grow-1">
-                                <div class="fw-semibold font-outfit text-white">Rishi</div>
-                                <div class="text-secondary small">rishikeshrs922@gmail.com (Administrator)</div>
+                        <!-- Use another account -->
+                        <button class="btn google-account-row w-100 py-3 text-start d-flex align-items-center gap-3 border-top border-secondary border-opacity-10" onclick="alert('Google Auth Demo: Please choose one of the available accounts above.');">
+                            <div class="d-flex align-items-center justify-content-center text-secondary" style="width: 32px; height: 32px; min-width: 32px; font-size: 1.2rem;">
+                                <i class="bi bi-person-circle"></i>
                             </div>
-                        </button>
-                        
-                        <!-- Account 4: Rishi (Student - 922) -->
-                        <button class="btn google-btn-custom w-100 p-3 text-start d-flex align-items-center gap-3 rounded-3 transition google-account-option" data-username="STUDENT001" data-email="rishikeshrs922@gmail.com">
-                            <div class="rounded-circle bg-primary bg-opacity-20 text-primary d-flex align-items-center justify-content-center fw-bold fs-5" style="width: 42px; height: 42px; min-width: 42px;">RS</div>
                             <div class="flex-grow-1">
-                                <div class="fw-semibold font-outfit text-white">Rishi (Student)</div>
-                                <div class="text-secondary small">rishikeshrs922@gmail.com (Student)</div>
-                            </div>
-                        </button>
-
-                        <!-- Account 5: Rishi (Developer - richx522) -->
-                        <button class="btn google-btn-custom w-100 p-3 text-start d-flex align-items-center gap-3 rounded-3 transition google-account-option" data-username="admin" data-email="richx522@gmail.com">
-                            <div class="rounded-circle bg-warning bg-opacity-20 text-warning d-flex align-items-center justify-content-center fw-bold fs-5" style="width: 42px; height: 42px; min-width: 42px;">R</div>
-                            <div class="flex-grow-1">
-                                <div class="fw-semibold font-outfit text-white">Rishi (Developer)</div>
-                                <div class="text-secondary small">richx522@gmail.com (Administrator)</div>
+                                <div class="text-white" style="font-size: 0.92rem;">Use another account</div>
                             </div>
                         </button>
                     </div>
+
+                    <!-- Footer policy text -->
+                    <p class="text-secondary mb-0" style="font-size: 0.75rem; line-height: 1.4;">
+                        Before using this app, you can review CampusAI's <a href="#" class="text-primary text-decoration-none">Privacy Policy</a> and <a href="#" class="text-primary text-decoration-none">Terms of Service</a>.
+                    </p>
                 </div>
-                <div class="modal-footer border-top border-secondary border-opacity-10 px-4 py-3 bg-dark bg-opacity-20 d-flex justify-content-center">
-                    <button type="button" class="btn btn-link text-secondary text-decoration-none small" data-bs-dismiss="modal">Cancel</button>
+
+                <!-- STEP 2: CHOOSE ROLE -->
+                <div id="google-step-role" class="p-4 d-none text-center">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <svg width="24" height="24" viewBox="0 0 18 18">
+                            <path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.47h4.84a4.14 4.14 0 0 1-1.8 2.71v2.26h2.91c1.7-1.56 2.69-3.86 2.69-6.6z"/>
+                            <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.2l-2.91-2.26a5.64 5.64 0 0 1-8.52-3.04H.51v2.33A9 9 0 0 0 9 18z"/>
+                            <path fill="#FBBC05" d="M3.53 10.5a5.41 5.41 0 0 1 0-3v-2.33H.51a9 9 0 0 0 0 7.66l3.02-2.33z"/>
+                            <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35L15 2.4A9 9 0 0 0 .51 5.17l3.02 2.33A5.64 5.64 0 0 1 9 3.58z"/>
+                        </svg>
+                        <span class="text-white font-outfit fw-bold" style="font-size: 0.95rem;">Sign in with Google</span>
+                    </div>
+
+                    <h3 class="text-white font-outfit fw-normal mb-1" style="font-size: 1.5rem;">Select Portal Role</h3>
+                    <p class="text-secondary small mb-4" id="google-selected-email-display">for account@gmail.com</p>
+
+                    <div class="d-flex flex-column gap-3 mb-4">
+                        <button id="google-role-student-btn" class="btn btn-glow-primary py-3 w-100">
+                            <i class="bi bi-mortarboard-fill me-2"></i>Access Student Portal
+                        </button>
+                        
+                        <button id="google-role-admin-btn" class="btn btn-outline-light py-3 w-100 border border-secondary border-opacity-20 bg-white bg-opacity-5 hover-bg-opacity-10 text-white rounded-3">
+                            <i class="bi bi-shield-lock-fill me-2"></i>Access Admin Portal
+                        </button>
+                    </div>
+
+                    <button type="button" class="btn btn-link text-secondary text-decoration-none small" id="google-role-back-btn">
+                        <i class="bi bi-arrow-left me-1"></i>Back to account selection
+                    </button>
                 </div>
+
             </div>
         </div>
     </div>

@@ -613,4 +613,26 @@ body[data-theme="light"] .google-btn-custom:hover {
     border-color: rgba(0, 0, 0, 0.25) !important;
 }
 
+/* Google Account Chooser Row (Exact Match) */
+.google-account-row {
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border: none !important;
+    transition: background 0.15s ease-in-out !important;
+}
+.google-account-row:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+}
+body[data-theme="light"] #googleLoginModal .modal-content {
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08) !important;
+}
+body[data-theme="light"] .google-account-row:hover {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+
+
 
