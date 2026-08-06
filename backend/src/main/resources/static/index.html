@@ -1120,39 +1120,56 @@
                     </button>
                 </div>
 
-                <!-- STEP 3: ADD CUSTOM ACCOUNT -->
-                <div id="google-step-custom" class="p-4 d-none">
-                    <div class="d-flex align-items-center gap-2 mb-4">
-                        <svg width="24" height="24" viewBox="0 0 18 18">
+                <!-- STEP 3: ADD CUSTOM ACCOUNT (EXACT GOOGLE LOGIN LOOK) -->
+                <div id="google-step-custom" class="p-4 d-none text-start">
+                    <div class="mb-4">
+                        <svg width="24" height="24" viewBox="0 0 18 18" class="mb-3">
                             <path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.47h4.84a4.14 4.14 0 0 1-1.8 2.71v2.26h2.91c1.7-1.56 2.69-3.86 2.69-6.6z"/>
                             <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.2l-2.91-2.26a5.64 5.64 0 0 1-8.52-3.04H.51v2.33A9 9 0 0 0 9 18z"/>
                             <path fill="#FBBC05" d="M3.53 10.5a5.41 5.41 0 0 1 0-3v-2.33H.51a9 9 0 0 0 0 7.66l3.02-2.33z"/>
                             <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35L15 2.4A9 9 0 0 0 .51 5.17l3.02 2.33A5.64 5.64 0 0 1 9 3.58z"/>
                         </svg>
-                        <span class="text-white font-outfit fw-bold" style="font-size: 0.95rem;">Sign in with Google</span>
+                        <h2 class="text-white font-outfit fw-normal mb-1" style="font-size: 1.8rem; letter-spacing: -0.5px;">Sign in</h2>
+                        <p class="text-secondary mb-0" style="font-size: 0.88rem;">to continue to <span class="text-white">CampusAI</span></p>
                     </div>
 
-                    <h3 class="text-white font-outfit fw-normal mb-1" style="font-size: 1.5rem; letter-spacing: -0.5px;">Add an account</h3>
-                    <p class="text-secondary small mb-4" style="font-size: 0.88rem;">Enter your Google account details</p>
-
-                    <div class="d-flex flex-column gap-3 mb-4">
-                        <div class="text-start">
-                            <label class="form-label text-secondary small" for="google-custom-name">Full Name</label>
-                            <input type="text" id="google-custom-name" class="form-control bg-dark bg-opacity-40 border border-secondary border-opacity-20 text-white rounded-3 py-2" placeholder="e.g. Rishikesh RS">
+                    <!-- Form Inputs (Google style float outline) -->
+                    <div class="d-flex flex-column gap-4 mb-4">
+                        <div class="google-input-group position-relative">
+                            <input type="email" id="google-custom-email" class="google-material-input w-100 bg-transparent text-white rounded px-3 py-3" placeholder=" " required>
+                            <label class="google-material-label" for="google-custom-email">Email or phone</label>
                         </div>
-                        <div class="text-start">
-                            <label class="form-label text-secondary small" for="google-custom-email">Google Email Address</label>
-                            <input type="email" id="google-custom-email" class="form-control bg-dark bg-opacity-40 border border-secondary border-opacity-20 text-white rounded-3 py-2" placeholder="name@gmail.com">
+
+                        <div class="google-input-group position-relative">
+                            <input type="text" id="google-custom-name" class="google-material-input w-100 bg-transparent text-white rounded px-3 py-3" placeholder=" " required>
+                            <label class="google-material-label" for="google-custom-name">Full Name</label>
                         </div>
                         
-                        <button id="google-custom-continue-btn" class="btn btn-glow-primary py-2.5 w-100 mt-2">
-                            Next
-                        </button>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="#" class="text-primary text-decoration-none small fw-semibold" onclick="alert('Google Auth Demo: Forgot email is not active.');">Forgot email?</a>
+                        </div>
                     </div>
 
-                    <button type="button" class="btn btn-link text-secondary text-decoration-none small" id="google-custom-back-btn">
-                        <i class="bi bi-arrow-left me-1"></i>Back
-                    </button>
+                    <!-- Subtext -->
+                    <p class="text-secondary small mb-4" style="font-size: 0.8rem; line-height: 1.4;">
+                        Not your computer? Use Guest mode to sign in privately. <a href="#" class="text-primary text-decoration-none">Learn more about using Guest mode</a>
+                    </p>
+
+                    <!-- Bottom Buttons -->
+                    <div class="d-flex justify-content-between align-items-center pt-2">
+                        <button type="button" class="btn btn-link text-primary text-decoration-none small fw-semibold p-0" id="google-custom-back-btn">
+                            Back
+                        </button>
+                        
+                        <div class="d-flex gap-3 align-items-center">
+                            <button type="button" class="btn btn-link text-primary text-decoration-none small fw-semibold p-0" onclick="alert('Google Auth Demo: Account creation is not active.');">
+                                Create account
+                            </button>
+                            <button id="google-custom-continue-btn" class="btn google-pill-btn px-4 py-2 fw-semibold">
+                                Next
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
             </div>

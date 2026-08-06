@@ -634,5 +634,78 @@ body[data-theme="light"] .google-account-row:hover {
     background: rgba(0, 0, 0, 0.02) !important;
 }
 
+/* Google Material Outline Input Box */
+.google-input-group {
+    position: relative;
+}
+.google-material-input {
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    outline: none !important;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    height: 56px;
+}
+.google-material-input:focus {
+    border-color: #8ab4f8 !important;
+    box-shadow: 0 0 0 1px #8ab4f8 !important;
+}
+.google-material-label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #0a0a0a;
+    padding: 0 6px;
+    color: #9ca3af;
+    font-size: 0.95rem;
+    transition: 0.15s ease-all;
+    pointer-events: none;
+}
+/* When focused or placeholder is not shown */
+.google-material-input:focus ~ .google-material-label,
+.google-material-input:not(:placeholder-shown) ~ .google-material-label {
+    top: 0;
+    font-size: 0.75rem;
+    color: #8ab4f8;
+}
+/* Light Theme support */
+body[data-theme="light"] .google-material-input {
+    border: 1px solid rgba(0, 0, 0, 0.23) !important;
+    color: #1f2937 !important;
+}
+body[data-theme="light"] .google-material-input:focus {
+    border-color: #1a73e8 !important;
+    box-shadow: 0 0 0 1px #1a73e8 !important;
+}
+body[data-theme="light"] .google-material-label {
+    background: #ffffff;
+    color: #5f6368;
+}
+body[data-theme="light"] .google-material-input:focus ~ .google-material-label,
+body[data-theme="light"] .google-material-input:not(:placeholder-shown) ~ .google-material-label {
+    color: #1a73e8;
+}
+
+/* Google Pill Button */
+.google-pill-btn {
+    background: #8ab4f8 !important;
+    color: #202124 !important;
+    border-radius: 100px !important;
+    border: none !important;
+    font-size: 0.88rem;
+    transition: background 0.15s;
+}
+.google-pill-btn:hover {
+    background: #a8c7fa !important;
+}
+body[data-theme="light"] .google-pill-btn {
+    background: #1a73e8 !important;
+    color: #ffffff !important;
+}
+body[data-theme="light"] .google-pill-btn:hover {
+    background: #1557b0 !important;
+}
+
+
 
 
