@@ -29,6 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginUsername = document.getElementById("login-username");
     const loginPassword = document.getElementById("login-password");
     const loginError = document.getElementById("login-error");
+    
+    // Login Tab Switcher Elements
+    let loginRole = "student"; 
+    const tabStudent = document.getElementById("login-tab-student");
+    const tabAdmin = document.getElementById("login-tab-admin");
+    const usernameLabel = document.querySelector('label[for="login-username"]');
 
     // Landing Page CTAs
     const exploreBtn = document.getElementById("explore-btn");
@@ -80,6 +86,27 @@ document.addEventListener("DOMContentLoaded", () => {
         loginUsername.value = localStorage.getItem("campusai_saved_username") || "";
         loginPassword.value = localStorage.getItem("campusai_saved_password") || "";
         document.getElementById("remember-me").checked = true;
+    }
+
+    // Role Tab Switcher Event Listeners
+    if (tabStudent && tabAdmin) {
+        tabStudent.addEventListener("click", () => {
+            loginRole = "student";
+            tabStudent.classList.add("active-tab");
+            tabAdmin.classList.remove("active-tab");
+            if (usernameLabel) usernameLabel.textContent = "Student ID / Username";
+            loginUsername.placeholder = "Username or Student ID";
+            loginError.classList.add("d-none");
+        });
+
+        tabAdmin.addEventListener("click", () => {
+            loginRole = "admin";
+            tabAdmin.classList.add("active-tab");
+            tabStudent.classList.remove("active-tab");
+            if (usernameLabel) usernameLabel.textContent = "Administrator Username";
+            loginUsername.placeholder = "Username or Student ID";
+            loginError.classList.add("d-none");
+        });
     }
 
     // Dark/Light Theme Handler
@@ -259,6 +286,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = loginPassword.value;
 
         loginError.classList.add("d-none");
+
+        // Validate selected portal
+        if (loginRole === "student" && username.toLowerCase() === "admin") {
+            loginError.textContent = "This is the Student Portal. Please click 'Admin Login' tab to sign in as Administrator.";
+            loginError.classList.remove("d-none");
+            showToast("Admin credentials entered in Student portal.", "warning");
+            return;
+        }
+
+        if (loginRole === "admin" && username.toLowerCase().startsWith("student")) {
+            loginError.textContent = "This is the Admin Portal. Please click 'Student Login' tab to sign in as Student.";
+            loginError.classList.remove("d-none");
+            showToast("Student credentials entered in Admin portal.", "warning");
+            return;
+        }
+
         const res = window.MockDB.authenticate(username, password);
 
         if (res.success) {

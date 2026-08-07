@@ -751,6 +751,33 @@ body[data-theme="light"] #departmentModal #dept-modal-facilities {
     color: #475569 !important;
 }
 
+/* Login Tab Switcher */
+.login-tab-btn {
+    color: var(--text-secondary) !important;
+    background: transparent !important;
+    border: none !important;
+    font-size: 0.88rem;
+    transition: all 0.25s ease-in-out !important;
+}
+.login-tab-btn:hover {
+    color: var(--text-primary) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+}
+.login-tab-btn.active-tab {
+    background: var(--primary-color) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25) !important;
+}
+body[data-theme="light"] .login-tab-btn:hover {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+body[data-theme="light"] .login-tab-btn.active-tab {
+    background: var(--primary-color) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15) !important;
+}
+
+
 
 
 

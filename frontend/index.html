@@ -354,6 +354,16 @@
                 
                 <div id="login-error" class="alert alert-danger d-none small"></div>
 
+                <!-- Role Tab Switcher -->
+                <div class="d-flex justify-content-center gap-1 mb-4 p-1 bg-dark bg-opacity-20 rounded-3" style="border: 1px solid var(--card-border);">
+                    <button type="button" id="login-tab-student" class="btn btn-sm w-50 py-2 rounded-2 fw-semibold transition login-tab-btn active-tab">
+                        <i class="bi bi-mortarboard-fill me-1"></i>Student Login
+                    </button>
+                    <button type="button" id="login-tab-admin" class="btn btn-sm w-50 py-2 rounded-2 fw-semibold transition login-tab-btn">
+                        <i class="bi bi-shield-lock-fill me-1"></i>Admin Login
+                    </button>
+                </div>
+
                 <form id="login-form">
                     <div class="form-floating-custom">
                         <label for="login-username">Username or Student ID</label>
