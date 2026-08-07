@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Landing Page CTAs
     const exploreBtn = document.getElementById("explore-btn");
-    const studentLoginBtn = document.getElementById("student-login-btn");
 
     // Chatbot Elements
     const chatWidget = document.getElementById("chat-widget");
@@ -223,14 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (deptLink) deptLink.classList.add("active");
         
         document.getElementById("departments-section")?.scrollIntoView({ behavior: "smooth" });
-    });
-
-    studentLoginBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        navigateTo("login-page");
-        setTimeout(() => {
-            loginUsername.focus();
-        }, 150);
     });
 
     // Department Details Modal trigger
