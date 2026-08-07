@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     programsList.innerHTML = "";
                     deptData.programs.forEach(prog => {
                         const li = document.createElement("li");
-                        li.className = "mb-2 d-flex align-items-center gap-2 text-secondary-emphasis small";
+                        li.className = "mb-2 d-flex align-items-center gap-2 small";
                         li.innerHTML = `<i class="bi bi-patch-check-fill text-success"></i><span>${prog}</span>`;
                         programsList.appendChild(li);
                     });

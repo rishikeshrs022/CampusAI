@@ -717,6 +717,41 @@ body[data-theme="light"] #dept-modal-content-card {
     box-shadow: 0 10px 40px rgba(0,0,0,0.1) !important;
 }
 
+/* Department Modal Dark Mode High Contrast Rules */
+#departmentModal .text-secondary {
+    color: #cbd5e1 !important; /* light grey (slate-300) */
+}
+#departmentModal #dept-modal-subtitle {
+    color: #94a3b8 !important; /* readable slate grey */
+}
+#departmentModal #dept-modal-programs li {
+    color: #e2e8f0 !important; /* light slate */
+}
+#departmentModal .table-custom td.text-secondary {
+    color: #cbd5e1 !important;
+}
+#departmentModal #dept-modal-facilities {
+    color: #cbd5e1 !important;
+}
+
+/* Department Modal Light Mode High Contrast Rules */
+body[data-theme="light"] #departmentModal .text-secondary {
+    color: #475569 !important; /* dark slate grey */
+}
+body[data-theme="light"] #departmentModal #dept-modal-subtitle {
+    color: #475569 !important;
+}
+body[data-theme="light"] #departmentModal #dept-modal-programs li {
+    color: #1f2937 !important; /* dark grey */
+}
+body[data-theme="light"] #departmentModal .table-custom td.text-secondary {
+    color: #475569 !important;
+}
+body[data-theme="light"] #departmentModal #dept-modal-facilities {
+    color: #475569 !important;
+}
+
+
 
 
 
