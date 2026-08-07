@@ -381,6 +381,59 @@ document.addEventListener("DOMContentLoaded", () => {
             googleLoginModal.show();
         });
 
+        // Helper function to log in dynamically based on active tab
+        function executeGoogleLogin(name, email) {
+            const users = window.MockDB.getUsers();
+            if (loginRole === "student") {
+                const matchedUser = users.find(u => u.username === "STUDENT001");
+                if (matchedUser) {
+                    const student = window.MockDB.getStudentById("STUDENT001");
+                    if (student) {
+                        student.name = name;
+                        student.email = email;
+                        window.MockDB.saveStudent(student);
+                    }
+
+                    const sessionUser = {
+                        success: true,
+                        username: matchedUser.username,
+                        role: matchedUser.role,
+                        refId: matchedUser.refId,
+                        name: name
+                    };
+                    currentUser = sessionUser;
+                    currentStudent = window.MockDB.getStudentById(sessionUser.refId);
+                    
+                    showToast(`Signed in via Google as ${name}!`, "success");
+                    adjustNavForRole(sessionUser.role);
+                    navigateTo("student-dashboard");
+                    googleLoginModal.hide();
+                }
+            } else {
+                // loginRole === "admin"
+                const matchedUser = users.find(u => u.username === "admin");
+                if (matchedUser) {
+                    matchedUser.email = email;
+                    matchedUser.name = name;
+                    window.MockDB.saveUser(matchedUser);
+
+                    const sessionUser = {
+                        success: true,
+                        username: matchedUser.username,
+                        role: matchedUser.role,
+                        refId: matchedUser.refId,
+                        name: name
+                    };
+                    currentUser = sessionUser;
+                    
+                    showToast(`Signed in via Google as ${name}!`, "success");
+                    adjustNavForRole(sessionUser.role);
+                    navigateTo("admin-panel");
+                    googleLoginModal.hide();
+                }
+            }
+        }
+
         // Step 1: Click account row
         const googleOAuthBtns = googleLoginModalEl.querySelectorAll(".google-oauth-btn");
         googleOAuthBtns.forEach(btn => {
@@ -388,10 +441,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 selectedName = btn.getAttribute("data-name");
                 selectedEmail = btn.getAttribute("data-email");
 
-                // Transition to Step 2
-                selectedEmailDisplay.textContent = `to continue to CampusAI as ${selectedName} (${selectedEmail})`;
-                stepAccount.classList.add("d-none");
-                stepRole.classList.remove("d-none");
+                // Log in immediately based on selected tab role
+                executeGoogleLogin(selectedName, selectedEmail);
             });
         });
 
@@ -422,85 +473,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                selectedName = nameVal;
-                selectedEmail = emailVal;
-
-                // Transition to Step 2 (Select Role)
-                selectedEmailDisplay.textContent = `to continue to CampusAI as ${selectedName} (${selectedEmail})`;
-                stepCustom.classList.add("d-none");
-                stepRole.classList.remove("d-none");
+                // Log in immediately based on selected tab role
+                executeGoogleLogin(nameVal, emailVal);
             });
         }
-
-        // Step 2: Back button
-        roleBackBtn.addEventListener("click", () => {
-            // If we came from custom input, go back to custom input. Else go to account select.
-            if (customNameInput.value.trim() !== "") {
-                stepCustom.classList.remove("d-none");
-                stepRole.classList.add("d-none");
-            } else {
-                stepAccount.classList.remove("d-none");
-                stepRole.classList.add("d-none");
-            }
-        });
-
-        // Step 2: Select Student Portal
-        roleStudentBtn.addEventListener("click", () => {
-            const users = window.MockDB.getUsers();
-            // Default to STUDENT001 profile
-            const matchedUser = users.find(u => u.username === "STUDENT001");
-            if (matchedUser) {
-                // Personalize profile in LocalStorage database
-                const student = window.MockDB.getStudentById("STUDENT001");
-                if (student) {
-                    student.name = selectedName;
-                    student.email = selectedEmail;
-                    window.MockDB.saveStudent(student);
-                }
-
-                const sessionUser = {
-                    success: true,
-                    username: matchedUser.username,
-                    role: matchedUser.role,
-                    refId: matchedUser.refId,
-                    name: selectedName
-                };
-                currentUser = sessionUser;
-                currentStudent = window.MockDB.getStudentById(sessionUser.refId);
-                
-                showToast(`Signed in via Google as ${selectedName}!`, "success");
-                adjustNavForRole(sessionUser.role);
-                navigateTo("student-dashboard");
-                googleLoginModal.hide();
-            }
-        });
-
-        // Step 2: Select Admin Portal
-        roleAdminBtn.addEventListener("click", () => {
-            const users = window.MockDB.getUsers();
-            // Default to admin profile
-            const matchedUser = users.find(u => u.username === "admin");
-            if (matchedUser) {
-                // Personalize Admin email in LocalStorage
-                matchedUser.email = selectedEmail;
-                matchedUser.name = selectedName;
-                window.MockDB.saveUser(matchedUser);
-
-                const sessionUser = {
-                    success: true,
-                    username: matchedUser.username,
-                    role: matchedUser.role,
-                    refId: matchedUser.refId,
-                    name: selectedName
-                };
-                currentUser = sessionUser;
-                
-                showToast(`Signed in via Google as ${selectedName}!`, "success");
-                adjustNavForRole(sessionUser.role);
-                navigateTo("admin-panel");
-                googleLoginModal.hide();
-            }
-        });
     }
 
     function logout() {
