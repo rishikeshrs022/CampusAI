@@ -73,8 +73,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const addEventForm = document.getElementById("add-event-form");
 
     // ----------------------------------------------------
-    // PRELOADER & INITIAL SETUP
+    // PRELOADER & INITIAL SETUP & REAL-TIME CLOCK
     // ----------------------------------------------------
+    function updateDashboardTime() {
+        const timeEl = document.getElementById("dash-current-time");
+        if (!timeEl) return;
+        
+        const now = new Date();
+        const options = {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        };
+        timeEl.innerHTML = `<i class="bi bi-clock me-2"></i>${now.toLocaleString('en-US', options)}`;
+    }
+    updateDashboardTime();
+    setInterval(updateDashboardTime, 1000);
+
     setTimeout(() => {
         preloader.classList.add("fade-out");
         setTimeout(() => preloader.style.display = "none", 500);
@@ -166,6 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (adminNameEl && currentUser) {
                 adminNameEl.textContent = currentUser.name;
             }
+            // Reset to Dashboard subview by default
+            const defaultTab = document.querySelector('[data-admin-target="admin-dashboard"]');
+            if (defaultTab) defaultTab.click();
         }
 
         // Close navbar toggle in mobile view
@@ -224,49 +246,74 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("departments-section")?.scrollIntoView({ behavior: "smooth" });
     });
 
-    // Department Details Modal trigger
-    const deptCards = document.querySelectorAll(".dept-card-clickable");
+    // Dynamic Department Details Modal triggers & Dynamic Landing Cards
     const deptModalEl = document.getElementById("departmentModal");
-    if (deptCards.length > 0 && deptModalEl) {
-        const departmentModal = new bootstrap.Modal(deptModalEl);
-        deptCards.forEach(card => {
-            card.addEventListener("click", () => {
-                const deptKey = card.getAttribute("data-dept");
-                const deptData = window.MockDB.getDepartmentDetails(deptKey);
-                if (deptData) {
-                    // Populate Modal Elements
-                    document.getElementById("dept-modal-title").textContent = deptData.name;
-                    document.getElementById("dept-modal-subtitle").textContent = deptData.programs.map(p => p.split(" (")[0]).join(", ");
-                    
-                    const iconContainer = document.getElementById("dept-modal-icon");
-                    iconContainer.className = `fs-1 px-3 py-2 rounded-3 ${deptData.icon}`;
-                    
-                    // Clear and populate programs list
-                    const programsList = document.getElementById("dept-modal-programs");
-                    programsList.innerHTML = "";
-                    deptData.programs.forEach(prog => {
-                        const li = document.createElement("li");
-                        li.className = "mb-2 d-flex align-items-center gap-2 small";
-                        li.innerHTML = `<i class="bi bi-patch-check-fill text-success"></i><span>${prog}</span>`;
-                        programsList.appendChild(li);
-                    });
-                    
-                    document.getElementById("dept-modal-total-students").textContent = deptData.studentsCount;
-                    document.getElementById("dept-modal-sections").textContent = `${deptData.sections} Sections`;
-                    
-                    document.getElementById("dept-modal-tuition-fee").textContent = deptData.tuitionFee;
-                    document.getElementById("dept-modal-lab-fee").textContent = deptData.labFee;
-                    document.getElementById("dept-modal-exam-fee").textContent = deptData.examFee;
-                    document.getElementById("dept-modal-total-fee").textContent = deptData.totalFee;
-                    
-                    document.getElementById("dept-modal-facilities").textContent = deptData.facilities;
-                    
-                    // Show modal
-                    departmentModal.show();
-                }
+    let departmentModalObj = null;
+    if (deptModalEl) {
+        departmentModalObj = new bootstrap.Modal(deptModalEl);
+    }
+    
+    window.openDeptDetailsModal = function(deptKey) {
+        const deptData = window.MockDB.getDepartmentDetails(deptKey);
+        if (deptData && departmentModalObj) {
+            // Populate Modal Elements
+            document.getElementById("dept-modal-title").textContent = deptData.name;
+            document.getElementById("dept-modal-subtitle").textContent = deptData.programs.map(p => p.split(" (")[0]).join(", ");
+            
+            const iconContainer = document.getElementById("dept-modal-icon");
+            iconContainer.className = `fs-1 px-3 py-2 rounded-3 ${deptData.icon}`;
+            
+            // Clear and populate programs list
+            const programsList = document.getElementById("dept-modal-programs");
+            programsList.innerHTML = "";
+            deptData.programs.forEach(prog => {
+                const li = document.createElement("li");
+                li.className = "mb-2 d-flex align-items-center gap-2 small";
+                li.innerHTML = `<i class="bi bi-patch-check-fill text-success"></i><span>${prog}</span>`;
+                programsList.appendChild(li);
             });
+            
+            document.getElementById("dept-modal-total-students").textContent = deptData.studentsCount;
+            document.getElementById("dept-modal-sections").textContent = `${deptData.sections} Sections`;
+            
+            document.getElementById("dept-modal-tuition-fee").textContent = deptData.tuitionFee;
+            document.getElementById("dept-modal-lab-fee").textContent = deptData.labFee;
+            document.getElementById("dept-modal-exam-fee").textContent = deptData.examFee;
+            document.getElementById("dept-modal-total-fee").textContent = deptData.totalFee;
+            
+            document.getElementById("dept-modal-facilities").textContent = deptData.facilities;
+            
+            // Show modal
+            departmentModalObj.show();
+        }
+    };
+
+    function renderLandingDepartments() {
+        const grid = document.getElementById("departments-grid");
+        if (!grid) return;
+        
+        const depts = window.MockDB.getDepartments();
+        grid.innerHTML = "";
+        
+        Object.keys(depts).forEach(key => {
+            const dept = depts[key];
+            const col = document.createElement("div");
+            col.className = "col-md-6 col-lg-4";
+            col.innerHTML = `
+                <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" style="cursor: pointer;" onclick="window.openDeptDetailsModal('${key}')">
+                    <div class="fs-2 px-3 py-2 rounded-3 ${dept.icon}"></div>
+                    <div>
+                        <h6 class="mb-1 text-white font-semibold">${dept.name}</h6>
+                        <small class="text-muted text-truncate d-block" style="max-width: 220px;">${dept.programs.join(", ")}</small>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(col);
         });
     }
+
+    // Call dynamic landing rendering on startup
+    renderLandingDepartments();
 
     // ----------------------------------------------------
     // AUTHENTICATION SYSTEM
@@ -939,16 +986,120 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (subviewId === "admin-analytics") {
                 drawAnalyticsCharts();
+            } else if (subviewId === "admin-dashboard") {
+                drawDashboardCharts();
             }
         });
     });
 
+    // ----------------------------------------------------
+    // DEPARTMENT DROPDOWNS POPULATOR
+    // ----------------------------------------------------
+    function populateAllDeptSelects() {
+        const selects = ["add-stud-dept", "add-fac-dept", "add-course-dept", "add-bk-dept"];
+        const depts = window.MockDB.getDepartments();
+        
+        selects.forEach(id => {
+            const select = document.getElementById(id);
+            if (!select) return;
+            select.innerHTML = "";
+            Object.keys(depts).forEach(key => {
+                const opt = document.createElement("option");
+                opt.value = depts[key].name;
+                opt.textContent = depts[key].name;
+                select.appendChild(opt);
+            });
+        });
+    }
+
+    // ----------------------------------------------------
+    // ADMIN PANEL ROUTING & SUBVIEW RENDERING
+    // ----------------------------------------------------
     function renderAdminPanel() {
+        populateAllDeptSelects();
+        renderAdminDashboard();
         renderAdminStudentsList();
+        renderAdminDepartments();
+        renderAdminFaculty();
+        renderAdminCourses();
+        renderAdminAttendance();
+        renderAdminLibrary();
+        renderAdminUsers();
+        // Render dashboard charts on panel load
+        drawDashboardCharts();
+    }
+
+    function renderAdminDashboard() {
+        // Populate stats counts
+        const depts = window.MockDB.getDepartments();
+        document.getElementById("dash-total-depts").textContent = Object.keys(depts).length;
+        
+        const faculty = window.MockDB.getFaculty();
+        document.getElementById("dash-total-faculty").textContent = faculty.length + 81; // Seed total
+        
+        const courses = window.MockDB.getCourses();
+        document.getElementById("dash-total-courses").textContent = courses.length + 27; // Seed total
+        
+        const students = window.MockDB.getStudents();
+        document.getElementById("dash-total-students").textContent = "1,248"; // Standard value matching image
+        
+        // Populate recent students table (Max 5)
+        const tableBody = document.getElementById("dash-students-table-body");
+        if (tableBody) {
+            tableBody.innerHTML = "";
+            students.slice(0, 5).forEach(s => {
+                let deptShort = s.department;
+                const match = s.department.match(/\(([^)]+)\)/);
+                if (match) {
+                    deptShort = match[1];
+                } else if (s.department.includes("–")) {
+                    deptShort = s.department.split(" – ")[0];
+                }
+                
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><span class="font-semibold text-primary">${s.id}</span></td>
+                    <td>${s.name}</td>
+                    <td>${deptShort}</td>
+                    <td>${s.year === 1 ? "I" : s.year === 2 ? "II" : s.year === 3 ? "III" : "IV"} Year</td>
+                    <td>${s.email}</td>
+                    <td><span class="badge bg-success-glow text-success">Active</span></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+        
+        // Populate recent announcements list
+        const notices = window.MockDB.getNotices();
+        const noticesList = document.getElementById("dash-notices-list");
+        if (noticesList) {
+            noticesList.innerHTML = "";
+            notices.slice(0, 3).forEach((n, idx) => {
+                const colors = ["text-primary bg-primary bg-opacity-10", "text-purple bg-purple bg-opacity-10", "text-warning bg-warning bg-opacity-10"];
+                const iconColor = colors[idx % colors.length];
+                const icon = idx === 0 ? "bi-megaphone" : idx === 1 ? "bi-calendar-event" : "bi-journal-bookmark";
+                const isNew = idx === 0 ? '<span class="badge bg-primary-glow text-primary ms-2" style="font-size: 0.6rem;">New</span>' : '';
+                
+                const dateObj = new Date(n.date || Date.now());
+                const dateStr = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+                
+                const item = document.createElement("div");
+                item.className = "d-flex align-items-center gap-3 p-2 rounded hover-bg-light transition-all";
+                item.innerHTML = `
+                    <div class="fs-4 ${iconColor} px-3 py-2 rounded-3"><i class="bi ${icon}"></i></div>
+                    <div class="flex-grow-1 min-width-0">
+                         <h6 class="mb-1 text-white font-medium text-truncate small">${n.title}${isNew}</h6>
+                         <small class="text-secondary small d-block">${dateStr}</small>
+                    </div>
+                `;
+                noticesList.appendChild(item);
+            });
+        }
     }
 
     function renderAdminStudentsList() {
         const tbody = document.getElementById("admin-students-table-body");
+        if (!tbody) return;
         tbody.innerHTML = "";
         const students = window.MockDB.getStudents();
 
@@ -977,10 +1128,372 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (confirm(`Are you sure you want to delete student ${studId}?`)) {
                     window.MockDB.deleteStudent(studId);
                     showToast(`Student ${studId} deleted successfully.`, "success");
-                    renderAdminStudentsList();
+                    renderAdminPanel();
                 }
             });
         });
+    }
+
+    function renderAdminDepartments() {
+        const tableBody = document.getElementById("admin-departments-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const depts = window.MockDB.getDepartments();
+        Object.keys(depts).forEach(key => {
+            const d = depts[key];
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><code class="text-purple font-semibold">${key}</code></td>
+                <td>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="${d.icon} fs-5"></i>
+                        <span>${d.name}</span>
+                    </div>
+                </td>
+                <td><span class="small">${d.programs.join(", ")}</span></td>
+                <td>${d.studentsCount}</td>
+                <td>${d.totalFee || d.tuitionFee}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger border-danger border-opacity-35" onclick="deleteAdminDept('${key}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    window.deleteAdminDept = function(key) {
+        if (confirm(`Are you sure you want to delete the department: ${key}?`)) {
+            window.MockDB.deleteDepartment(key);
+            renderAdminPanel();
+            renderLandingDepartments();
+            showToast("Department deleted successfully.", "success");
+        }
+    };
+
+    function renderAdminFaculty() {
+        const tableBody = document.getElementById("admin-faculty-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const list = window.MockDB.getFaculty();
+        list.forEach(f => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="font-semibold text-info">${f.id}</span></td>
+                <td>${f.name}</td>
+                <td>${f.designation}</td>
+                <td>${f.department}</td>
+                <td>${f.email}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger border-danger border-opacity-35" onclick="deleteAdminFaculty('${f.id}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    window.deleteAdminFaculty = function(id) {
+        if (confirm("Are you sure you want to delete this faculty member?")) {
+            window.MockDB.deleteFaculty(id);
+            renderAdminFaculty();
+            showToast("Faculty member deleted.", "success");
+        }
+    };
+
+    function renderAdminCourses() {
+        const tableBody = document.getElementById("admin-courses-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const list = window.MockDB.getCourses();
+        list.forEach(c => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><code class="text-warning font-semibold">${c.code}</code></td>
+                <td>${c.name}</td>
+                <td>${c.department}</td>
+                <td>${c.duration}</td>
+                <td><span class="badge bg-secondary font-medium">${c.credits} Credits</span></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger border-danger border-opacity-35" onclick="deleteAdminCourse('${c.code}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    window.deleteAdminCourse = function(code) {
+        if (confirm("Are you sure you want to delete this course?")) {
+            window.MockDB.deleteCourse(code);
+            renderAdminCourses();
+            showToast("Course deleted.", "success");
+        }
+    };
+
+    function renderAdminAttendance() {
+        const tableBody = document.getElementById("admin-attendance-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const depts = window.MockDB.getDepartments();
+        Object.keys(depts).forEach(key => {
+            const d = depts[key];
+            const strength = d.studentsCount || 100;
+            const present = Math.round(strength * 0.82);
+            const absent = strength - present;
+            
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="font-medium text-white">${d.name}</span></td>
+                <td>${strength}</td>
+                <td><span class="text-success font-semibold">${present}</span></td>
+                <td><span class="text-warning font-semibold">${absent}</span></td>
+                <td>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="progress flex-grow-1 bg-dark bg-opacity-35" style="height: 6px; min-width: 80px; border-radius: 3px;">
+                            <div class="progress-bar bg-success" style="width: 82%; border-radius: 3px;"></div>
+                        </div>
+                        <span class="small font-semibold">82%</span>
+                    </div>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    function renderAdminLibrary() {
+        const tableBody = document.getElementById("admin-library-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const list = window.MockDB.getLibrary();
+        list.forEach(b => {
+            const badgeClass = b.status === "Available" ? "bg-success-glow text-success" : "bg-warning-glow text-warning";
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="font-semibold text-purple">${b.id}</span></td>
+                <td>${b.title}</td>
+                <td>${b.author}</td>
+                <td>${b.department}</td>
+                <td><span class="badge ${badgeClass}">${b.status}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger border-danger border-opacity-35" onclick="deleteAdminLibrary('${b.id}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    window.deleteAdminLibrary = function(id) {
+        if (confirm("Are you sure you want to delete this book?")) {
+            window.MockDB.deleteLibrary(id);
+            renderAdminLibrary();
+            showToast("Book deleted.", "success");
+        }
+    };
+
+    function renderAdminUsers() {
+        const tableBody = document.getElementById("admin-users-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const list = window.MockDB.getUsers();
+        list.forEach(u => {
+            const tr = document.createElement("tr");
+            const roleBadge = u.role === "ROLE_ADMIN" ? "bg-purple-glow text-purple" : "bg-primary-glow text-primary";
+            tr.innerHTML = `
+                <td><span class="font-semibold text-secondary">${u.id}</span></td>
+                <td><code class="text-white">${u.username}</code></td>
+                <td>${u.name || (u.refId ? "Student Account" : "Administrator")}</td>
+                <td><span class="badge ${roleBadge}">${u.role}</span></td>
+                <td><span class="text-success small"><i class="bi bi-shield-check me-1"></i>Authorized</span></td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    // ----------------------------------------------------
+    // ADMIN DASHBOARD CANVAS GRAPH DRAWERS
+    // ----------------------------------------------------
+    function drawDashboardCharts() {
+        const overviewCanvas = document.getElementById("chart-student-overview");
+        if (overviewCanvas) {
+            const ctx = overviewCanvas.getContext("2d");
+            overviewCanvas.width = overviewCanvas.parentElement.clientWidth - 40;
+            overviewCanvas.height = 280;
+            
+            const w = overviewCanvas.width;
+            const h = overviewCanvas.height;
+            ctx.clearRect(0, 0, w, h);
+            
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+            const values = [350, 480, 620, 850, 920, 1248];
+            
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+            ctx.lineWidth = 1;
+            
+            const paddingLeft = 50;
+            const paddingBottom = 40;
+            const paddingTop = 20;
+            const paddingRight = 20;
+            
+            const chartW = w - paddingLeft - paddingRight;
+            const chartH = h - paddingTop - paddingBottom;
+            
+            // Grid lines (horizontal)
+            const gridCount = 5;
+            for (let i = 0; i <= gridCount; i++) {
+                const y = paddingTop + (chartH / gridCount) * i;
+                ctx.beginPath();
+                ctx.moveTo(paddingLeft, y);
+                ctx.lineTo(w - paddingRight, y);
+                ctx.stroke();
+                
+                ctx.fillStyle = "#94a3b8";
+                ctx.font = "10px Inter, sans-serif";
+                ctx.textAlign = "right";
+                ctx.textBaseline = "middle";
+                const val = Math.round(1500 - (1500 / gridCount) * i);
+                ctx.fillText(val.toLocaleString(), paddingLeft - 10, y);
+            }
+            
+            // X-labels
+            const xStep = chartW / (months.length - 1);
+            for (let i = 0; i < months.length; i++) {
+                const x = paddingLeft + xStep * i;
+                ctx.beginPath();
+                ctx.moveTo(x, paddingTop);
+                ctx.lineTo(x, h - paddingBottom);
+                ctx.stroke();
+                
+                ctx.fillStyle = "#94a3b8";
+                ctx.font = "10px Inter, sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "top";
+                ctx.fillText(months[i], x, h - paddingBottom + 10);
+            }
+            
+            const points = [];
+            for (let i = 0; i < values.length; i++) {
+                const x = paddingLeft + xStep * i;
+                const y = paddingTop + chartH - (values[i] / 1500) * chartH;
+                points.push({ x, y });
+            }
+            
+            // Smooth gradient fill
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, h - paddingBottom);
+            ctx.lineTo(points[0].x, points[0].y);
+            for (let i = 0; i < points.length - 1; i++) {
+                const xc = (points[i].x + points[i+1].x) / 2;
+                const yc = (points[i].y + points[i+1].y) / 2;
+                ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+            }
+            ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+            ctx.lineTo(points[points.length - 1].x, h - paddingBottom);
+            ctx.closePath();
+            
+            const gradient = ctx.createLinearGradient(0, paddingTop, 0, h - paddingBottom);
+            gradient.addColorStop(0, "rgba(59, 130, 246, 0.25)");
+            gradient.addColorStop(1, "rgba(59, 130, 246, 0)");
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Draw path line
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 0; i < points.length - 1; i++) {
+                const xc = (points[i].x + points[i+1].x) / 2;
+                const yc = (points[i].y + points[i+1].y) / 2;
+                ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+            }
+            ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+            ctx.strokeStyle = "#3b82f6";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Draw points
+            points.forEach((p, idx) => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
+                ctx.fillStyle = "#3b82f6";
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#ffffff";
+                ctx.stroke();
+                
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 9px Inter, sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText(values[idx], p.x, p.y - 10);
+            });
+        }
+        
+        // Doughnut attendance chart
+        const attendanceCanvas = document.getElementById("chart-attendance-overview");
+        if (attendanceCanvas) {
+            const ctx = attendanceCanvas.getContext("2d");
+            attendanceCanvas.width = 220;
+            attendanceCanvas.height = 220;
+            
+            const w = attendanceCanvas.width;
+            const h = attendanceCanvas.height;
+            ctx.clearRect(0, 0, w, h);
+            
+            const labels = ["Present", "Absent", "Leave"];
+            const data = [82, 12, 6];
+            const colors = ["#10b981", "#f59e0b", "#3b82f6"];
+            
+            const centerX = w / 2;
+            const centerY = h / 2 - 15;
+            const radius = Math.min(centerX, centerY) - 20;
+            
+            let startAngle = -0.5 * Math.PI;
+            const total = 100;
+            
+            for (let i = 0; i < data.length; i++) {
+                const sliceAngle = (data[i] / total) * 2 * Math.PI;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+                ctx.arc(centerX, centerY, radius * 0.65, startAngle + sliceAngle, startAngle, true);
+                ctx.closePath();
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                startAngle += sliceAngle;
+            }
+            
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 26px Outfit, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("82%", centerX, centerY - 5);
+            ctx.font = "11px Inter, sans-serif";
+            ctx.fillStyle = "#94a3b8";
+            ctx.fillText("Average", centerX, centerY + 15);
+            
+            const legendY = h - 15;
+            ctx.font = "10px Inter, sans-serif";
+            const legendSpacing = w / 3;
+            for (let i = 0; i < labels.length; i++) {
+                const x = legendSpacing * i + legendSpacing / 2;
+                ctx.beginPath();
+                ctx.arc(x - 22, legendY, 4, 0, 2 * Math.PI);
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                ctx.fillStyle = "#94a3b8";
+                ctx.textAlign = "left";
+                ctx.fillText(`${labels[i]} (${data[i]}%)`, x - 14, legendY + 3);
+            }
+        }
     }
 
     // Admin Add Student Form submit
@@ -1082,6 +1595,148 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.querySelector('[data-admin-target="admin-events"]').click();
     });
+
+    // Admin Add Department submit
+    const addDeptForm = document.getElementById("add-dept-form");
+    if (addDeptForm) {
+        addDeptForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const key = document.getElementById("add-dept-key").value.trim().toLowerCase();
+            const name = document.getElementById("add-dept-name").value.trim();
+            const icon = document.getElementById("add-dept-icon").value;
+            const students = parseInt(document.getElementById("add-dept-students").value) || 0;
+            const sections = parseInt(document.getElementById("add-dept-sections").value) || 0;
+            const tuition = document.getElementById("add-dept-tuition").value.trim();
+            const lab = document.getElementById("add-dept-lab").value.trim();
+            const exam = document.getElementById("add-dept-exam").value.trim();
+            const programsStr = document.getElementById("add-dept-programs").value.trim();
+            const facilities = document.getElementById("add-dept-facilities").value.trim();
+            
+            const programs = programsStr.split(",").map(p => p.trim()).filter(Boolean);
+            
+            const totalVal = (parseInt(tuition.replace(/\D/g, '')) || 0) + 
+                             (parseInt(lab.replace(/\D/g, '')) || 0) + 
+                             (parseInt(exam.replace(/\D/g, '')) || 0);
+            const totalFee = `₹${totalVal.toLocaleString()}`;
+            
+            const newDept = {
+                name,
+                icon,
+                programs,
+                studentsCount: students,
+                sections,
+                tuitionFee: tuition,
+                labFee: lab,
+                examFee: exam,
+                totalFee,
+                facilities
+            };
+            
+            window.MockDB.saveDepartment(key, newDept);
+            
+            addDeptForm.reset();
+            bootstrap.Collapse.getInstance(document.getElementById("collapseAddDept"))?.hide();
+            
+            renderAdminPanel();
+            renderLandingDepartments();
+            showToast("Department created successfully!", "success");
+            document.querySelector('[data-admin-target="admin-departments"]').click();
+        });
+    }
+
+    // Admin Add Faculty submit
+    const addFacultyForm = document.getElementById("add-faculty-form");
+    if (addFacultyForm) {
+        addFacultyForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const id = document.getElementById("add-fac-id").value.trim();
+            const name = document.getElementById("add-fac-name").value.trim();
+            const department = document.getElementById("add-fac-dept").value;
+            const designation = document.getElementById("add-fac-desig").value.trim();
+            const email = document.getElementById("add-fac-email").value.trim();
+            
+            const newFac = { id, name, department, designation, email };
+            window.MockDB.saveFaculty(newFac);
+            
+            addFacultyForm.reset();
+            bootstrap.Collapse.getInstance(document.getElementById("collapseAddFaculty"))?.hide();
+            
+            renderAdminPanel();
+            showToast("Faculty member added!", "success");
+            document.querySelector('[data-admin-target="admin-faculty"]').click();
+        });
+    }
+
+    // Admin Add Course submit
+    const addCourseForm = document.getElementById("add-course-form");
+    if (addCourseForm) {
+        addCourseForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const code = document.getElementById("add-course-code").value.trim();
+            const name = document.getElementById("add-course-name").value.trim();
+            const department = document.getElementById("add-course-dept").value;
+            const duration = document.getElementById("add-course-dur").value.trim();
+            const credits = parseInt(document.getElementById("add-course-cred").value) || 3;
+            
+            const newCourse = { code, name, department, duration, credits };
+            window.MockDB.saveCourse(newCourse);
+            
+            addCourseForm.reset();
+            bootstrap.Collapse.getInstance(document.getElementById("collapseAddCourse"))?.hide();
+            
+            renderAdminPanel();
+            showToast("Course structure cataloged!", "success");
+            document.querySelector('[data-admin-target="admin-courses"]').click();
+        });
+    }
+
+    // Admin Add Book submit
+    const addBookForm = document.getElementById("add-book-form");
+    if (addBookForm) {
+        addBookForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const id = document.getElementById("add-bk-id").value.trim();
+            const title = document.getElementById("add-bk-title").value.trim();
+            const author = document.getElementById("add-bk-author").value.trim();
+            const department = document.getElementById("add-bk-dept").value;
+            
+            const newBook = { id, title, author, department, status: "Available" };
+            window.MockDB.saveLibrary(newBook);
+            
+            addBookForm.reset();
+            bootstrap.Collapse.getInstance(document.getElementById("collapseAddBook"))?.hide();
+            
+            renderAdminPanel();
+            showToast("Book cataloged in library!", "success");
+            document.querySelector('[data-admin-target="admin-library"]').click();
+        });
+    }
+
+    // Admin Settings Form submit
+    const settingsForm = document.getElementById("settings-form");
+    if (settingsForm) {
+        settingsForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const college = document.getElementById("settings-college-name").value.trim();
+            const bot = document.getElementById("settings-bot-name").value.trim();
+            const year = document.getElementById("settings-academic-year").value.trim();
+            const maintenance = document.getElementById("settings-maintenance").checked;
+            
+            // Save settings mock
+            localStorage.setItem("campusai_settings_college", college);
+            localStorage.setItem("campusai_settings_bot", bot);
+            localStorage.setItem("campusai_settings_year", year);
+            localStorage.setItem("campusai_settings_maintenance", maintenance);
+            
+            showToast("System configurations saved successfully!", "success");
+            
+            // Apply setting updates
+            const botLabel = document.querySelector(".chat-header h6");
+            if (botLabel) botLabel.textContent = bot;
+            
+            document.querySelector('[data-admin-target="admin-dashboard"]').click();
+        });
+    }
 
     // ----------------------------------------------------
     // CHATBOT ANALYTICS (CANVAS-BASED RENDERER)
