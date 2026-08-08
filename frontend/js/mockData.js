@@ -5,104 +5,122 @@
 
 const DEFAULT_STUDENTS = [
     {
-        id: "STUDENT001",
-        name: "Rahul Sharma",
-        email: "rahul.sharma@campusai.edu",
+        id: "STU2025001",
+        name: "Rishikesh R",
+        email: "rishikesh@gmail.com",
         password: "password123", 
-        department: "Computer Science & BCA",
-        year: 3,
+        department: "B.Sc Information Technology (B.Sc IT)",
+        year: 2,
         phone: "+91 98765 43210",
         attendance: 86.5,
         attendanceDetails: [
-            { subject: "Web Programming", attended: 36, total: 40, percent: 90.0 },
-            { subject: "Database Management Systems", attended: 32, total: 40, percent: 80.0 },
-            { subject: "Python for Data Analysis", attended: 35, total: 40, percent: 87.5 },
-            { subject: "Software Engineering Core", attended: 34, total: 40, percent: 85.0 },
-            { subject: "Discrete Mathematics", attended: 37, total: 42, percent: 88.0 }
+            { subject: "Networking Basics", attended: 36, total: 40, percent: 90.0 },
+            { subject: "Web Technologies", attended: 32, total: 40, percent: 80.0 },
+            { subject: "Python Programming", attended: 35, total: 40, percent: 87.5 }
         ],
         cgpa: 8.75,
         semesterDetails: [
             { sem: 1, gpa: 8.5 },
-            { sem: 2, gpa: 8.65 },
-            { sem: 3, gpa: 8.9 },
-            { sem: 4, gpa: 8.8 },
-            { sem: 5, gpa: 8.9 }
+            { sem: 2, gpa: 8.75 }
         ],
         marks: [
-            { subject: "Web Programming", test1: 85, test2: 90, model: 88 },
-            { subject: "Database Management Systems", test1: 78, test2: 82, model: 80 },
-            { subject: "Python for Data Analysis", test1: 92, test2: 95, model: 94 },
-            { subject: "Software Engineering Core", test1: 88, test2: 86, model: 87 },
-            { subject: "Discrete Mathematics", test1: 84, test2: 89, model: 86 }
+            { subject: "Networking Basics", test1: 85, test2: 90, model: 88 },
+            { subject: "Web Technologies", test1: 78, test2: 82, model: 80 }
         ]
     },
     {
-        id: "STUDENT002",
-        name: "Priya Patel",
-        email: "priya.patel@campusai.edu",
+        id: "STU2025002",
+        name: "Sneha P",
+        email: "sneha@gmail.com",
         password: "password123",
-        department: "Commerce & BBA",
-        year: 4,
+        department: "BCA – Bachelor of Computer Applications",
+        year: 2,
         phone: "+91 98765 43211",
         attendance: 92.0,
         attendanceDetails: [
-            { subject: "Corporate Accounting", attended: 38, total: 40, percent: 95.0 },
-            { subject: "Financial Management", attended: 36, total: 40, percent: 90.0 },
-            { subject: "Marketing and Advertising", attended: 37, total: 40, percent: 92.5 },
-            { subject: "Organizational Behavior", attended: 36, total: 40, percent: 90.0 }
+            { subject: "Database Management", attended: 38, total: 40, percent: 95.0 },
+            { subject: "Java Programming", attended: 36, total: 40, percent: 90.0 }
         ],
         cgpa: 9.15,
         semesterDetails: [
             { sem: 1, gpa: 9.0 },
-            { sem: 2, gpa: 9.1 },
-            { sem: 3, gpa: 9.3 },
-            { sem: 4, gpa: 9.2 },
-            { sem: 5, gpa: 9.0 },
-            { sem: 6, gpa: 9.2 },
-            { sem: 7, gpa: 9.35 }
+            { sem: 2, gpa: 9.15 }
         ],
         marks: [
-            { subject: "Corporate Accounting", test1: 95, test2: 94, model: 96 },
-            { subject: "Financial Management", test1: 89, test2: 92, model: 91 },
-            { subject: "Marketing and Advertising", test1: 90, test2: 91, model: 93 },
-            { subject: "Organizational Behavior", test1: 92, test2: 90, model: 92 }
+            { subject: "Database Management", test1: 95, test2: 94, model: 96 }
         ]
     },
     {
-        id: "STUDENT003",
-        name: "Arjun Kumar",
-        email: "arjun.kumar@campusai.edu",
+        id: "STU2025003",
+        name: "Karthik S",
+        email: "karthik@gmail.com",
         password: "password123",
-        department: "Physics",
-        year: 2,
+        department: "B.Com Computer Applications (B.Com CA)",
+        year: 1,
         phone: "+91 98765 43212",
         attendance: 74.5,
         attendanceDetails: [
-            { subject: "Quantum Mechanics", attended: 28, total: 40, percent: 70.0 },
-            { subject: "Mathematical Physics", attended: 30, total: 40, percent: 75.0 },
-            { subject: "Solid State Electronics", attended: 29, total: 40, percent: 72.5 },
-            { subject: "Nuclear Physics", attended: 32, total: 40, percent: 80.0 }
+            { subject: "Financial Accounting", attended: 28, total: 40, percent: 70.0 },
+            { subject: "Office Automation", attended: 30, total: 40, percent: 75.0 }
         ],
         cgpa: 7.20,
         semesterDetails: [
-            { sem: 1, gpa: 7.0 },
-            { sem: 2, gpa: 7.3 },
-            { sem: 3, gpa: 7.10 }
+            { sem: 1, gpa: 7.20 }
         ],
         marks: [
-            { subject: "Quantum Mechanics", test1: 65, test2: 70, model: 68 },
-            { subject: "Mathematical Physics", test1: 72, test2: 68, model: 70 },
-            { subject: "Solid State Electronics", test1: 63, test2: 74, model: 71 },
-            { subject: "Nuclear Physics", test1: 78, test2: 75, model: 76 }
+            { subject: "Financial Accounting", test1: 65, test2: 70, model: 68 }
+        ]
+    },
+    {
+        id: "STU2025004",
+        name: "Priya M",
+        email: "priya@gmail.com",
+        password: "password123",
+        department: "B.Sc Computer Science (B.Sc CS)",
+        year: 2,
+        phone: "+91 98765 43213",
+        attendance: 82.0,
+        attendanceDetails: [
+            { subject: "Operating Systems", attended: 33, total: 40, percent: 82.5 }
+        ],
+        cgpa: 8.50,
+        semesterDetails: [
+            { sem: 1, gpa: 8.40 },
+            { sem: 2, gpa: 8.50 }
+        ],
+        marks: [
+            { subject: "Operating Systems", test1: 82, test2: 84, model: 83 }
+        ]
+    },
+    {
+        id: "STU2025005",
+        name: "Arun V",
+        email: "arun@gmail.com",
+        password: "password123",
+        department: "BBA – Bachelor of Business Administration",
+        year: 1,
+        phone: "+91 98765 43214",
+        attendance: 80.0,
+        attendanceDetails: [
+            { subject: "Principles of Management", attended: 32, total: 40, percent: 80.0 }
+        ],
+        cgpa: 7.80,
+        semesterDetails: [
+            { sem: 1, gpa: 7.80 }
+        ],
+        marks: [
+            { subject: "Principles of Management", test1: 75, test2: 80, model: 78 }
         ]
     }
 ];
 
 const DEFAULT_USERS = [
-    { id: "U001", username: "STUDENT001", password: "password123", role: "ROLE_STUDENT", refId: "STUDENT001" },
-    { id: "U002", username: "STUDENT002", password: "password123", role: "ROLE_STUDENT", refId: "STUDENT002" },
-    { id: "U003", username: "STUDENT003", password: "password123", role: "ROLE_STUDENT", refId: "STUDENT003" },
-    { id: "U004", username: "admin", password: "admin123", role: "ROLE_ADMIN", name: "Rishi", email: "admin@campusai.edu" }
+    { id: "U001", username: "STU2025001", password: "password123", role: "ROLE_STUDENT", refId: "STU2025001" },
+    { id: "U002", username: "STU2025002", password: "password123", role: "ROLE_STUDENT", refId: "STU2025002" },
+    { id: "U003", username: "STU2025003", password: "password123", role: "ROLE_STUDENT", refId: "STU2025003" },
+    { id: "U004", username: "STU2025004", password: "password123", role: "ROLE_STUDENT", refId: "STU2025004" },
+    { id: "U005", username: "STU2025005", password: "password123", role: "ROLE_STUDENT", refId: "STU2025005" },
+    { id: "U006", username: "admin", password: "admin123", role: "ROLE_ADMIN", name: "Rishi", email: "admin@campusai.edu" }
 ];
 
 const DEFAULT_NOTICES = [
@@ -199,126 +217,225 @@ const CAREER_GUIDE = {
 };
 
 const DEPARTMENTS_DETAILS = {
+    it: {
+        name: "B.Sc Information Technology (B.Sc IT)",
+        icon: "bi bi-laptop text-primary bg-primary bg-opacity-10",
+        programs: ["B.Sc Information Technology (3 Years)", "M.Sc Information Technology (2 Years)"],
+        studentsCount: 120,
+        sections: 4,
+        tuitionFee: "₹45,000",
+        labFee: "₹10,000",
+        examFee: "₹5,000",
+        totalFee: "₹60,000",
+        facilities: "Equipped with state-of-the-art networking labs, IoT development kits, Cloud computing access, and software engineering suites."
+    },
     cs: {
-        name: "Computer Science & BCA",
+        name: "B.Sc Computer Science (B.Sc CS)",
         icon: "bi bi-pc-display text-primary bg-primary bg-opacity-10",
-        programs: ["B.Sc Computer Science (3 Years)", "BCA - Bachelor of Computer Applications (3 Years)", "M.Sc Computer Science (2 Years)"],
+        programs: ["B.Sc Computer Science (3 Years)", "M.Sc Computer Science (2 Years)"],
         studentsCount: 180,
         sections: 6,
         tuitionFee: "₹45,000",
         labFee: "₹10,000",
         examFee: "₹5,000",
         totalFee: "₹60,000",
-        facilities: "Equipped with two advanced programming labs housing 120 high-speed computers, dedicated high-speed server racks, and AI project sandbox environments."
+        facilities: "Advanced programming labs, GPU computing servers for deep learning, virtualization clusters, and reference computing library."
     },
-    english: {
-        name: "English Literature",
-        icon: "bi bi-journal-text text-purple bg-purple bg-opacity-10",
-        programs: ["B.A. English Literature (3 Years)", "M.A. English Literature (2 Years)"],
+    bca: {
+        name: "BCA – Bachelor of Computer Applications",
+        icon: "bi bi-window text-info bg-info bg-opacity-10",
+        programs: ["BCA (3 Years)", "MCA (2 Years)"],
+        studentsCount: 150,
+        sections: 5,
+        tuitionFee: "₹43,000",
+        labFee: "₹8,000",
+        examFee: "₹5,000",
+        totalFee: "₹56,000",
+        facilities: "Application development center, mobile programming labs, digital design suites, and database management workshops."
+    },
+    aiml: {
+        name: "B.Sc Artificial Intelligence & Machine Learning (AI & ML)",
+        icon: "bi bi-cpu text-purple bg-purple bg-opacity-10",
+        programs: ["B.Sc AI & ML (3 Years)", "M.Sc Artificial Intelligence (2 Years)"],
         studentsCount: 90,
         sections: 3,
-        tuitionFee: "₹35,000",
+        tuitionFee: "₹55,000",
+        labFee: "₹15,000",
+        examFee: "₹6,000",
+        totalFee: "₹76,000",
+        facilities: "NVIDIA DGX-powered research lab, neural network modeling suites, robotics kits, and computer vision sandbox setups."
+    },
+    datascience: {
+        name: "B.Sc Data Science",
+        icon: "bi bi-database text-warning bg-warning bg-opacity-10",
+        programs: ["B.Sc Data Science (3 Years)", "M.Sc Big Data Analytics (2 Years)"],
+        studentsCount: 100,
+        sections: 3,
+        tuitionFee: "₹50,000",
+        labFee: "₹12,000",
+        examFee: "₹5,000",
+        totalFee: "₹67,000",
+        facilities: "Big Data processing setups, Hadoop and Spark virtual environments, visualization labs, and statistical analysis computers."
+    },
+    bcom: {
+        name: "B.Com – Bachelor of Commerce",
+        icon: "bi bi-bank text-success bg-success bg-opacity-10",
+        programs: ["B.Com General (3 Years)", "M.Com (2 Years)"],
+        studentsCount: 200,
+        sections: 6,
+        tuitionFee: "₹38,000",
+        labFee: "₹4,000",
+        examFee: "₹4,500",
+        totalFee: "₹46,500",
+        facilities: "Financial simulation center, accounting software lab with Tally licenses, and business communication reference libraries."
+    },
+    bcomca: {
+        name: "B.Com Computer Applications (B.Com CA)",
+        icon: "bi bi-file-earmark-spreadsheet text-success bg-success bg-opacity-10",
+        programs: ["B.Com Computer Applications (3 Years)"],
+        studentsCount: 160,
+        sections: 5,
+        tuitionFee: "₹42,000",
+        labFee: "₹7,000",
+        examFee: "₹5,000",
+        totalFee: "₹54,000",
+        facilities: "E-Commerce computing labs, financial spreadsheets workshops, and computerized accounting systems setups."
+    },
+    bba: {
+        name: "BBA – Bachelor of Business Administration",
+        icon: "bi bi-briefcase text-danger bg-danger bg-opacity-10",
+        programs: ["BBA General (3 Years)", "MBA (2 Years)"],
+        studentsCount: 150,
+        sections: 5,
+        tuitionFee: "₹45,000",
+        labFee: "₹5,000",
+        examFee: "₹5,000",
+        totalFee: "₹55,000",
+        facilities: "Virtual boardrooms, corporate discussion theater, management simulation models, and entrepreneurship cell."
+    },
+    bbaca: {
+        name: "BBA Computer Applications",
+        icon: "bi bi-display text-danger bg-danger bg-opacity-10",
+        programs: ["BBA Computer Applications (3 Years)"],
+        studentsCount: 110,
+        sections: 4,
+        tuitionFee: "₹46,000",
+        labFee: "₹8,000",
+        examFee: "₹5,000",
+        totalFee: "₹59,000",
+        facilities: "Business management information systems (MIS) labs, ERP software interfaces, and digital presentation suites."
+    },
+    maths: {
+        name: "B.Sc Mathematics",
+        icon: "bi bi-calculator text-warning bg-warning bg-opacity-10",
+        programs: ["B.Sc Mathematics (3 Years)", "M.Sc Mathematics (2 Years)"],
+        studentsCount: 95,
+        sections: 3,
+        tuitionFee: "₹36,000",
         labFee: "₹4,000",
         examFee: "₹4,000",
-        totalFee: "₹43,000",
-        facilities: "Modern Language Communication Lab, a rich department reference library featuring over 5,000 classical and contemporary works, and writing workshop theater."
+        totalFee: "₹44,000",
+        facilities: "Mathematical modeling lab featuring MATLAB and LaTeX licenses, reference seminar hall, and statistical toolkits."
     },
     physics: {
-        name: "Physics",
+        name: "B.Sc Physics",
         icon: "bi bi-radioactive text-info bg-info bg-opacity-10",
         programs: ["B.Sc Physics (3 Years)", "M.Sc Physics (2 Years)"],
         studentsCount: 120,
         sections: 4,
-        tuitionFee: "₹42,000",
+        tuitionFee: "₹40,000",
         labFee: "₹8,000",
         examFee: "₹5,000",
-        totalFee: "₹55,000",
-        facilities: "State-of-the-art optics laboratory, darkroom facilities, electronics workbenches, and computational modeling systems for quantum astrophysics research."
+        totalFee: "₹53,000",
+        facilities: "Modern optics darkroom, electronic circuit benches, thermodynamics lab, and computational physics systems."
     },
     chemistry: {
-        name: "Chemistry",
-        icon: "bi bi-droplet-fill text-success bg-success bg-opacity-10",
+        name: "B.Sc Chemistry",
+        icon: "bi bi-droplet text-success bg-success bg-opacity-10",
         programs: ["B.Sc Chemistry (3 Years)", "M.Sc Analytical Chemistry (2 Years)"],
         studentsCount: 110,
         sections: 4,
-        tuitionFee: "₹42,000",
-        labFee: "₹10,000",
+        tuitionFee: "₹40,000",
+        labFee: "₹9,000",
         examFee: "₹5,000",
-        totalFee: "₹57,000",
-        facilities: "Advanced organic synthesis laboratory, fully ventilated fume hoods, spectrophotometers, and analytical chromatography instruments."
+        totalFee: "₹54,000",
+        facilities: "Organic synthesis laboratory, ventilated fume hoods, digital spectrophotometers, and inorganic analysis workshops."
     },
-    math: {
-        name: "Mathematics",
-        icon: "bi bi-calculator-fill text-warning bg-warning bg-opacity-10",
-        programs: ["B.Sc Mathematics (3 Years)", "M.Sc Mathematics (2 Years)"],
-        studentsCount: 95,
+    english: {
+        name: "B.A English",
+        icon: "bi bi-journal-text text-purple bg-purple bg-opacity-10",
+        programs: ["B.A English Literature (3 Years)", "M.A English Literature (2 Years)"],
+        studentsCount: 90,
         sections: 3,
-        tuitionFee: "₹38,000",
-        labFee: "₹5,000",
-        examFee: "₹4,500",
-        totalFee: "₹47,500",
-        facilities: "Mathematical modeling lab equipped with MATLAB and Mathematica licenses, statistical analysis workshop systems, and competitive math prep resources."
-    },
-    commerce: {
-        name: "Commerce & BBA",
-        icon: "bi bi-cash-coin text-danger bg-danger bg-opacity-10",
-        programs: ["B.Com - General (3 Years)", "B.Com - Computer Applications (3 Years)", "BBA - Bachelor of Business Administration (3 Years)", "M.Com (2 Years)"],
-        studentsCount: 240,
-        sections: 8,
-        tuitionFee: "₹45,000",
-        labFee: "₹6,000",
-        examFee: "₹5,000",
-        totalFee: "₹56,000",
-        facilities: "Virtual business boardrooms, mock trading floor software interfaces, digital banking simulation labs, and entrepreneurship incubator cells."
-    },
-    biotech: {
-        name: "Biotechnology & Microbiology",
-        icon: "bi bi-dna text-success bg-success bg-opacity-10",
-        programs: ["B.Sc Biotechnology (3 Years)", "B.Sc Microbiology (3 Years)", "M.Sc Biotechnology (2 Years)"],
-        studentsCount: 130,
-        sections: 4,
-        tuitionFee: "₹48,000",
-        labFee: "₹12,000",
-        examFee: "₹5,000",
-        totalFee: "₹65,000",
-        facilities: "Equipped with high-end bio-safety cabinets, compound microscopes, PCR chambers, autoclaves, and fermentation incubator setups."
-    },
-    economics: {
-        name: "Economics & Political Science",
-        icon: "bi bi-graph-up-arrow text-info bg-info bg-opacity-10",
-        programs: ["B.A. Economics (3 Years)", "B.A. Political Science (3 Years)", "M.A. Applied Economics (2 Years)"],
-        studentsCount: 110,
-        sections: 4,
-        tuitionFee: "₹36,000",
+        tuitionFee: "₹32,000",
         labFee: "₹3,000",
         examFee: "₹4,000",
-        totalFee: "₹43,000",
-        facilities: "Economic forecasting data systems, public policy research archives, and active debating society rooms for governmental mock models."
+        totalFee: "₹39,000",
+        facilities: "Language communication theater, digital phonetics lab, and library reference wing with over 5,000 literary works."
     },
-    viscom: {
-        name: "Visual Communication & Media",
-        icon: "bi bi-camera-reels text-warning bg-warning bg-opacity-10",
-        programs: ["B.Sc Visual Communication (3 Years)", "M.Sc Electronic Media (2 Years)"],
-        studentsCount: 140,
-        sections: 5,
-        tuitionFee: "₹55,000",
-        labFee: "₹15,000",
-        examFee: "₹5,000",
-        totalFee: "₹75,000",
-        facilities: "A professional soundproof recording studio, television editing bays, photo studio equipped with green screens, and premium cameras."
+    tamil: {
+        name: "B.A Tamil",
+        icon: "bi bi-translate text-pink bg-pink bg-opacity-10",
+        programs: ["B.A Tamil Literature (3 Years)", "M.A Tamil (2 Years)"],
+        studentsCount: 80,
+        sections: 3,
+        tuitionFee: "₹30,000",
+        labFee: "₹2,000",
+        examFee: "₹4,000",
+        totalFee: "₹36,000",
+        facilities: "Tamil classical literature reference department, poetry workshop forum, and historical manuscript study archives."
+    },
+    economics: {
+        name: "B.A Economics",
+        icon: "bi bi-graph-up-arrow text-info bg-info bg-opacity-10",
+        programs: ["B.A Economics (3 Years)", "M.A Econometrics (2 Years)"],
+        studentsCount: 100,
+        sections: 3,
+        tuitionFee: "₹34,000",
+        labFee: "₹3,000",
+        examFee: "₹4,000",
+        totalFee: "₹41,000",
+        facilities: "Macroeconomics statistics forecasting center, data tracking terminals, and active public debating chambers."
     }
 };
+
+const DEFAULT_FACULTY = [
+    { id: "FAC001", name: "Dr. K. Raghavan", designation: "Professor & Head", department: "B.Sc Computer Science (B.Sc CS)", email: "raghavan@campusai.edu" },
+    { id: "FAC002", name: "Dr. Ananya Sen", designation: "Associate Professor", department: "B.Sc Information Technology (B.Sc IT)", email: "ananya.sen@campusai.edu" },
+    { id: "FAC003", name: "Prof. S. Ranganathan", designation: "Assistant Professor", department: "B.Sc Mathematics", email: "ranganathan@campusai.edu" },
+    { id: "FAC004", name: "Dr. Meera Bai", designation: "Professor & Head", department: "B.A English", email: "meera.bai@campusai.edu" },
+    { id: "FAC005", name: "Dr. G. Vasudevan", designation: "Professor", department: "B.Sc Physics", email: "vasudevan@campusai.edu" }
+];
+
+const DEFAULT_COURSES = [
+    { code: "CS201", name: "Database Management Systems", department: "B.Sc Computer Science (B.Sc CS)", duration: "1 Semester", credits: 4 },
+    { code: "IT202", name: "Web Programming with JS", department: "B.Sc Information Technology (B.Sc IT)", duration: "1 Semester", credits: 4 },
+    { code: "AI301", name: "Neural Networks & Deep Learning", department: "B.Sc Artificial Intelligence & Machine Learning (AI & ML)", duration: "1 Semester", credits: 5 },
+    { code: "DS102", name: "Statistical Data Analysis", department: "B.Sc Data Science", duration: "1 Semester", credits: 4 },
+    { code: "CO101", name: "Principles of Accounting", department: "B.Com – Bachelor of Commerce", duration: "1 Semester", credits: 3 }
+];
+
+const DEFAULT_LIBRARY = [
+    { id: "BK001", title: "Introduction to Algorithms", author: "Cormen, Leiserson", department: "B.Sc Computer Science (B.Sc CS)", status: "Available" },
+    { id: "BK002", title: "Quantum Physics", author: "H.C. Verma", department: "B.Sc Physics", status: "Issued" },
+    { id: "BK003", title: "Organic Chemistry Vol 1", author: "Morrison & Boyd", department: "B.Sc Chemistry", status: "Available" },
+    { id: "BK004", title: "Advanced Calculus", author: "Spivak", department: "B.Sc Mathematics", status: "Issued" }
+];
 
 // Initialize DB in LocalStorage
 function initDB() {
     // Check version to auto-clear legacy engineering local storage structures
-    const DB_VERSION = "2.2";
+    const DB_VERSION = "2.4";
     if (localStorage.getItem("campusai_db_version") !== DB_VERSION) {
         localStorage.removeItem("campusai_students");
         localStorage.removeItem("campusai_users");
         localStorage.removeItem("campusai_notices");
         localStorage.removeItem("campusai_events");
         localStorage.removeItem("campusai_chat_history");
+        localStorage.removeItem("campusai_departments");
+        localStorage.removeItem("campusai_faculty");
+        localStorage.removeItem("campusai_courses");
+        localStorage.removeItem("campusai_library");
         localStorage.setItem("campusai_db_version", DB_VERSION);
     }
 
@@ -336,6 +453,18 @@ function initDB() {
     }
     if (!localStorage.getItem("campusai_chat_history")) {
         localStorage.setItem("campusai_chat_history", JSON.stringify([]));
+    }
+    if (!localStorage.getItem("campusai_departments")) {
+        localStorage.setItem("campusai_departments", JSON.stringify(DEPARTMENTS_DETAILS));
+    }
+    if (!localStorage.getItem("campusai_faculty")) {
+        localStorage.setItem("campusai_faculty", JSON.stringify(DEFAULT_FACULTY));
+    }
+    if (!localStorage.getItem("campusai_courses")) {
+        localStorage.setItem("campusai_courses", JSON.stringify(DEFAULT_COURSES));
+    }
+    if (!localStorage.getItem("campusai_library")) {
+        localStorage.setItem("campusai_library", JSON.stringify(DEFAULT_LIBRARY));
     }
 }
 
@@ -508,7 +637,58 @@ const MockDB = {
     getCareerPath: (key) => CAREER_GUIDE[key],
     
     // Department Details Methods
-    getDepartmentDetails: (key) => DEPARTMENTS_DETAILS[key]
+    getDepartments: () => JSON.parse(localStorage.getItem("campusai_departments")) || {},
+    getDepartmentDetails: (key) => MockDB.getDepartments()[key],
+    saveDepartment: (key, dept) => {
+        const depts = MockDB.getDepartments();
+        depts[key] = dept;
+        localStorage.setItem("campusai_departments", JSON.stringify(depts));
+        return dept;
+    },
+    deleteDepartment: (key) => {
+        const depts = MockDB.getDepartments();
+        delete depts[key];
+        localStorage.setItem("campusai_departments", JSON.stringify(depts));
+    },
+
+    // Faculty Methods
+    getFaculty: () => JSON.parse(localStorage.getItem("campusai_faculty")) || [],
+    saveFaculty: (faculty) => {
+        const list = MockDB.getFaculty();
+        list.push(faculty);
+        localStorage.setItem("campusai_faculty", JSON.stringify(list));
+        return faculty;
+    },
+    deleteFaculty: (id) => {
+        const list = MockDB.getFaculty().filter(f => f.id !== id);
+        localStorage.setItem("campusai_faculty", JSON.stringify(list));
+    },
+
+    // Course Methods
+    getCourses: () => JSON.parse(localStorage.getItem("campusai_courses")) || [],
+    saveCourse: (course) => {
+        const list = MockDB.getCourses();
+        list.push(course);
+        localStorage.setItem("campusai_courses", JSON.stringify(list));
+        return course;
+    },
+    deleteCourse: (code) => {
+        const list = MockDB.getCourses().filter(c => c.code !== code);
+        localStorage.setItem("campusai_courses", JSON.stringify(list));
+    },
+
+    // Library Methods
+    getLibrary: () => JSON.parse(localStorage.getItem("campusai_library")) || [],
+    saveLibrary: (book) => {
+        const list = MockDB.getLibrary();
+        list.push(book);
+        localStorage.setItem("campusai_library", JSON.stringify(list));
+        return book;
+    },
+    deleteLibrary: (id) => {
+        const list = MockDB.getLibrary().filter(b => b.id !== id);
+        localStorage.setItem("campusai_library", JSON.stringify(list));
+    }
 };
 
 // Export to window object for frontend scripts

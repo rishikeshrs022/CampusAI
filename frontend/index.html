@@ -236,88 +236,8 @@
                     <h2 class="font-outfit text-white fw-bold">Academic Departments</h2>
                     <p class="text-secondary col-md-6 mx-auto">Our campus hosts 6 specialized departments equipped with research libraries and modern computational learning labs.</p>
                 </div>
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="cs">
-                            <div class="fs-2 text-primary bg-primary bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-pc-display"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">Computer Science & BCA</h6>
-                                <small class="text-muted">B.Sc CS, BCA. Focus on Web Dev, Software, & Apps.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="english">
-                            <div class="fs-2 text-purple bg-purple bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-journal-text"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">English Literature</h6>
-                                <small class="text-muted">B.A, M.A English. Focus on linguistics, drama, & poetry.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="physics">
-                            <div class="fs-2 text-info bg-info bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-radioactive"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">Physics</h6>
-                                <small class="text-muted">B.Sc Physics. Focus on quantum mechanics & astrophysics.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="chemistry">
-                            <div class="fs-2 text-success bg-success bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-droplet-fill"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">Chemistry</h6>
-                                <small class="text-muted">B.Sc Chemistry. Focus on organic & polymer synthesis.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="math">
-                            <div class="fs-2 text-warning bg-warning bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-calculator-fill"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">Mathematics</h6>
-                                <small class="text-muted">B.Sc Math. Focus on statistics, calculus, & operations.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="commerce">
-                            <div class="fs-2 text-danger bg-opacity-10 text-danger px-3 py-2 rounded-3"><i class="bi bi-cash-coin"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">Commerce & BBA</h6>
-                                <small class="text-muted">B.Com, BBA. Focus on accounting, finance, & marketing.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="biotech">
-                            <div class="fs-2 text-success bg-success bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-dna"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">Biotechnology & Microbiology</h6>
-                                <small class="text-muted">B.Sc Biotech, Microbiology. Focus on genetics, immunology, & lab biochemistry.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="economics">
-                            <div class="fs-2 text-info bg-info bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-graph-up-arrow"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">Economics & Political Science</h6>
-                                <small class="text-muted">B.A Economics, Political Science. Focus on macroeconomics & policy.</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card dept-card-clickable p-3 d-flex align-items-center gap-3" data-dept="viscom">
-                            <div class="fs-2 text-warning bg-warning bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-camera-reels"></i></div>
-                            <div>
-                                <h6 class="mb-1 text-white font-semibold">Visual Communication & Media</h6>
-                                <small class="text-muted">B.Sc VisCom. Focus on graphic design, filmmaking, & 3D animation.</small>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row g-4" id="departments-grid">
+                    <!-- Departments injected dynamically -->
                 </div>
             </div>
         </section>
@@ -605,34 +525,183 @@
         <div class="container-fluid p-0">
             <div class="row g-0">
                 <!-- Admin Sidebar -->
-                <div class="col-md-3 col-lg-2 admin-sidebar">
+                <div class="col-md-3 col-lg-2 admin-sidebar" style="min-height: 100vh; overflow-y: auto; max-height: 100vh;">
                     <div class="py-3 px-4 border-bottom border-secondary border-opacity-10">
                         <small class="text-secondary uppercase font-semibold">Campus Admin</small>
                         <h6 id="admin-sidebar-name" class="text-white font-outfit fw-bold mb-0">Rishi</h6>
                     </div>
-                    <div class="nav flex-column mt-3">
-                        <a href="#" class="admin-sidebar-link active" data-admin-target="admin-students">
+                    <div class="nav flex-column mt-3 px-2">
+                        <small class="text-secondary px-3 py-1 font-semibold uppercase small opacity-70" style="font-size: 0.72rem; letter-spacing: 0.5px;">Management</small>
+                        <a href="#" class="admin-sidebar-link active" data-admin-target="admin-dashboard">
+                            <i class="bi bi-speedometer2"></i>Dashboard
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-students">
                             <i class="bi bi-people"></i>Students
                         </a>
-                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-notices">
-                            <i class="bi bi-megaphone"></i>Notices
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-departments">
+                            <i class="bi bi-diagram-3"></i>Departments
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-faculty">
+                            <i class="bi bi-person-badge"></i>Faculty
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-courses">
+                            <i class="bi bi-book"></i>Courses
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-attendance">
+                            <i class="bi bi-check2-square"></i>Attendance
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-exams">
+                            <i class="bi bi-award"></i>Examinations
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-library">
+                            <i class="bi bi-journal-bookmark"></i>Library
                         </a>
                         <a href="#" class="admin-sidebar-link" data-admin-target="admin-events">
                             <i class="bi bi-calendar-event"></i>Events
                         </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-notices">
+                            <i class="bi bi-megaphone"></i>Notices
+                        </a>
+                        
+                        <small class="text-secondary px-3 py-1 mt-3 font-semibold uppercase small opacity-70" style="font-size: 0.72rem; letter-spacing: 0.5px;">Administration</small>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-users">
+                            <i class="bi bi-person-lock"></i>Users & Roles
+                        </a>
+                        <a href="#" class="admin-sidebar-link" data-admin-target="admin-settings">
+                            <i class="bi bi-gear"></i>System Settings
+                        </a>
                         <a href="#" class="admin-sidebar-link" data-admin-target="admin-analytics">
                             <i class="bi bi-bar-chart-line"></i>Chatbot Analytics
                         </a>
-                        <a href="#" class="admin-sidebar-link logout-btn text-danger">
+                        <a href="#" class="admin-sidebar-link logout-btn text-danger mt-3 mb-4">
                             <i class="bi bi-box-arrow-right"></i>Sign Out
                         </a>
                     </div>
                 </div>
 
                 <!-- Admin Main View -->
-                <div class="col-md-9 col-lg-10 p-4">
+                <div class="col-md-9 col-lg-10 p-4" style="max-height: 100vh; overflow-y: auto;">
+                    <!-- Subview 0: Dashboard Summary -->
+                    <div id="admin-dashboard" class="admin-subview active animate-fade-in">
+                        <!-- Welcome Header -->
+                        <div class="row align-items-center mb-4">
+                            <div class="col-md-8">
+                                <h3 class="text-white font-outfit fw-bold mb-1">Welcome back, Admin! 👋</h3>
+                                <p class="text-secondary mb-0">Here's what's happening in your college today.</p>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <span class="badge bg-purple-glow px-3 py-2 font-medium text-white" style="font-size: 0.88rem;">
+                                    <i class="bi bi-clock me-2"></i>May 26, 2025, 11:30 AM
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Stats Cards Row -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-3">
+                                <div class="glass-card d-flex align-items-center gap-3 p-3">
+                                    <div class="fs-1 text-primary bg-primary bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-people-fill"></i></div>
+                                    <div>
+                                        <small class="text-secondary font-medium d-block" style="font-size: 0.75rem;">Total Students</small>
+                                        <h4 class="text-white fw-bold mb-0" id="dash-total-students">1,248</h4>
+                                        <small class="text-success small"><i class="bi bi-arrow-up-right me-1"></i>+12 this month</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="glass-card d-flex align-items-center gap-3 p-3">
+                                    <div class="fs-1 text-info bg-info bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-person-badge-fill"></i></div>
+                                    <div>
+                                        <small class="text-secondary font-medium d-block" style="font-size: 0.75rem;">Total Faculty</small>
+                                        <h4 class="text-white fw-bold mb-0" id="dash-total-faculty">86</h4>
+                                        <small class="text-success small"><i class="bi bi-arrow-up-right me-1"></i>+4 this month</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="glass-card d-flex align-items-center gap-3 p-3">
+                                    <div class="fs-1 text-success bg-success bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-book-half"></i></div>
+                                    <div>
+                                        <small class="text-secondary font-medium d-block" style="font-size: 0.75rem;">Total Courses</small>
+                                        <h4 class="text-white fw-bold mb-0" id="dash-total-courses">32</h4>
+                                        <small class="text-success small"><i class="bi bi-arrow-up-right me-1"></i>+2 this month</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="glass-card d-flex align-items-center gap-3 p-3">
+                                    <div class="fs-1 text-warning bg-warning bg-opacity-10 px-3 py-2 rounded-3"><i class="bi bi-building"></i></div>
+                                    <div>
+                                        <small class="text-secondary font-medium d-block" style="font-size: 0.75rem;">Departments</small>
+                                        <h4 class="text-white fw-bold mb-0" id="dash-total-depts">15</h4>
+                                        <small class="text-secondary small" style="font-size: 0.75rem;">No change</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts row -->
+                        <div class="row mb-4">
+                            <div class="col-lg-7 mb-4 mb-lg-0">
+                                <div class="glass-card p-4">
+                                    <h5 class="text-white font-outfit fw-bold mb-3">Student Overview</h5>
+                                    <canvas id="chart-student-overview" height="280"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="glass-card p-4">
+                                    <h5 class="text-white font-outfit fw-bold mb-3">Attendance Overview</h5>
+                                    <div class="d-flex justify-content-center align-items-center" style="height: 280px; position: relative;">
+                                        <canvas id="chart-attendance-overview" width="220" height="220"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Tables Row -->
+                        <div class="row">
+                            <!-- Recent Students Table -->
+                            <div class="col-lg-8 mb-4 mb-lg-0">
+                                <div class="glass-card p-0 overflow-hidden">
+                                    <div class="px-4 py-3 border-bottom border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
+                                        <h5 class="text-white font-outfit fw-bold mb-0">Recent Students</h5>
+                                        <button class="btn btn-sm btn-outline-primary border-primary border-opacity-35 text-white" onclick="document.querySelector('[data-admin-target=admin-students]').click();">View All</button>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-custom align-middle mb-0 text-white">
+                                            <thead>
+                                                <tr>
+                                                    <th>Student ID</th>
+                                                    <th>Name</th>
+                                                    <th>Department</th>
+                                                    <th>Year</th>
+                                                    <th>Email</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="dash-students-table-body">
+                                                <!-- Dynamic entries matching image -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sidebar widgets -->
+                            <div class="col-lg-4">
+                                <!-- Recent Announcements widget -->
+                                <div class="glass-card p-4 mb-4" style="height: 100%;">
+                                    <h5 class="text-white font-outfit fw-bold mb-3">Recent Announcements</h5>
+                                    <div class="d-flex flex-column gap-3" id="dash-notices-list">
+                                        <!-- Notices lists -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Subview 1: Students Management -->
-                    <div id="admin-students" class="admin-subview active animate-fade-in">
+                    <div id="admin-students" class="admin-subview animate-fade-in">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-people me-2"></i>Student Management</h4>
                             <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddStudent">
@@ -859,6 +928,502 @@
                                         <canvas id="chart-activity-analytics" width="400" height="280"></canvas>
                                     </div>
                                 </div>
+                            </div>
+                    </div>
+
+                    <!-- Subview 6: Faculty Management -->
+                    <div id="admin-faculty" class="admin-subview animate-fade-in">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-person-badge me-2"></i>Faculty Directory</h4>
+                            <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddFaculty">
+                                <i class="bi bi-plus-lg me-1"></i>Add Faculty
+                            </button>
+                        </div>
+
+                        <!-- Add Faculty Form -->
+                        <div class="collapse mb-4" id="collapseAddFaculty">
+                            <div class="glass-card p-4">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Add Faculty Member</h5>
+                                <form id="add-faculty-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-fac-id">Faculty ID (Unique, e.g. FAC101)</label>
+                                                <input type="text" id="add-fac-id" placeholder="e.g. FAC101" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-fac-name">Full Name</label>
+                                                <input type="text" id="add-fac-name" placeholder="e.g. Dr. Ramesh Kumar" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-fac-dept">Department</label>
+                                                <select id="add-fac-dept" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                                    <!-- Dynamic options -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-fac-desig">Designation</label>
+                                                <input type="text" id="add-fac-desig" placeholder="e.g. Associate Professor" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating-custom">
+                                        <label for="add-fac-email">Email Address</label>
+                                        <input type="email" id="add-fac-email" placeholder="e.g. ramesh@campusai.edu" required>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-outline-secondary text-white border-secondary border-opacity-35" data-bs-toggle="collapse" data-bs-target="#collapseAddFaculty">Cancel</button>
+                                        <button type="submit" class="btn btn-primary bg-purple border-purple">Add Faculty</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Faculty Table -->
+                        <div class="glass-card p-0 overflow-hidden">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Faculty ID</th>
+                                            <th>Name</th>
+                                            <th>Designation</th>
+                                            <th>Department</th>
+                                            <th>Email</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-faculty-table-body">
+                                        <!-- Dynamic rendering -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subview 7: Course Management -->
+                    <div id="admin-courses" class="admin-subview animate-fade-in">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-book me-2"></i>Course Curriculum</h4>
+                            <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddCourse">
+                                <i class="bi bi-plus-lg me-1"></i>Add Course
+                            </button>
+                        </div>
+
+                        <!-- Add Course Form -->
+                        <div class="collapse mb-4" id="collapseAddCourse">
+                            <div class="glass-card p-4">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Add Course Structure</h5>
+                                <form id="add-course-form">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-course-code">Course Code (e.g. IT204)</label>
+                                                <input type="text" id="add-course-code" placeholder="e.g. IT204" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-floating-custom">
+                                                <label for="add-course-name">Course Name</label>
+                                                <input type="text" id="add-course-name" placeholder="e.g. Data Structures & Algorithms" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-course-dept">Department</label>
+                                                <select id="add-course-dept" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                                    <!-- Dynamic options -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating-custom">
+                                                <label for="add-course-dur">Duration</label>
+                                                <input type="text" id="add-course-dur" placeholder="e.g. 1 Semester" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating-custom">
+                                                <label for="add-course-cred">Credits</label>
+                                                <input type="number" id="add-course-cred" placeholder="e.g. 4" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-outline-secondary text-white border-secondary border-opacity-35" data-bs-toggle="collapse" data-bs-target="#collapseAddCourse">Cancel</button>
+                                        <button type="submit" class="btn btn-primary bg-purple border-purple">Add Course</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Courses Table -->
+                        <div class="glass-card p-0 overflow-hidden">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Course Name</th>
+                                            <th>Department</th>
+                                            <th>Duration</th>
+                                            <th>Credits</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-courses-table-body">
+                                        <!-- Dynamic rendering -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subview 8: Attendance Overview -->
+                    <div id="admin-attendance" class="admin-subview animate-fade-in">
+                        <h4 class="text-white font-outfit fw-bold mb-4"><i class="bi bi-check2-square me-2"></i>Attendance Overview</h4>
+                        <div class="glass-card p-4 mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-white font-semibold mb-0">Daily College Attendance Analysis</h5>
+                                <span class="badge bg-success">Live Today</span>
+                            </div>
+                            <div class="row g-4 text-center">
+                                <div class="col-6 col-md-3">
+                                    <h2 class="text-success fw-bold">82%</h2>
+                                    <small class="text-secondary font-medium">Average Present</small>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <h2 class="text-warning fw-bold">12%</h2>
+                                    <small class="text-secondary font-medium">Average Absent</small>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <h2 class="text-info fw-bold">6%</h2>
+                                    <small class="text-secondary font-medium">On Approved Leave</small>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <h2 class="text-white fw-bold">1,023</h2>
+                                    <small class="text-secondary font-medium">Students Marked Present</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Attendance by Department grid -->
+                        <div class="glass-card p-0 overflow-hidden">
+                            <div class="px-4 py-3 border-bottom border-secondary border-opacity-10">
+                                <h5 class="text-white font-outfit fw-bold mb-0">Department-wise Breakdown</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Department</th>
+                                            <th>Strength</th>
+                                            <th>Present Today</th>
+                                            <th>Absent Today</th>
+                                            <th>Present %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-attendance-table-body">
+                                        <!-- Rendered dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subview 9: Examinations -->
+                    <div id="admin-exams" class="admin-subview animate-fade-in">
+                        <h4 class="text-white font-outfit fw-bold mb-4"><i class="bi bi-award me-2"></i>Examinations Schedule</h4>
+                        
+                        <!-- Timeline schedules -->
+                        <div class="glass-card p-4 mb-4">
+                            <h5 class="text-white font-semibold mb-3">Academic Exam Timetables</h5>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="border-start border-purple border-3 ps-3">
+                                    <h6 class="text-white font-medium mb-1">Internal Assessment I</h6>
+                                    <p class="text-secondary small mb-1">Scheduled Date: August 20, 2026</p>
+                                    <span class="badge bg-secondary font-semibold">Active Prep</span>
+                                </div>
+                                <div class="border-start border-info border-3 ps-3">
+                                    <h6 class="text-white font-medium mb-1">Internal Assessment II</h6>
+                                    <p class="text-secondary small mb-1">Scheduled Date: October 5, 2026</p>
+                                    <span class="badge bg-secondary font-semibold">Draft</span>
+                                </div>
+                                <div class="border-start border-warning border-3 ps-3">
+                                    <h6 class="text-white font-medium mb-1">Practical Exams & Lab Vivas</h6>
+                                    <p class="text-secondary small mb-1">Scheduled Date: November 2 - 10, 2026</p>
+                                    <span class="badge bg-secondary font-semibold">Draft</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subview 10: Library Management -->
+                    <div id="admin-library" class="admin-subview animate-fade-in">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-journal-bookmark me-2"></i>Library Catalog</h4>
+                            <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddBook">
+                                <i class="bi bi-plus-lg me-1"></i>Add Book
+                            </button>
+                        </div>
+
+                        <!-- Add Book Form -->
+                        <div class="collapse mb-4" id="collapseAddBook">
+                            <div class="glass-card p-4">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Add Book Details</h5>
+                                <form id="add-book-form">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-floating-custom">
+                                                <label for="add-bk-id">Book Accession No. / ID</label>
+                                                <input type="text" id="add-bk-id" placeholder="e.g. BK005" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-floating-custom">
+                                                <label for="add-bk-title">Book Title</label>
+                                                <input type="text" id="add-bk-title" placeholder="e.g. Modern Operating Systems" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-bk-author">Author(s)</label>
+                                                <input type="text" id="add-bk-author" placeholder="e.g. Andrew S. Tanenbaum" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-bk-dept">Department Target</label>
+                                                <select id="add-bk-dept" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                                    <!-- Dynamic options -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-outline-secondary text-white border-secondary border-opacity-35" data-bs-toggle="collapse" data-bs-target="#collapseAddBook">Cancel</button>
+                                        <button type="submit" class="btn btn-primary bg-purple border-purple">Catalogue Book</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Library Table -->
+                        <div class="glass-card p-0 overflow-hidden">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Book ID</th>
+                                            <th>Title</th>
+                                            <th>Author</th>
+                                            <th>Department</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-library-table-body">
+                                        <!-- Dynamic rendering -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subview 11: Users & Roles -->
+                    <div id="admin-users" class="admin-subview animate-fade-in">
+                        <h4 class="text-white font-outfit fw-bold mb-4"><i class="bi bi-person-lock me-2"></i>Users & Roles Management</h4>
+                        <div class="glass-card p-0 overflow-hidden">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>User ID</th>
+                                            <th>Username</th>
+                                            <th>Account Name</th>
+                                            <th>System Role</th>
+                                            <th>Authorization Access</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-users-table-body">
+                                        <!-- Dynamic rendering -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subview 12: System Settings -->
+                    <div id="admin-settings" class="admin-subview animate-fade-in">
+                        <h4 class="text-white font-outfit fw-bold mb-4"><i class="bi bi-gear me-2"></i>System Configuration</h4>
+                        <div class="glass-card p-4">
+                            <h5 class="text-white font-semibold mb-3">Portal Settings</h5>
+                            <form id="settings-form">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating-custom">
+                                            <label for="settings-college-name">College Name</label>
+                                            <input type="text" id="settings-college-name" value="CampusAI Arts & Science College" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating-custom">
+                                            <label for="settings-bot-name">AI Assistant Label</label>
+                                            <input type="text" id="settings-bot-name" value="CampusAI Assistant" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating-custom">
+                                            <label for="settings-academic-year">Active Academic Year</label>
+                                            <input type="text" id="settings-academic-year" value="2025 - 2026" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating-custom flex-row justify-content-between p-3" style="display: flex; align-items: center; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); border-radius: 10px; margin-bottom: 20px;">
+                                            <div>
+                                                <h6 class="text-white font-medium mb-0">Maintenance Mode</h6>
+                                                <small class="text-secondary small">Temporarily disable student logins</small>
+                                            </div>
+                                            <div class="form-check form-switch m-0 fs-4">
+                                                <input class="form-check-input" type="checkbox" id="settings-maintenance">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary bg-purple border-purple">Save Configurations</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Subview 5: Departments Management -->
+                    <div id="admin-departments" class="admin-subview animate-fade-in">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-diagram-3 me-2"></i>Department Management</h4>
+                            <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddDept">
+                                <i class="bi bi-plus-lg me-1"></i>Add Department
+                            </button>
+                        </div>
+
+                        <!-- Add Department Form Collapse -->
+                        <div class="collapse mb-4" id="collapseAddDept">
+                            <div class="glass-card p-4">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Create New Department</h5>
+                                <form id="add-dept-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-dept-key">Department Code / Key (Lowercase, unique, e.g. chemistry, biotech)</label>
+                                                <input type="text" id="add-dept-key" placeholder="e.g. chemistry" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-dept-name">Department Name</label>
+                                                <input type="text" id="add-dept-name" placeholder="e.g. Chemistry" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-dept-icon">Bootstrap Icon & Theme Color</label>
+                                                <select id="add-dept-icon" class="bg-dark text-white form-select select-custom" required style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); border-radius: 10px; padding: 14px 16px; color: var(--text-primary);">
+                                                    <option value="bi bi-pc-display text-primary bg-primary bg-opacity-10" class="bg-dark text-white">bi-pc-display (Blue CS)</option>
+                                                    <option value="bi bi-journal-text text-purple bg-purple bg-opacity-10" class="bg-dark text-white">bi-journal-text (Purple English)</option>
+                                                    <option value="bi bi-radioactive text-info bg-info bg-opacity-10" class="bg-dark text-white">bi-radioactive (Info Physics)</option>
+                                                    <option value="bi bi-droplet-fill text-success bg-success bg-opacity-10" class="bg-dark text-white">bi-droplet-fill (Success Chemistry)</option>
+                                                    <option value="bi bi-calculator-fill text-warning bg-warning bg-opacity-10" class="bg-dark text-white">bi-calculator-fill (Warning Math)</option>
+                                                    <option value="bi bi-cash-coin text-danger bg-danger bg-opacity-10" class="bg-dark text-white">bi-cash-coin (Danger Commerce)</option>
+                                                    <option value="bi bi-dna text-success bg-success bg-opacity-10" class="bg-dark text-white">bi-dna (Success Biotech)</option>
+                                                    <option value="bi bi-graph-up-arrow text-info bg-info bg-opacity-10" class="bg-dark text-white">bi-graph-up-arrow (Info Economics)</option>
+                                                    <option value="bi bi-camera-reels text-warning bg-warning bg-opacity-10" class="bg-dark text-white">bi-camera-reels (Warning Viscom)</option>
+                                                    <option value="bi bi-mortarboard text-primary bg-primary bg-opacity-10" class="bg-dark text-white">bi-mortarboard (Primary Education)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating-custom">
+                                                <label for="add-dept-students">Active Students</label>
+                                                <input type="number" id="add-dept-students" placeholder="e.g. 100" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-floating-custom">
+                                                <label for="add-dept-sections">Sections</label>
+                                                <input type="number" id="add-dept-sections" placeholder="e.g. 3" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-dept-tuition">Tuition Fee (Annual)</label>
+                                                <input type="text" id="add-dept-tuition" placeholder="e.g. ₹40,000" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-dept-lab">Laboratory & Library Fee</label>
+                                                <input type="text" id="add-dept-lab" placeholder="e.g. ₹8,000" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-dept-exam">Exam & Sports Fee</label>
+                                                <input type="text" id="add-dept-exam" placeholder="e.g. ₹5,000" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating-custom">
+                                        <label for="add-dept-programs">Offered Programs (Comma separated)</label>
+                                        <input type="text" id="add-dept-programs" placeholder="e.g. B.Sc Chemistry (3 Years), M.Sc Chemistry (2 Years)" required>
+                                    </div>
+                                    <div class="form-floating-custom">
+                                        <label for="add-dept-facilities">Facilities & Infrastructure</label>
+                                        <textarea id="add-dept-facilities" class="form-control" rows="3" placeholder="Describe laboratory equipment, department library facilities etc." required style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); border-radius: 10px; color: var(--text-primary);"></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-outline-secondary text-white border-secondary border-opacity-35" data-bs-toggle="collapse" data-bs-target="#collapseAddDept">Cancel</button>
+                                        <button type="submit" class="btn btn-primary bg-purple border-purple">Create Department</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Departments Table -->
+                        <div class="glass-card p-0 overflow-hidden">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Department Name</th>
+                                            <th>Offered Programs</th>
+                                            <th>Students</th>
+                                            <th>Annual Fee</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-departments-table-body">
+                                        <!-- Dynamic rendering -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
