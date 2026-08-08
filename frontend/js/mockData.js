@@ -597,10 +597,14 @@ const MockDB = {
             answer = CHAT_ANSWERS.timings;
             topicKey = "timings";
         } else if (q.includes("department") || q.includes("branch") || q.includes("stream")) {
-            answer = CHAT_ANSWERS.departments;
+            const depts = MockDB.getDepartments();
+            const names = Object.keys(depts).map((key, i) => `${i + 1}. <b>${depts[key].name}</b>`).join("<br>");
+            answer = `CampusAI features ${Object.keys(depts).length} premier Arts, Science, & Commerce departments:<br>${names}<br>All departments are NAAC A++ accredited.`;
             topicKey = "departments";
         } else if (q.includes("course") || q.includes("program") || q.includes("degree") || q.includes("offer")) {
-            answer = CHAT_ANSWERS.courses;
+            const courses = MockDB.getCourses();
+            const names = courses.map(c => `• <b>${c.code}</b>: ${c.name} (${c.department})`).join("<br>");
+            answer = `We offer the following academic course curriculums:<br>${names}`;
             topicKey = "courses";
         } else if (q.includes("admission") || q.includes("apply") || q.includes("join") || q.includes("tnea") || q.includes("counselling")) {
             answer = CHAT_ANSWERS.admission;
@@ -621,7 +625,9 @@ const MockDB = {
             answer = CHAT_ANSWERS.library;
             topicKey = "library";
         } else if (q.includes("faculty") || q.includes("teacher") || q.includes("professor") || q.includes("staff")) {
-            answer = CHAT_ANSWERS.faculty;
+            const faculty = MockDB.getFaculty();
+            const names = faculty.slice(0, 5).map(f => `• <b>${f.name}</b> - ${f.designation} (${f.department})`).join("<br>");
+            answer = `We have over 86 experienced faculty members. Here are some of our professors:<br>${names}`;
             topicKey = "faculty";
         } else {
             // General query fallback response
