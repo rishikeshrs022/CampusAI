@@ -776,10 +776,77 @@ body[data-theme="light"] .login-tab-btn.active-tab {
     color: #ffffff !important;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15) !important;
 }
+/* Student Sidebar Links */
+.student-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.88rem;
+    border-radius: 6px;
+    transition: all 0.25s ease;
+}
+.student-sidebar-link:hover {
+    color: var(--text-primary) !important;
+    background: var(--hover-bg);
+}
+.student-sidebar-link.active {
+    background: var(--primary-color) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+}
 
+.student-subview {
+    display: none;
+}
+.student-subview.active {
+    display: block;
+}
 
+/* Quick access tiles style */
+.quick-access-tile {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 14px 8px;
+    transition: all 0.22s ease-in-out;
+}
+.quick-access-tile:hover {
+    background: var(--hover-bg);
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+}
 
+/* Radial progress support */
+svg .radial-bg {
+    stroke: rgba(255, 255, 255, 0.05);
+}
+svg .radial-progress {
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dasharray 0.35s;
+}
 
-
+body[data-theme="light"] .student-sidebar-link {
+    color: #475569;
+}
+body[data-theme="light"] .student-sidebar-link:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: #0f172a !important;
+}
+body[data-theme="light"] .student-sidebar-link.active {
+    background: var(--primary-color) !important;
+    color: #ffffff !important;
+}
+body[data-theme="light"] .quick-access-tile {
+    background: rgba(0, 0, 0, 0.01);
+}
+body[data-theme="light"] .quick-access-tile:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
 
 

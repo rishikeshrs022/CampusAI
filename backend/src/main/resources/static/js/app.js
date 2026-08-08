@@ -77,19 +77,33 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------
     function updateDashboardTime() {
         const timeEl = document.getElementById("dash-current-time");
-        if (!timeEl) return;
-        
-        const now = new Date();
-        const options = {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-        };
-        timeEl.innerHTML = `<i class="bi bi-clock me-2"></i>${now.toLocaleString('en-US', options)}`;
+        if (timeEl) {
+            const now = new Date();
+            const options = {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            timeEl.innerHTML = `<i class="bi bi-clock me-2"></i>${now.toLocaleString('en-US', options)}`;
+        }
+
+        const studTimeEl = document.getElementById("stud-banner-time");
+        if (studTimeEl) {
+            const now = new Date();
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const dayEl = document.getElementById("stud-banner-day");
+            const dateEl = document.getElementById("stud-banner-date");
+            
+            if (dayEl) dayEl.textContent = days[now.getDay()];
+            if (dateEl) {
+                dateEl.textContent = now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+            }
+            studTimeEl.textContent = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+        }
     }
     updateDashboardTime();
     setInterval(updateDashboardTime, 1000);
@@ -179,6 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Trigger Subviews updates
         if (viewId === "student-dashboard") {
             renderStudentDashboard();
+            // Reset to Dashboard subview by default
+            const defaultTab = document.querySelector('[data-student-target="stud-dash-home"]');
+            if (defaultTab) defaultTab.click();
         } else if (viewId === "admin-panel") {
             renderAdminPanel();
             const adminNameEl = document.getElementById("admin-sidebar-name");
@@ -202,6 +219,120 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentPath !== targetPath) {
             history.pushState(null, "", targetPath);
         }
+    }
+
+    // ----------------------------------------------------
+    // STUDENT PORTAL ROUTING & ACTIONS BINDINGS
+    // ----------------------------------------------------
+    const studentSidebarLinks = document.querySelectorAll(".student-sidebar-link");
+    const studentSubviews = document.querySelectorAll(".student-subview");
+
+    studentSidebarLinks.forEach(link => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const subviewId = link.getAttribute("data-student-target");
+
+            studentSidebarLinks.forEach(l => l.classList.remove("active"));
+            link.classList.add("active");
+
+            studentSubviews.forEach(view => {
+                view.classList.remove("active");
+                view.classList.add("d-none");
+                if (view.id === subviewId) {
+                    view.classList.remove("d-none");
+                    view.classList.add("active");
+                }
+            });
+
+            // Set dynamic title in topbar
+            const subviewTitle = link.textContent.trim();
+            document.getElementById("student-subview-title").textContent = subviewTitle;
+        });
+    });
+
+    // Quick Access click routers
+    document.querySelectorAll(".quick-access-tile").forEach(tile => {
+        tile.addEventListener("click", () => {
+            const target = tile.getAttribute("data-student-target");
+            const correspondingLink = document.querySelector(`.student-sidebar-link[data-student-target="${target}"]`);
+            if (correspondingLink) {
+                correspondingLink.click();
+            }
+        });
+    });
+
+    // Promo Chatbot buttons click handlers
+    const promoChatbotBtn = document.getElementById("btn-stud-promo-chatbot");
+    const helpChatbotBtn = document.getElementById("btn-stud-help-chatbot");
+    
+    if (promoChatbotBtn) {
+        promoChatbotBtn.addEventListener("click", () => {
+            const chatbotLink = document.querySelector('.student-sidebar-link[data-student-target="stud-chatbot-view"]');
+            if (chatbotLink) chatbotLink.click();
+        });
+    }
+    if (helpChatbotBtn) {
+        helpChatbotBtn.addEventListener("click", () => {
+            const chatbotLink = document.querySelector('.student-sidebar-link[data-student-target="stud-chatbot-view"]');
+            if (chatbotLink) chatbotLink.click();
+        });
+    }
+
+    // Assignment submit upload panel
+    window.showUploadForm = function(assignmentTitle) {
+        document.getElementById("upload-assign-title").textContent = assignmentTitle;
+        const uploadCollapse = document.getElementById("collapseAssignmentUpload");
+        if (uploadCollapse) {
+            const bsCollapse = bootstrap.Collapse.getOrCreateInstance(uploadCollapse);
+            bsCollapse.show();
+        }
+    };
+    
+    const assignmentForm = document.getElementById("assignment-upload-form");
+    if (assignmentForm) {
+        assignmentForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            showToast("Assignment uploaded successfully!", "success");
+            assignmentForm.reset();
+            bootstrap.Collapse.getOrCreateInstance(document.getElementById("collapseAssignmentUpload")).hide();
+        });
+    }
+
+    // Full-screen Chatbot conversation form submit
+    const studChatForm = document.getElementById("stud-full-chat-form");
+    const studChatInput = document.getElementById("stud-full-chat-input");
+    const studChatMessages = document.getElementById("stud-full-chat-messages");
+    
+    if (studChatForm) {
+        studChatForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const text = studChatInput.value.trim();
+            if (!text) return;
+            
+            // Add user message
+            studChatMessages.innerHTML += `
+                <div class="chat-message user-msg">${text}</div>
+            `;
+            studChatInput.value = "";
+            studChatMessages.scrollTop = studChatMessages.scrollHeight;
+            
+            // Generate bot response
+            setTimeout(() => {
+                const response = window.MockDB.processQuery(text);
+                studChatMessages.innerHTML += `
+                    <div class="chat-message bot-msg">${response.answer}</div>
+                `;
+                studChatMessages.scrollTop = studChatMessages.scrollHeight;
+                
+                // Track analytics
+                window.MockDB.saveChatMessage({
+                    text,
+                    sender: "student",
+                    topic: response.topic,
+                    timestamp: new Date().toISOString()
+                });
+            }, 500);
+        });
     }
 
     navLinks.forEach(link => {
@@ -682,82 +813,166 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------
     // STUDENT DASHBOARD RENDERER
     // ----------------------------------------------------
+    // ----------------------------------------------------
+    // STUDENT DASHBOARD RENDERER
+    // ----------------------------------------------------
     function renderStudentDashboard() {
         if (!currentStudent) return;
 
-        // Profile Card details
-        document.getElementById("stud-name").textContent = currentStudent.name;
-        document.getElementById("stud-id").textContent = currentStudent.id;
-        document.getElementById("stud-dept").textContent = currentStudent.department;
-        document.getElementById("stud-year").textContent = `${currentStudent.year}rd Year`;
-        document.getElementById("stud-email").textContent = currentStudent.email;
-        document.getElementById("stud-phone").textContent = currentStudent.phone;
+        // 1. Topbar and Profile Header details
+        const topbarName = document.getElementById("stud-topbar-name");
+        const topbarDept = document.getElementById("stud-topbar-dept");
+        const welcomeName = document.getElementById("stud-welcome-name");
 
-        // Attendance Percentage (Radial)
+        if (topbarName) topbarName.textContent = currentStudent.name;
+        if (topbarDept) topbarDept.textContent = currentStudent.department;
+        if (welcomeName) welcomeName.textContent = currentStudent.name.split(" ")[0];
+
+        // Personal Details Subview
+        const profName = document.getElementById("profile-stud-name");
+        const profId = document.getElementById("profile-stud-id");
+        const profDept = document.getElementById("profile-stud-dept");
+        const profYear = document.getElementById("profile-stud-year");
+        const profEmail = document.getElementById("profile-stud-email");
+        const profPhone = document.getElementById("profile-stud-phone");
+
+        if (profName) profName.textContent = currentStudent.name;
+        if (profId) profId.textContent = currentStudent.id;
+        if (profDept) profDept.textContent = currentStudent.department;
+        if (profYear) profYear.textContent = currentStudent.year === 1 ? "I Year" : currentStudent.year === 2 ? "II Year" : currentStudent.year === 3 ? "III Year" : "IV Year";
+        if (profEmail) profEmail.textContent = currentStudent.email;
+        if (profPhone) profPhone.textContent = currentStudent.phone;
+
+        // 2. Attendance Percentages (SVG Radials)
         const percent = currentStudent.attendance;
-        const offset = 251.2 - (251.2 * percent) / 100;
-        document.getElementById("attendance-circle").style.strokeDashoffset = offset;
-        document.getElementById("attendance-percentage").textContent = `${percent}%`;
+        const radialAttendance = document.getElementById("stud-radial-attendance");
+        const textAttendance = document.getElementById("stud-text-attendance");
+        const radialProfAttendance = document.getElementById("profile-radial-attendance");
+        const textProfAttendance = document.getElementById("profile-text-attendance");
 
-        // Attendance list rendering
-        const attendList = document.getElementById("attendance-subject-list");
-        attendList.innerHTML = "";
-        currentStudent.attendanceDetails.forEach(subject => {
-            const barClass = subject.percent >= 85 ? "bg-success" : (subject.percent >= 75 ? "bg-info" : "bg-danger");
-            attendList.innerHTML += `
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between mb-1">
-                        <span>${subject.subject}</span>
-                        <small class="text-secondary">${subject.attended}/${subject.total} hrs (${subject.percent}%)</small>
-                    </div>
-                    <div class="progress progress-custom" style="height: 6px;">
-                        <div class="progress-bar ${barClass}" role="progressbar" style="width: ${subject.percent}%"></div>
-                    </div>
-                </div>
-            `;
-        });
+        if (radialAttendance) radialAttendance.setAttribute("stroke-dasharray", `${percent}, 100`);
+        if (textAttendance) textAttendance.textContent = `${percent}%`;
+        if (radialProfAttendance) radialProfAttendance.setAttribute("stroke-dasharray", `${percent}, 100`);
+        if (textProfAttendance) textProfAttendance.textContent = `${percent}%`;
 
-        // Academic details
-        document.getElementById("student-cgpa").textContent = currentStudent.cgpa.toFixed(2);
+        // Attendance total days counter
+        const totalClasses = currentStudent.attendanceDetails.reduce((sum, curr) => sum + curr.total, 0);
+        const attendedClasses = currentStudent.attendanceDetails.reduce((sum, curr) => sum + curr.attended, 0);
+        const attDaysEl = document.getElementById("stud-attendance-days");
+        if (attDaysEl) attDaysEl.textContent = `${attendedClasses} / ${totalClasses} Hours`;
+
+        // 3. CGPA Progress circle
+        const cgpa = currentStudent.cgpa;
+        const radialCgpa = document.getElementById("stud-radial-cgpa");
+        const textCgpa = document.getElementById("stud-text-cgpa");
+        if (radialCgpa) radialCgpa.setAttribute("stroke-dasharray", `${cgpa * 10}, 100`);
+        if (textCgpa) textCgpa.textContent = cgpa.toFixed(2);
+
+        // Subject counters
+        const subjectCountEl = document.getElementById("stud-subjects-count");
+        if (subjectCountEl) subjectCountEl.textContent = currentStudent.attendanceDetails.length;
+
+        // 4. Render Subjects List Overview Table & Attendance Breakdown
+        const subjectsBody = document.getElementById("stud-subjects-body");
+        const attDetailBody = document.getElementById("stud-attendance-detail-body");
+        const marksDetailBody = document.getElementById("stud-marks-detail-body");
         
-        // Render marks sheet table
-        const marksBody = document.getElementById("student-marks-body");
-        marksBody.innerHTML = "";
-        currentStudent.marks.forEach(item => {
-            marksBody.innerHTML += `
-                <tr>
-                    <td><b>${item.subject}</b></td>
-                    <td class="text-center">${item.test1}</td>
-                    <td class="text-center">${item.test2}</td>
-                    <td class="text-center">${item.model}</td>
-                    <td class="text-center fw-bold text-gradient">${calculateGrade(item.model)}</td>
-                </tr>
-            `;
+        if (subjectsBody) subjectsBody.innerHTML = "";
+        if (attDetailBody) attDetailBody.innerHTML = "";
+        if (marksDetailBody) marksDetailBody.innerHTML = "";
+
+        const defaultFacultyCoordinators = ["Mrs. Priya M", "Mr. Karthik S", "Mr. Arul V", "Dr. S. Vignesh", "Mrs. J. Geetha", "Dr. P. Krishnan"];
+
+        currentStudent.attendanceDetails.forEach((subject, idx) => {
+            const fac = defaultFacultyCoordinators[idx % defaultFacultyCoordinators.length];
+            const code = `23IT40${idx + 1}`;
+            const statusText = subject.percent >= 85 ? "Good" : (subject.percent >= 75 ? "Average" : "Low");
+            const statusClass = subject.percent >= 85 ? "bg-success" : (subject.percent >= 75 ? "bg-warning" : "bg-danger");
+            const attBarClass = subject.percent >= 85 ? "bg-success" : (subject.percent >= 75 ? "bg-info" : "bg-danger");
+
+            if (subjectsBody) {
+                subjectsBody.innerHTML += `
+                    <tr>
+                        <td><code>${code}</code></td>
+                        <td><b>${subject.subject}</b></td>
+                        <td>${fac}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="progress flex-grow-1 bg-dark bg-opacity-25" style="height: 5px; min-width: 60px;">
+                                    <div class="progress-bar ${attBarClass}" style="width: ${subject.percent}%;"></div>
+                                </div>
+                                <span class="small">${subject.percent}%</span>
+                            </div>
+                        </td>
+                        <td><span class="badge ${statusClass} bg-opacity-20 text-${statusText === "Good" ? "success" : statusText === "Average" ? "warning" : "danger"}">${statusText}</span></td>
+                    </tr>
+                `;
+            }
+
+            if (attDetailBody) {
+                attDetailBody.innerHTML += `
+                    <tr>
+                        <td><b>${subject.subject}</b></td>
+                        <td>${subject.total} Hours</td>
+                        <td>${subject.attended} Hours</td>
+                        <td><span class="font-semibold text-white">${subject.percent}%</span></td>
+                        <td><span class="text-success small"><i class="bi bi-check-circle-fill me-1"></i>Met Criteria</span></td>
+                    </tr>
+                `;
+            }
         });
 
-        // Notices Board rendering
-        const noticeList = document.getElementById("dashboard-notice-list");
-        noticeList.innerHTML = "";
+        // 5. Render Marks Summary
+        const recordCgpa = document.getElementById("stud-record-cgpa");
+        if (recordCgpa) recordCgpa.textContent = currentStudent.cgpa.toFixed(2);
+
+        if (marksDetailBody) {
+            currentStudent.marks.forEach(item => {
+                marksDetailBody.innerHTML += `
+                    <tr>
+                        <td><b>${item.subject}</b></td>
+                        <td class="text-center">${item.test1}</td>
+                        <td class="text-center">${item.test2}</td>
+                        <td class="text-center">${item.model}</td>
+                        <td class="text-center fw-bold text-gradient">${calculateGrade(item.model)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // 6. Dynamic Notices List
+        const dashNotices = document.getElementById("stud-dash-notices");
+        const noticesContainer = document.getElementById("stud-notices-container");
         const notices = window.MockDB.getNotices();
-        notices.forEach(notice => {
-            noticeList.innerHTML += `
-                <div class="glass-card mb-3 p-3">
+
+        if (dashNotices) dashNotices.innerHTML = "";
+        if (noticesContainer) noticesContainer.innerHTML = "";
+
+        notices.forEach((notice, idx) => {
+            const noticeCardHtml = `
+                <div class="glass-card p-3 m-0" style="background: rgba(255,255,255,0.01);">
                     <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h6 class="mb-0 text-white font-semibold">${notice.title}</h6>
-                        <span class="badge bg-purple-glow font-medium">${notice.category}</span>
+                        <h6 class="mb-0 text-white font-semibold text-truncate small" style="max-width: 190px;">${notice.title}</h6>
+                        <span class="badge bg-purple-glow font-medium" style="font-size: 0.65rem;">${notice.category}</span>
                     </div>
-                    <p class="text-secondary small mb-2 text-truncate-3">${notice.content}</p>
+                    <p class="text-secondary small mb-2 text-truncate-2" style="font-size: 0.76rem;">${notice.content}</p>
                     <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>${notice.date}</small>
-                        <button class="btn btn-sm btn-outline-primary analyze-notice-btn" data-id="${notice.id}">
-                            <i class="bi bi-cpu me-1"></i>Analyze Notice
+                        <small class="text-muted" style="font-size: 0.7rem;"><i class="bi bi-calendar3 me-1"></i>${notice.date}</small>
+                        <button class="btn btn-sm btn-outline-primary py-0.5 px-2 font-semibold analyze-notice-btn" style="font-size: 0.72rem;" data-id="${notice.id}">
+                            <i class="bi bi-cpu me-1"></i>Analyze
                         </button>
                     </div>
                 </div>
             `;
+            if (dashNotices && idx < 3) {
+                dashNotices.innerHTML += noticeCardHtml;
+            }
+            if (noticesContainer) {
+                noticesContainer.innerHTML += noticeCardHtml;
+            }
         });
 
-        // Attach notice analyzer modal listeners
+        // Attach notice analyzer modal listeners to all generated buttons
         document.querySelectorAll(".analyze-notice-btn").forEach(btn => {
             btn.addEventListener("click", () => {
                 const noticeId = btn.getAttribute("data-id");
@@ -768,33 +983,95 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        // Events list rendering
-        const eventList = document.getElementById("dashboard-events-list");
-        eventList.innerHTML = "";
+        // 7. Dynamic Events Log Calendar
+        const dashEvents = document.getElementById("stud-dash-events");
+        const eventsContainer = document.getElementById("stud-events-container");
         const events = window.MockDB.getEvents();
-        events.forEach(evt => {
-            eventList.innerHTML += `
-                <div class="d-flex align-items-center mb-3">
-                    <div class="flex-shrink-0 text-center px-2 py-1 bg-primary bg-opacity-20 border border-primary border-opacity-30 rounded me-3" style="min-width: 60px;">
-                        <span class="d-block fw-bold text-primary small">${evt.date.split("-")[2]}</span>
-                        <span class="d-block text-muted small">${new Date(evt.date).toLocaleString('default', { month: 'short' })}</span>
+
+        if (dashEvents) dashEvents.innerHTML = "";
+        if (eventsContainer) eventsContainer.innerHTML = "";
+
+        events.forEach((evt, idx) => {
+            const dayNum = evt.date.split("-")[2];
+            const monthStr = new Date(evt.date).toLocaleString('default', { month: 'short' }).toUpperCase();
+            
+            const eventCardHtml = `
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 text-center px-2 py-1 bg-primary bg-opacity-20 border border-primary border-opacity-30 rounded me-3" style="min-width: 55px;">
+                        <span class="d-block fw-bold text-primary fs-5 lh-1">${dayNum}</span>
+                        <span class="d-block text-muted small" style="font-size: 0.65rem;">${monthStr}</span>
                     </div>
-                    <div>
-                        <h6 class="mb-0 text-white font-semibold">${evt.title}</h6>
-                        <small class="text-secondary">${evt.time} | ${evt.location}</small>
+                    <div class="text-start">
+                        <h6 class="mb-0 text-white font-semibold small">${evt.title}</h6>
+                        <small class="text-secondary" style="font-size: 0.72rem;">${evt.time} | ${evt.location}</small>
                     </div>
                 </div>
             `;
+
+            if (dashEvents && idx < 3) {
+                dashEvents.innerHTML += eventCardHtml;
+            }
+            if (eventsContainer) {
+                eventsContainer.innerHTML += `
+                    <div class="glass-card p-3 d-flex align-items-center justify-content-between mb-2">
+                        ${eventCardHtml}
+                        <span class="badge bg-success bg-opacity-15 text-success">Upcoming</span>
+                    </div>
+                `;
+            }
         });
 
-        // Placement statistics
-        renderPlacementList();
+        // 8. Render Library Book list
+        const libBody = document.getElementById("stud-library-table-body");
+        if (libBody) {
+            libBody.innerHTML = "";
+            const books = window.MockDB.getLibrary();
+            books.forEach(b => {
+                const statusClass = b.status === "Available" ? "bg-success-glow text-success" : "bg-warning-glow text-warning";
+                libBody.innerHTML += `
+                    <tr>
+                        <td><span class="font-semibold text-purple">${b.id}</span></td>
+                        <td>${b.title}</td>
+                        <td>${b.author}</td>
+                        <td>${b.department}</td>
+                        <td><span class="badge ${statusClass}">${b.status}</span></td>
+                    </tr>
+                `;
+            });
+        }
 
-        // Performance Predictor Card details
+        // 9. Load dynamic Fees Struktur
+        const depts = window.MockDB.getDepartments();
+        let deptDetails = null;
+        Object.keys(depts).forEach(k => {
+            if (depts[k].name === currentStudent.department) {
+                deptDetails = depts[k];
+            }
+        });
+        
+        if (!deptDetails) {
+            deptDetails = {
+                tuitionFee: "₹45,000",
+                labFee: "₹8,000",
+                examFee: "₹3,500",
+                totalFee: "₹56,500"
+            };
+        }
+        
+        const fTuition = document.getElementById("stud-fee-tuition");
+        const fLab = document.getElementById("stud-fee-lab");
+        const fExam = document.getElementById("stud-fee-exam");
+        const fTotal = document.getElementById("stud-fee-total");
+
+        if (fTuition) fTuition.textContent = deptDetails.tuitionFee;
+        if (fLab) fLab.textContent = deptDetails.labFee;
+        if (fExam) fExam.textContent = deptDetails.examFee;
+        if (fTotal) fTotal.textContent = deptDetails.totalFee || deptDetails.tuitionFee;
+
+        // Trigger Subviews Helper Renderers
+        renderStudentPlacementList();
         renderPerformancePrediction();
-
-        // Career Assistant details
-        renderCareerPathData();
+        renderStudentCareerPathData();
     }
 
     function calculateGrade(marks) {
@@ -839,6 +1116,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!currentStudent) return;
 
         const container = document.getElementById("performance-predictor-content");
+        const studContainer = document.getElementById("stud-predictor-content");
         const currentCgpa = currentStudent.cgpa;
         const attendance = currentStudent.attendance;
 
@@ -875,7 +1153,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adviceList.push("Set daily coding targets for at least 1 hour on key DSA topics.");
         }
 
-        container.innerHTML = `
+        const formattedHtml = `
             <div class="row align-items-center">
                 <div class="col-md-5 text-center border-end border-secondary border-opacity-30">
                     <small class="text-secondary d-block mb-1">Predicted Next Semester GPA</small>
@@ -890,6 +1168,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         `;
+
+        if (container) container.innerHTML = formattedHtml;
+        if (studContainer) studContainer.innerHTML = formattedHtml;
     }
 
     // ----------------------------------------------------
@@ -928,11 +1209,51 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     }
 
+    function renderStudentCareerPathData(careerKey = "webdev") {
+        const path = window.MockDB.getCareerPath(careerKey);
+        if (!path) return;
+
+        const title = document.getElementById("stud-career-title");
+        const skills = document.getElementById("stud-career-skills");
+        const courses = document.getElementById("stud-career-courses");
+        const roadmap = document.getElementById("stud-career-roadmap");
+
+        if (title) title.textContent = path.title;
+        
+        if (skills) {
+            skills.innerHTML = "";
+            path.skills.forEach(skill => {
+                skills.innerHTML += `<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 m-1 font-medium py-2 px-3">${skill}</span>`;
+            });
+        }
+
+        if (courses) {
+            courses.innerHTML = "";
+            path.courses.forEach(course => {
+                courses.innerHTML += `
+                    <li class="d-flex align-items-center mb-2">
+                        <i class="bi bi-play-circle-fill text-purple me-2"></i>
+                        <span class="text-secondary small">${course}</span>
+                    </li>
+                `;
+            });
+        }
+
+        if (roadmap) {
+            roadmap.innerHTML = `
+                <div class="alert bg-purple bg-opacity-10 border border-purple border-opacity-20 text-purple small mb-0">
+                    <i class="bi bi-compass-fill me-2"></i><b>Recommended Path:</b> ${path.roadmap}
+                </div>
+            `;
+        }
+    }
+
     // ----------------------------------------------------
     // PLACEMENTS RENDERER
     // ----------------------------------------------------
     function renderPlacementList() {
         const plcList = document.getElementById("student-placements-list");
+        if (!plcList) return;
         plcList.innerHTML = "";
 
         const recruiters = [
@@ -940,6 +1261,42 @@ document.addEventListener("DOMContentLoaded", () => {
             { company: "TCS Digital", date: "2026-09-02", minCgpa: 7.0, dept: ["All"], role: "Graduate Trainee" },
             { company: "Cognizant", date: "2026-09-15", minCgpa: 6.5, dept: ["All"], role: "Programmer Analyst" },
             { company: "Deloitte", date: "2026-10-05", minCgpa: 8.0, dept: ["Commerce & BBA", "Mathematics"], role: "Financial Analyst" }
+        ];
+
+        recruiters.forEach(rec => {
+            const isEligibleCgpa = currentStudent.cgpa >= rec.minCgpa;
+            const isEligibleDept = rec.dept.includes("All") || rec.dept.includes(currentStudent.department);
+            const isEligible = isEligibleCgpa && isEligibleDept;
+
+            const eligibilityBadge = isEligible 
+                ? '<span class="badge bg-success bg-opacity-20 text-success">Eligible</span>' 
+                : '<span class="badge bg-danger bg-opacity-20 text-danger">Not Eligible</span>';
+
+            plcList.innerHTML += `
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-20 py-2">
+                    <div>
+                        <h6 class="mb-0 text-white font-semibold">${rec.company}</h6>
+                        <small class="text-secondary">${rec.role} | Drive: ${rec.date}</small>
+                    </div>
+                    <div class="text-end">
+                        ${eligibilityBadge}
+                        <div class="small text-muted mt-1">Min: ${rec.minCgpa} CGPA</div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function renderStudentPlacementList() {
+        const plcList = document.getElementById("stud-placement-container");
+        if (!plcList) return;
+        plcList.innerHTML = "";
+
+        const recruiters = [
+            { company: "Google", date: "2026-08-24", minCgpa: 8.5, dept: ["Computer Science & BCA", "B.Sc Information Technology (B.Sc IT)", "B.Sc Computer Science (B.Sc CS)", "BCA – Bachelor of Computer Applications", "B.Sc Artificial Intelligence & Learning (AI & ML)"], role: "Software Engineer" },
+            { company: "TCS Digital", date: "2026-09-02", minCgpa: 7.0, dept: ["All"], role: "Graduate Trainee" },
+            { company: "Cognizant", date: "2026-09-15", minCgpa: 6.5, dept: ["All"], role: "Programmer Analyst" },
+            { company: "Deloitte", date: "2026-10-05", minCgpa: 8.0, dept: ["Commerce & BBA", "B.Com – Bachelor of Commerce", "BBA – Bachelor of Commerce"], role: "Financial Analyst" }
         ];
 
         recruiters.forEach(rec => {

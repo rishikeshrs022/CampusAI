@@ -327,102 +327,486 @@
     <!-- VIEW 3: STUDENT DASHBOARD -->
     <!-- ========================================== -->
     <div id="student-dashboard" class="view-section animate-fade-in">
-        <div class="container py-4">
-            <div class="row">
-                <!-- Profile Left Column -->
-                <div class="col-lg-4 mb-4">
-                    <div class="glass-card text-center mb-4">
-                        <div class="position-relative d-inline-block mb-3">
-                            <div class="rounded-circle border border-purple border-opacity-40 p-1" style="width: 100px; height: 100px; margin: 0 auto; overflow: hidden; background: rgba(255,255,255,0.05);">
-                                <i class="bi bi-person-fill text-secondary" style="font-size: 5rem;"></i>
-                            </div>
-                        </div>
-                        <h5 id="stud-name" class="text-white font-outfit fw-bold mb-1">-</h5>
-                        <p id="stud-id" class="text-muted small mb-3">-</p>
-                        
-                        <div class="border-top border-secondary border-opacity-20 pt-3 text-start small">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-secondary">Department:</span>
-                                <span id="stud-dept" class="text-white font-semibold text-end">-</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-secondary">Year:</span>
-                                <span id="stud-year" class="text-white font-semibold">-</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-secondary">Email:</span>
-                                <span id="stud-email" class="text-white font-semibold">-</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span class="text-secondary">Phone:</span>
-                                <span id="stud-phone" class="text-white font-semibold">-</span>
-                            </div>
-                        </div>
+        <div class="container-fluid p-0">
+            <div class="row g-0">
+                <!-- Student Sidebar -->
+                <div class="col-md-3 col-lg-2 admin-sidebar" style="min-height: 100vh; overflow-y: auto; max-height: 100vh;">
+                    <div class="p-3 text-center border-bottom border-secondary border-opacity-20">
+                        <h5 class="text-white font-outfit fw-bold mb-0">
+                            <i class="bi bi-mortarboard-fill text-primary me-2"></i>CampusAI
+                        </h5>
+                        <small class="text-muted text-uppercase tracking-wider" style="font-size: 0.7rem;">Student Portal</small>
                     </div>
+                    
+                    <div class="p-3">
+                        <ul class="nav flex-column gap-1">
+                            <!-- Dashboard Summary -->
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link active" data-student-target="stud-dash-home">
+                                    <i class="bi bi-grid-fill me-2"></i>Dashboard
+                                </a>
+                            </li>
+                            
+                            <li class="sidebar-section-title text-secondary mt-3 mb-1 px-3 small text-uppercase font-semibold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Academic</li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-profile">
+                                    <i class="bi bi-person-fill me-2"></i>My Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-attendance">
+                                    <i class="bi bi-calendar-check-fill me-2"></i>Attendance
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-academics">
+                                    <i class="bi bi-journal-text me-2"></i>Academics
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-exams">
+                                    <i class="bi bi-calendar-event me-2"></i>Examinations
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-timetable">
+                                    <i class="bi bi-table me-2"></i>Time Table
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-results">
+                                    <i class="bi bi-award-fill me-2"></i>Results
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-assignments">
+                                    <i class="bi bi-file-earmark-check-fill me-2"></i>Assignments
+                                </a>
+                            </li>
 
-                    <!-- Attendance Card -->
-                    <div class="glass-card mb-4">
-                        <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-calendar-check text-primary me-2"></i>Attendance</h5>
-                        <div class="row align-items-center mb-4">
-                            <div class="col-5">
-                                <div class="radial-container">
-                                    <svg class="radial-svg" width="100" height="100">
-                                        <defs>
-                                            <linearGradient id="attendanceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                <stop offset="0%" stop-color="#3b82f6"/>
-                                                <stop offset="100%" stop-color="#a855f7"/>
-                                            </linearGradient>
-                                        </defs>
-                                        <circle class="radial-bg" cx="50" cy="50" r="40" />
-                                        <circle id="attendance-circle" class="radial-progress" cx="50" cy="50" r="40" />
-                                    </svg>
-                                    <div id="attendance-percentage" class="radial-text text-white">-</div>
-                                </div>
-                            </div>
-                            <div class="col-7 small">
-                                <p class="text-secondary mb-1">Current Standing: <b>Good</b></p>
-                                <p class="text-muted mb-0 small">Maintain above 75% to prevent internal exam blockages.</p>
-                            </div>
-                        </div>
-                        <div id="attendance-subject-list">
-                            <!-- Injected dynamically -->
+                            <li class="sidebar-section-title text-secondary mt-3 mb-1 px-3 small text-uppercase font-semibold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Campus</li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-notices">
+                                    <i class="bi bi-bell-fill me-2"></i>Notice Board
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-events">
+                                    <i class="bi bi-calendar3-event me-2"></i>Events
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-library">
+                                    <i class="bi bi-book-fill me-2"></i>Library
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-fees">
+                                    <i class="bi bi-credit-card-fill me-2"></i>Fee & Payments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-transport">
+                                    <i class="bi bi-bus-front-fill me-2"></i>Transportation
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-hostel">
+                                    <i class="bi bi-building-fill me-2"></i>Hostel
+                                </a>
+                            </li>
+
+                            <li class="sidebar-section-title text-secondary mt-3 mb-1 px-3 small text-uppercase font-semibold" style="font-size: 0.72rem; letter-spacing: 0.5px;">Others</li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-placement">
+                                    <i class="bi bi-briefcase-fill me-2"></i>Placement
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link student-sidebar-link" data-student-target="stud-chatbot-view">
+                                    <i class="bi bi-robot me-2"></i>AI Chatbot
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Sidebar Footer Help Card -->
+                        <div class="glass-card mt-4 p-3 border border-secondary border-opacity-20 rounded-3 text-center" style="background: rgba(255,255,255,0.02);">
+                            <i class="bi bi-question-circle-fill text-primary fs-3 mb-2 d-block"></i>
+                            <h6 class="text-white small mb-1">Need Help?</h6>
+                            <p class="text-secondary small mb-3" style="font-size: 0.75rem;">Ask our AI assistant</p>
+                            <button class="btn btn-sm btn-glow-primary w-100 font-semibold" id="btn-stud-help-chatbot">Open Chatbot</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Academic Middle/Right Column -->
-                <div class="col-lg-8">
-                    <!-- Nav Tabs for Academics and Career Guides -->
-                    <ul class="nav nav-pills mb-4 gap-2 border-bottom border-secondary border-opacity-10 pb-3" id="dashboard-tab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="btn btn-outline-primary active" id="academics-tab" data-bs-toggle="pill" data-bs-target="#pills-academics" type="button" role="tab"><i class="bi bi-journal-text me-2"></i>Academics</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="btn btn-outline-primary" id="career-tab" data-bs-toggle="pill" data-bs-target="#pills-career" type="button" role="tab"><i class="bi bi-compass me-2"></i>AI Career Guide</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="btn btn-outline-primary" id="notices-tab" data-bs-toggle="pill" data-bs-target="#pills-notices" type="button" role="tab"><i class="bi bi-bell me-2"></i>Notice Board</button>
-                        </li>
-                    </ul>
+                <!-- Student Main Content Column -->
+                <div class="col-md-9 col-lg-10 d-flex flex-column" style="min-height: 100vh; max-height: 100vh; overflow-y: auto;">
+                    <!-- Student Topbar -->
+                    <div class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom border-secondary border-opacity-10 text-white" style="background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px);">
+                        <div class="d-flex align-items-center gap-3">
+                            <h5 id="student-subview-title" class="font-outfit fw-bold mb-0">Dashboard</h5>
+                        </div>
+                        <div class="d-flex align-items-center gap-4">
+                            <!-- Search Bar -->
+                            <div class="position-relative d-none d-md-block" style="width: 250px;">
+                                <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary border-opacity-30 rounded-pill px-3 py-1.5" placeholder="Search anything..." style="padding-left: 2.2rem !important;">
+                                <i class="bi bi-search text-muted position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.85rem;"></i>
+                            </div>
+                            
+                            <!-- Theme Toggle -->
+                            <button class="btn btn-sm btn-outline-secondary border-0 text-white fs-5 p-0" id="stud-theme-toggle" title="Toggle Light/Dark Theme">
+                                <i class="bi bi-sun-fill text-warning"></i>
+                            </button>
 
-                    <div class="tab-content" id="dashboard-tabContent">
-                        <!-- Academics Pill -->
-                        <div class="tab-pane fade show active" id="pills-academics" role="tabpanel">
-                            <!-- Performance Predictor Widget (Futuristic Element) -->
-                            <div class="glass-card mb-4" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);">
-                                <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-cpu-fill text-purple me-2"></i>AI Performance Predictor</h5>
-                                <div id="performance-predictor-content">
+                            <!-- Notifications Bell -->
+                            <div class="position-relative" style="cursor: pointer;">
+                                <i class="bi bi-bell-fill fs-5 text-secondary"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger p-1" style="font-size: 0.5rem;">3</span>
+                            </div>
+
+                            <!-- User Profile Info -->
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="rounded-circle border border-primary p-0.5" style="width: 38px; height: 38px; overflow: hidden; background: #3b82f6;">
+                                    <i class="bi bi-person-fill text-white fs-4 text-center d-block" style="margin-top: 1px;"></i>
+                                </div>
+                                <div class="lh-1 d-none d-sm-block text-start">
+                                    <h6 id="stud-topbar-name" class="mb-0 text-white fw-bold small">-</h6>
+                                    <small id="stud-topbar-dept" class="text-secondary" style="font-size: 0.72rem;">-</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student Subviews Wrapper -->
+                    <div class="p-4 flex-grow-1">
+                        
+                        <!-- SUBVIEW 1: DASHBOARD HOME SUMMARY -->
+                        <div id="stud-dash-home" class="student-subview active">
+                            <!-- Welcome Banner -->
+                            <div class="glass-card p-4 mb-4 welcome-banner-card position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-7 position-relative z-index-1">
+                                        <h3 class="font-outfit fw-bold text-white mb-2">Welcome back, <span id="stud-welcome-name" class="text-primary">-</span>! 👋</h3>
+                                        <p class="text-secondary mb-3">Here's what's happening in your campus today.</p>
+                                        <p class="fst-italic text-secondary small" style="max-width: 480px; line-height: 1.5;">
+                                            "Education is the passport to the future, for tomorrow belongs to those who prepare for it today."
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-5 mt-3 mt-lg-0 text-lg-end position-relative z-index-1 d-flex flex-wrap justify-content-lg-end gap-3">
+                                        <!-- Calendar Day Card -->
+                                        <div class="glass-card text-center p-3 m-0" style="min-width: 130px; background: rgba(15, 23, 42, 0.6);">
+                                            <i class="bi bi-calendar3 text-primary fs-3 mb-1 d-block"></i>
+                                            <span id="stud-banner-day" class="text-white font-bold d-block">-</span>
+                                            <small id="stud-banner-date" class="text-secondary font-medium">-</small>
+                                        </div>
+                                        <!-- Ticking Clock Card -->
+                                        <div class="glass-card text-center p-3 m-0" style="min-width: 140px; background: rgba(15, 23, 42, 0.6);">
+                                            <i class="bi bi-clock-fill text-purple fs-3 mb-1 d-block"></i>
+                                            <span id="stud-banner-time" class="text-white font-bold d-block">-</span>
+                                            <small class="text-secondary font-medium">Current Time</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Metrics Row -->
+                            <div class="row g-3 mb-4">
+                                <!-- Attendance KPI Radial Card -->
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="glass-card h-100 p-3 d-flex flex-column justify-content-between">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="text-secondary small font-semibold">Attendance</h6>
+                                            <i class="bi bi-calendar-check text-success fs-5"></i>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div style="position: relative; width: 68px; height: 68px;">
+                                                <svg width="68" height="68" viewBox="0 0 36 36">
+                                                    <path class="radial-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"/>
+                                                    <path id="stud-radial-attendance" class="radial-progress" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="82, 100"/>
+                                                </svg>
+                                                <div id="stud-text-attendance" class="position-absolute start-50 top-50 translate-middle text-white small font-bold" style="font-size: 0.85rem;">82%</div>
+                                            </div>
+                                            <div class="text-start">
+                                                <h6 class="text-white fw-bold mb-0">Good</h6>
+                                                <small class="text-muted" id="stud-attendance-days">74 / 90 Days</small>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="small text-primary text-decoration-none mt-2 d-inline-block hover-underline font-semibold text-start" data-student-target="stud-attendance">View Details <i class="bi bi-arrow-right ms-1"></i></a>
+                                    </div>
+                                </div>
+
+                                <!-- CGPA KPI Radial Card -->
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="glass-card h-100 p-3 d-flex flex-column justify-content-between">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="text-secondary small font-semibold">CGPA</h6>
+                                            <i class="bi bi-mortarboard-fill text-purple fs-5"></i>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div style="position: relative; width: 68px; height: 68px;">
+                                                <svg width="68" height="68" viewBox="0 0 36 36">
+                                                    <path class="radial-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"/>
+                                                    <path id="stud-radial-cgpa" class="radial-progress" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#a855f7" stroke-width="3" stroke-dasharray="79, 100"/>
+                                                </svg>
+                                                <div id="stud-text-cgpa" class="position-absolute start-50 top-50 translate-middle text-white small font-bold" style="font-size: 0.85rem;">7.89</div>
+                                            </div>
+                                            <div class="text-start">
+                                                <h6 class="text-white fw-bold mb-0">Sem IV</h6>
+                                                <small class="text-muted">Rank 12 / 120</small>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="small text-primary text-decoration-none mt-2 d-inline-block hover-underline font-semibold text-start" data-student-target="stud-academics">View Details <i class="bi bi-arrow-right ms-1"></i></a>
+                                    </div>
+                                </div>
+
+                                <!-- Subjects Card -->
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="glass-card h-100 p-3 d-flex flex-column justify-content-between">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="text-secondary small font-semibold">Subjects</h6>
+                                            <div class="fs-4 text-info"><i class="bi bi-journal-bookmark-fill"></i></div>
+                                        </div>
+                                        <div class="text-start">
+                                            <h3 class="text-white fw-bold mb-0" id="stud-subjects-count">6</h3>
+                                            <small class="text-muted">This Semester</small>
+                                        </div>
+                                        <a href="#" class="small text-primary text-decoration-none mt-2 d-inline-block hover-underline font-semibold text-start" data-student-target="stud-academics">View Subjects <i class="bi bi-arrow-right ms-1"></i></a>
+                                    </div>
+                                </div>
+
+                                <!-- Assignments Card -->
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="glass-card h-100 p-3 d-flex flex-column justify-content-between">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="text-secondary small font-semibold">Assignments</h6>
+                                            <div class="fs-4 text-warning"><i class="bi bi-file-earmark-check-fill"></i></div>
+                                        </div>
+                                        <div class="text-start">
+                                            <h3 class="text-white fw-bold mb-0" id="stud-assignments-count">2</h3>
+                                            <small class="text-muted">Pending</small>
+                                        </div>
+                                        <a href="#" class="small text-primary text-decoration-none mt-2 d-inline-block hover-underline font-semibold text-start" data-student-target="stud-assignments">View Assignments <i class="bi bi-arrow-right ms-1"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row for Events, Notices and Quick Access -->
+                            <div class="row mb-4 text-start">
+                                <!-- Upcoming Events Section -->
+                                <div class="col-lg-4 mb-4 mb-lg-0">
+                                    <div class="glass-card h-100">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="text-white font-outfit fw-bold m-0">Upcoming Events</h5>
+                                            <a href="#" class="small text-primary text-decoration-none font-semibold" data-student-target="stud-events">View All</a>
+                                        </div>
+                                        <div id="stud-dash-events" class="d-flex flex-column gap-3">
+                                            <!-- Injected dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Notice Board Section -->
+                                <div class="col-lg-4 mb-4 mb-lg-0">
+                                    <div class="glass-card h-100">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="text-white font-outfit fw-bold m-0">Notice Board</h5>
+                                            <a href="#" class="small text-primary text-decoration-none font-semibold" data-student-target="stud-notices">View All</a>
+                                        </div>
+                                        <div id="stud-dash-notices" class="d-flex flex-column gap-3">
+                                            <!-- Injected dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Access Tile Grid & Chatbot Tile -->
+                                <div class="col-lg-4 d-flex flex-column gap-3">
+                                    <div class="glass-card">
+                                        <h5 class="text-white font-outfit fw-bold mb-3">Quick Access</h5>
+                                        <div class="row g-2 text-center">
+                                            <div class="col-4">
+                                                <div class="quick-access-tile p-2 rounded hover-bg-light cursor-pointer" data-student-target="stud-timetable">
+                                                    <i class="bi bi-calendar3 fs-4 text-purple"></i>
+                                                    <span class="small d-block text-secondary mt-1" style="font-size:0.75rem;">Time Table</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="quick-access-tile p-2 rounded hover-bg-light cursor-pointer" data-student-target="stud-results">
+                                                    <i class="bi bi-bar-chart-fill fs-4 text-success"></i>
+                                                    <span class="small d-block text-secondary mt-1" style="font-size:0.75rem;">Results</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="quick-access-tile p-2 rounded hover-bg-light cursor-pointer" data-student-target="stud-fees">
+                                                    <i class="bi bi-credit-card fs-4 text-primary"></i>
+                                                    <span class="small d-block text-secondary mt-1" style="font-size:0.75rem;">Fee Payment</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="quick-access-tile p-2 rounded hover-bg-light cursor-pointer" data-student-target="stud-library">
+                                                    <i class="bi bi-book fs-4 text-info"></i>
+                                                    <span class="small d-block text-secondary mt-1" style="font-size:0.75rem;">Library</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="quick-access-tile p-2 rounded hover-bg-light cursor-pointer" data-student-target="stud-transport">
+                                                    <i class="bi bi-bus-front fs-4 text-warning"></i>
+                                                    <span class="small d-block text-secondary mt-1" style="font-size:0.75rem;">Transport</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="quick-access-tile p-2 rounded hover-bg-light cursor-pointer" data-student-target="stud-placement">
+                                                    <i class="bi bi-briefcase fs-4 text-white"></i>
+                                                    <span class="small d-block text-secondary mt-1" style="font-size:0.75rem;">Placement</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- AI Chatbot promo card -->
+                                    <div class="glass-card flex-grow-1 p-3 position-relative overflow-hidden d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%); min-height: 140px;">
+                                        <div>
+                                            <h6 class="text-white font-bold mb-1">AI College Chatbot</h6>
+                                            <p class="text-secondary small mb-2" style="font-size:0.8rem;">Ask anything about your college!</p>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between gap-2">
+                                            <button class="btn btn-sm btn-glow-primary" id="btn-stud-promo-chatbot">Chat Now</button>
+                                            <i class="bi bi-robot fs-1 text-purple opacity-75"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Subject Overview Table -->
+                            <div class="glass-card text-start">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="text-white font-outfit fw-bold m-0">Subject Overview</h5>
+                                    <a href="#" class="small text-primary text-decoration-none font-semibold" data-student-target="stud-academics">View All</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject Code</th>
+                                                <th>Subject Name</th>
+                                                <th>Faculty</th>
+                                                <th>Attendance</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="stud-subjects-body">
+                                            <!-- Injected dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 2: PROFILE -->
+                        <div id="stud-profile" class="student-subview d-none">
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="glass-card text-center">
+                                        <div class="position-relative d-inline-block mb-3 p-1 rounded-circle border border-primary" style="width: 110px; height: 110px; margin: 0 auto; overflow: hidden; background: rgba(255,255,255,0.05);">
+                                            <i class="bi bi-person-fill text-secondary" style="font-size: 5.5rem;"></i>
+                                        </div>
+                                        <h4 id="profile-stud-name" class="text-white font-outfit fw-bold mb-1">-</h4>
+                                        <p id="profile-stud-id" class="text-muted small mb-0">-</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 text-start">
+                                    <div class="glass-card">
+                                        <h5 class="text-white font-outfit fw-bold mb-3">Personal Details</h5>
+                                        <div class="row g-3 small">
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block">Department</span>
+                                                <span id="profile-stud-dept" class="text-white font-semibold fs-6">-</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block">Academic Year</span>
+                                                <span id="profile-stud-year" class="text-white font-semibold fs-6">-</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block">Email Address</span>
+                                                <span id="profile-stud-email" class="text-white font-semibold fs-6">-</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block">Contact Number</span>
+                                                <span id="profile-stud-phone" class="text-white font-semibold fs-6">-</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block">Admission Date</span>
+                                                <span class="text-white font-semibold fs-6">July 15, 2024</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block">Blood Group</span>
+                                                <span class="text-white font-semibold fs-6">O +ve</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 3: ATTENDANCE BREAKDOWN -->
+                        <div id="stud-attendance" class="student-subview d-none">
+                            <div class="glass-card mb-4 text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Attendance Analysis</h5>
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                                        <div style="position: relative; width: 120px; height: 120px; margin: 0 auto;">
+                                            <svg width="120" height="120" viewBox="0 0 36 36">
+                                                <path class="radial-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3.2"/>
+                                                <path id="profile-radial-attendance" class="radial-progress" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#10b981" stroke-width="3.2" stroke-dasharray="82, 100"/>
+                                            </svg>
+                                            <div id="profile-text-attendance" class="position-absolute start-50 top-50 translate-middle text-white fs-4 font-bold">82%</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h6 class="text-white font-bold mb-1">Status: Good Standing</h6>
+                                        <p class="text-secondary small mb-3">You have attended 74 out of 90 total class sessions. Keep it up to meet criteria.</p>
+                                        <div class="d-flex gap-4">
+                                            <div><span class="d-block text-secondary small">Present Days</span><span class="fs-5 text-success font-semibold">74</span></div>
+                                            <div><span class="d-block text-secondary small">Absent Days</span><span class="fs-5 text-warning font-semibold">12</span></div>
+                                            <div><span class="d-block text-secondary small">Medical Leave</span><span class="fs-5 text-primary font-semibold">4</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive border-top border-secondary border-opacity-15 pt-3">
+                                    <table class="table table-custom align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Total Classes</th>
+                                                <th>Attended</th>
+                                                <th>Percentage</th>
+                                                <th>Requirement</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="stud-attendance-detail-body">
+                                            <!-- Injected dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 4: ACADEMICS & PREDICTOR -->
+                        <div id="stud-academics" class="student-subview d-none">
+                            <!-- Performance Predictor -->
+                            <div class="glass-card mb-4 text-start" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);">
+                                <h5 class="text-white font-outfit fw-bold mb-2"><i class="bi bi-cpu-fill text-purple me-2"></i>AI Performance Predictor</h5>
+                                <div id="stud-predictor-content">
                                     <!-- Injected dynamically -->
                                 </div>
                             </div>
 
-                            <!-- CGPA and marks Card -->
-                            <div class="glass-card mb-4">
+                            <!-- Academic Record Summary -->
+                            <div class="glass-card mb-4 text-start">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="text-white font-outfit fw-bold m-0"><i class="bi bi-mortarboard text-purple me-2"></i>Academic Summary</h5>
+                                    <h5 class="text-white font-outfit fw-bold m-0">Marks Record</h5>
                                     <div>
                                         <span class="text-secondary small">Cumulative CGPA: </span>
-                                        <span id="student-cgpa" class="badge bg-purple-glow font-bold fs-6">-</span>
+                                        <span id="stud-record-cgpa" class="badge bg-purple-glow font-bold fs-6">-</span>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -436,44 +820,22 @@
                                                 <th class="text-center">Grade (Est.)</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="student-marks-body">
+                                        <tbody id="stud-marks-detail-body">
                                             <!-- Injected dynamically -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
 
-                            <!-- Placements & Events Split -->
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <div class="glass-card h-100">
-                                        <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-briefcase text-primary me-2"></i>Placements</h5>
-                                        <div id="student-placements-list">
-                                            <!-- Injected dynamically -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="glass-card h-100">
-                                        <h5 class="text-white font-outfit fw-bold mb-3"><i class="bi bi-calendar-event text-purple me-2"></i>Events Calendar</h5>
-                                        <div id="dashboard-events-list">
-                                            <!-- Injected dynamically -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- AI Career Pill -->
-                        <div class="tab-pane fade" id="pills-career" role="tabpanel">
-                            <div class="glass-card">
+                            <!-- Career Assistant Widget -->
+                            <div class="glass-card text-start">
                                 <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
                                     <div>
                                         <h5 class="text-white font-outfit fw-bold mb-1"><i class="bi bi-robot text-purple me-2"></i>AI Career Assistant</h5>
                                         <p class="text-secondary small mb-0">Select your specialization interests to map skills roadmaps and relevant resources.</p>
                                     </div>
                                     <div class="form-floating-custom m-0" style="min-width: 200px;">
-                                        <select id="career-select" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                        <select id="stud-career-select" class="form-select bg-dark text-white border-secondary border-opacity-30">
                                             <option value="webdev">Full-Stack Web Dev</option>
                                             <option value="aiml">AI / Machine Learning</option>
                                             <option value="cloud">Cloud Solutions</option>
@@ -483,35 +845,406 @@
                                 </div>
 
                                 <div class="border-top border-secondary border-opacity-20 pt-3">
-                                    <h4 id="career-title" class="text-white font-outfit fw-bold mb-3">-</h4>
-                                    
+                                    <h4 id="stud-career-title" class="text-white font-outfit fw-bold mb-3">-</h4>
                                     <div class="mb-4">
                                         <h6 class="text-secondary small font-semibold mb-2">Core Skills Matrix Required:</h6>
-                                        <div id="career-skills" class="d-flex flex-wrap gap-1">
-                                            <!-- Injected dynamically -->
-                                        </div>
+                                        <div id="stud-career-skills" class="d-flex flex-wrap gap-1"></div>
                                     </div>
-
                                     <div class="mb-4">
                                         <h6 class="text-secondary small font-semibold mb-2">Recommended Online Courses:</h6>
-                                        <ul id="career-courses" class="list-unstyled mb-0">
-                                            <!-- Injected dynamically -->
-                                        </ul>
+                                        <ul id="stud-career-courses" class="list-unstyled mb-0"></ul>
                                     </div>
+                                    <div id="stud-career-roadmap"></div>
+                                </div>
+                            </div>
+                        </div>
 
-                                    <div id="career-roadmap">
-                                        <!-- Injected dynamically -->
+                        <!-- SUBVIEW 5: EXAMINATIONS -->
+                        <div id="stud-exams" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Examination Schedule</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Subject Code</th>
+                                                <th>Subject Name</th>
+                                                <th>Session</th>
+                                                <th>Venue</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2026-11-18</td>
+                                                <td><code>23IT401</code></td>
+                                                <td>Data Structures & Algorithms</td>
+                                                <td>FN (09:30 AM - 12:30 PM)</td>
+                                                <td>Hall 12B (Science Block)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2026-11-20</td>
+                                                <td><code>23IT402</code></td>
+                                                <td>Database Management Systems</td>
+                                                <td>FN (09:30 AM - 12:30 PM)</td>
+                                                <td>Hall 12B (Science Block)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2026-11-22</td>
+                                                <td><code>23IT403</code></td>
+                                                <td>Operating Systems</td>
+                                                <td>FN (09:30 AM - 12:30 PM)</td>
+                                                <td>Hall 12D (Science Block)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 6: WEEKLY TIMETABLE -->
+                        <div id="stud-timetable" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Weekly Time Table</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle text-center table-bordered border-secondary border-opacity-10">
+                                        <thead>
+                                            <tr>
+                                                <th>Day</th>
+                                                <th>Period 1<br>(08:30-09:30)</th>
+                                                <th>Period 2<br>(09:30-10:30)</th>
+                                                <th>Period 3<br>(10:45-11:45)</th>
+                                                <th>Period 4<br>(11:45-12:45)</th>
+                                                <th>Lunch<br>(12:45-01:45)</th>
+                                                <th>Period 5<br>(01:45-02:45)</th>
+                                                <th>Period 6<br>(02:45-03:45)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="font-semibold text-white">Monday</td>
+                                                <td>DSA</td>
+                                                <td>DBMS</td>
+                                                <td>OS</td>
+                                                <td>Maths</td>
+                                                <td rowspan="5" class="bg-dark bg-opacity-25 align-middle text-muted small">LUNCH</td>
+                                                <td>DSA Lab</td>
+                                                <td>DSA Lab</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-semibold text-white">Tuesday</td>
+                                                <td>DBMS</td>
+                                                <td>OS</td>
+                                                <td>Maths</td>
+                                                <td>English</td>
+                                                <td>DBMS Lab</td>
+                                                <td>DBMS Lab</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-semibold text-white">Wednesday</td>
+                                                <td>OS</td>
+                                                <td>Maths</td>
+                                                <td>English</td>
+                                                <td>DSA</td>
+                                                <td>Seminar</td>
+                                                <td>Placement Prep</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-semibold text-white">Thursday</td>
+                                                <td>Maths</td>
+                                                <td>English</td>
+                                                <td>DSA</td>
+                                                <td>DBMS</td>
+                                                <td>Library</td>
+                                                <td>OS</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-semibold text-white">Friday</td>
+                                                <td>English</td>
+                                                <td>DSA</td>
+                                                <td>DBMS</td>
+                                                <td>OS</td>
+                                                <td>Sports</td>
+                                                <td>Career Guide</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 7: RESULTS GRADE SHEET -->
+                        <div id="stud-results" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Academic Term Results</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject Code</th>
+                                                <th>Subject Name</th>
+                                                <th class="text-center">Credits</th>
+                                                <th class="text-center">Internal Marks</th>
+                                                <th class="text-center">Grade Received</th>
+                                                <th class="text-center">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><code>23IT301</code></td>
+                                                <td>Design & Analysis of Algorithms</td>
+                                                <td class="text-center">4</td>
+                                                <td class="text-center">45 / 50</td>
+                                                <td class="text-center"><b>A +</b></td>
+                                                <td class="text-center"><span class="badge bg-success bg-opacity-25 text-success">Pass</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>23IT302</code></td>
+                                                <td>Software Engineering</td>
+                                                <td class="text-center">3</td>
+                                                <td class="text-center">41 / 50</td>
+                                                <td class="text-center"><b>A</b></td>
+                                                <td class="text-center"><span class="badge bg-success bg-opacity-25 text-success">Pass</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>23IT303</code></td>
+                                                <td>Computer Networks</td>
+                                                <td class="text-center">4</td>
+                                                <td class="text-center">48 / 50</td>
+                                                <td class="text-center"><b>O</b></td>
+                                                <td class="text-center"><span class="badge bg-success bg-opacity-25 text-success">Pass</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 8: ASSIGNMENTS -->
+                        <div id="stud-assignments" class="student-subview d-none">
+                            <div class="glass-card mb-4 text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Pending Tasks</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Assignment Title</th>
+                                                <th>Subject</th>
+                                                <th>Deadline Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><b>Practical Workbook (Ex 1 to 5)</b></td>
+                                                <td>Data Structures & Algorithms</td>
+                                                <td>Aug 15, 2026</td>
+                                                <td><span class="badge bg-warning bg-opacity-25 text-warning">Pending</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary py-1" onclick="showUploadForm('DSA Workbook')">Submit File</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>DBMS Model Design Report</b></td>
+                                                <td>Database Management Systems</td>
+                                                <td>Aug 22, 2026</td>
+                                                <td><span class="badge bg-warning bg-opacity-25 text-warning">Pending</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary py-1" onclick="showUploadForm('DBMS Report')">Submit File</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Submission collapse card -->
+                            <div class="collapse" id="collapseAssignmentUpload">
+                                <div class="glass-card text-start">
+                                    <h6 class="text-white font-bold mb-2">Upload Submission: <span id="upload-assign-title" class="text-primary">-</span></h6>
+                                    <form id="assignment-upload-form">
+                                        <div class="mb-3">
+                                            <label class="form-label text-secondary small">Choose PDF/ZIP file</label>
+                                            <input type="file" class="form-control bg-dark text-white border-secondary border-opacity-30" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-sm btn-glow-primary">Upload & Complete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 9: BULLETIN NOTICES -->
+                        <div id="stud-notices" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Official Announcements</h5>
+                                <div id="stud-notices-container" class="d-flex flex-column gap-3">
+                                    <!-- Injected dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 10: EVENTS CALENDAR -->
+                        <div id="stud-events" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">College Calendar & Events</h5>
+                                <div id="stud-events-container" class="d-flex flex-column gap-3">
+                                    <!-- Injected dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 11: LIBRARY CATALOG -->
+                        <div id="stud-library" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Library Search & Borrowed Books</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Book ID</th>
+                                                <th>Book Title</th>
+                                                <th>Author</th>
+                                                <th>Department</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="stud-library-table-body">
+                                            <!-- Injected dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 12: FEES AND INVOICES -->
+                        <div id="stud-fees" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Annual Fees Structure</h5>
+                                <div class="row g-4 small mb-4">
+                                    <div class="col-sm-3">
+                                        <div class="p-3 bg-dark bg-opacity-20 border border-secondary border-opacity-10 rounded text-center">
+                                            <span class="text-secondary d-block mb-1">Tuition Fee</span>
+                                            <span class="text-white font-bold fs-5" id="stud-fee-tuition">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="p-3 bg-dark bg-opacity-20 border border-secondary border-opacity-10 rounded text-center">
+                                            <span class="text-secondary d-block mb-1">Laboratory Fee</span>
+                                            <span class="text-white font-bold fs-5" id="stud-fee-lab">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="p-3 bg-dark bg-opacity-20 border border-secondary border-opacity-10 rounded text-center">
+                                            <span class="text-secondary d-block mb-1">Examinations Fee</span>
+                                            <span class="text-white font-bold fs-5" id="stud-fee-exam">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="p-3 bg-primary bg-opacity-15 border border-primary border-opacity-30 rounded text-center">
+                                            <span class="text-primary d-block mb-1">Total Fee</span>
+                                            <span class="text-white font-bold fs-5" id="stud-fee-total">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center border-top border-secondary border-opacity-20 pt-3">
+                                    <div>
+                                        <span class="text-success font-semibold small"><i class="bi bi-check-circle-fill me-1"></i> Paid in Full</span>
+                                    </div>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="alert('Downloading invoice PDF...')">Download Receipt</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 13: TRANSPORTATION -->
+                        <div id="stud-transport" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Bus Transport Details</h5>
+                                <div class="row g-3 small">
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Route Number</span>
+                                        <span class="text-white font-semibold fs-6">Route 14A</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Boarding Stop</span>
+                                        <span class="text-white font-semibold fs-6">Tambaram Junction (Bus Stand)</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Pickup Time</span>
+                                        <span class="text-white font-semibold fs-6">07:25 AM</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Bus Number Plate</span>
+                                        <span class="text-white font-semibold fs-6">TN-11-AC-3840</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Driver Contact</span>
+                                        <span class="text-white font-semibold fs-6">Mr. Murugan (+91 94441 28302)</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Notice Board Pill -->
-                        <div class="tab-pane fade" id="pills-notices" role="tabpanel">
-                            <div id="dashboard-notice-list">
-                                <!-- Injected dynamically -->
+                        <!-- SUBVIEW 14: HOSTEL -->
+                        <div id="stud-hostel" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Hostel Accommodation</h5>
+                                <div class="row g-3 small">
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Hostel Block</span>
+                                        <span class="text-white font-semibold fs-6">Kaviri Boys Hostel (Block B)</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Room Assigned</span>
+                                        <span class="text-white font-semibold fs-6">Room 304 (3rd Floor, Triple Sharing)</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Roommates</span>
+                                        <span class="text-white font-semibold fs-6">Arun V, Karthik S</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="text-secondary d-block">Warden Mobile</span>
+                                        <span class="text-white font-semibold fs-6">Dr. Ramesh Kumar (+91 98402 75801)</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- SUBVIEW 15: PLACEMENT LISTINGS -->
+                        <div id="stud-placement" class="student-subview d-none">
+                            <div class="glass-card text-start">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Active Recruitment Schedules</h5>
+                                <div id="stud-placement-container" class="d-flex flex-column gap-2">
+                                    <!-- Dynamic placements injected here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBVIEW 16: FULL-SCREEN CHATBOT -->
+                        <div id="stud-chatbot-view" class="student-subview d-none">
+                            <div class="glass-card d-flex flex-column p-0 overflow-hidden text-start" style="height: 60vh; min-height: 450px;">
+                                <div class="chat-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom border-secondary border-opacity-10 text-white" style="background: rgba(15, 23, 42, 0.45); border-radius: 8px 8px 0 0;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-robot fs-4 text-purple"></i>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold small">CampusAI Bot</h6>
+                                            <small class="text-success" style="font-size: 0.68rem;"><i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i>Active Assistant</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-messages p-3 flex-grow-1 overflow-y-auto d-flex flex-column gap-2" id="stud-full-chat-messages" style="background: rgba(15, 23, 42, 0.2);">
+                                    <!-- Messages dynamic -->
+                                    <div class="chat-message bot-msg">
+                                        Hi! Ask me anything about fees, timings, placements, or library bookings. How can I help you today?
+                                    </div>
+                                </div>
+                                <form id="stud-full-chat-form" class="p-2 border-top border-secondary border-opacity-15 d-flex gap-2">
+                                    <input type="text" id="stud-full-chat-input" class="form-control form-control-sm bg-dark text-white border-secondary border-opacity-30 rounded-pill px-3" placeholder="Type your query..." required>
+                                    <button type="submit" class="btn btn-sm btn-glow-primary rounded-circle px-2 py-1.5"><i class="bi bi-send-fill fs-6"></i></button>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
