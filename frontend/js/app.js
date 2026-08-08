@@ -73,8 +73,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const addEventForm = document.getElementById("add-event-form");
 
     // ----------------------------------------------------
-    // PRELOADER & INITIAL SETUP
+    // PRELOADER & INITIAL SETUP & REAL-TIME CLOCK
     // ----------------------------------------------------
+    function updateDashboardTime() {
+        const timeEl = document.getElementById("dash-current-time");
+        if (!timeEl) return;
+        
+        const now = new Date();
+        const options = {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        };
+        timeEl.innerHTML = `<i class="bi bi-clock me-2"></i>${now.toLocaleString('en-US', options)}`;
+    }
+    updateDashboardTime();
+    setInterval(updateDashboardTime, 1000);
+
     setTimeout(() => {
         preloader.classList.add("fade-out");
         setTimeout(() => preloader.style.display = "none", 500);
