@@ -520,7 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const googleLoginModalEl = document.getElementById("googleLoginModal");
     let googleLoginModal = null;
     if (googleLoginModalEl && googleLoginBtn) {
-        googleLoginModal = new bootstrap.Modal(googleLoginModalEl);
+        googleLoginModal = bootstrap.Modal.getOrCreateInstance(googleLoginModalEl);
         
         const stepAccount = document.getElementById("google-step-account");
         const stepRole = document.getElementById("google-step-role");
@@ -545,8 +545,8 @@ document.addEventListener("DOMContentLoaded", () => {
             stepAccount.classList.remove("d-none");
             stepRole.classList.add("d-none");
             stepCustom.classList.add("d-none");
-            customNameInput.value = "";
-            customEmailInput.value = "";
+            if (customNameInput) customNameInput.value = "";
+            if (customEmailInput) customEmailInput.value = "";
             googleLoginModal.show();
         });
 
@@ -554,9 +554,9 @@ document.addEventListener("DOMContentLoaded", () => {
         function executeGoogleLogin(name, email) {
             const users = window.MockDB.getUsers();
             if (loginRole === "student") {
-                const matchedUser = users.find(u => u.username === "STUDENT001");
+                const matchedUser = users.find(u => u.username === "STU2025001");
                 if (matchedUser) {
-                    const student = window.MockDB.getStudentById("STUDENT001");
+                    const student = window.MockDB.getStudentById("STU2025001");
                     if (student) {
                         student.name = name;
                         student.email = email;
