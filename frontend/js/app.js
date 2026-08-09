@@ -385,37 +385,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     window.openDeptDetailsModal = function(deptKey) {
-        const deptData = window.MockDB.getDepartmentDetails(deptKey);
-        if (deptData && departmentModalObj) {
-            // Populate Modal Elements
-            document.getElementById("dept-modal-title").textContent = deptData.name;
-            document.getElementById("dept-modal-subtitle").textContent = deptData.programs.map(p => p.split(" (")[0]).join(", ");
-            
-            const iconContainer = document.getElementById("dept-modal-icon");
-            iconContainer.className = `fs-1 px-3 py-2 rounded-3 ${deptData.icon}`;
-            
-            // Clear and populate programs list
-            const programsList = document.getElementById("dept-modal-programs");
-            programsList.innerHTML = "";
-            deptData.programs.forEach(prog => {
-                const li = document.createElement("li");
-                li.className = "mb-2 d-flex align-items-center gap-2 small";
-                li.innerHTML = `<i class="bi bi-patch-check-fill text-success"></i><span>${prog}</span>`;
-                programsList.appendChild(li);
-            });
-            
-            document.getElementById("dept-modal-total-students").textContent = deptData.studentsCount;
-            document.getElementById("dept-modal-sections").textContent = `${deptData.sections} Sections`;
-            
-            document.getElementById("dept-modal-tuition-fee").textContent = deptData.tuitionFee;
-            document.getElementById("dept-modal-lab-fee").textContent = deptData.labFee;
-            document.getElementById("dept-modal-exam-fee").textContent = deptData.examFee;
-            document.getElementById("dept-modal-total-fee").textContent = deptData.totalFee;
-            
-            document.getElementById("dept-modal-facilities").textContent = deptData.facilities;
-            
-            // Show modal
-            departmentModalObj.show();
+        try {
+            const deptData = window.MockDB.getDepartmentDetails(deptKey);
+            if (!deptData) {
+                console.error("Department details not found for key:", deptKey);
+                showToast("Department details are currently unavailable.", "warning");
+                return;
+            }
+            if (!departmentModalObj) {
+                const deptModalEl = document.getElementById("departmentModal");
+                if (deptModalEl) {
+                    departmentModalObj = bootstrap.Modal.getOrCreateInstance(deptModalEl);
+                }
+            }
+            if (deptData && departmentModalObj) {
+                // Populate Modal Elements
+                document.getElementById("dept-modal-title").textContent = deptData.name;
+                document.getElementById("dept-modal-subtitle").textContent = (deptData.programs || []).map(p => p.split(" (")[0]).join(", ");
+                
+                const iconContainer = document.getElementById("dept-modal-icon");
+                if (iconContainer) {
+                    iconContainer.className = `fs-1 px-3 py-2 rounded-3 ${deptData.icon || "bi bi-pc-display"}`;
+                }
+                
+                // Clear and populate programs list
+                const programsList = document.getElementById("dept-modal-programs");
+                if (programsList) {
+                    programsList.innerHTML = "";
+                    (deptData.programs || []).forEach(prog => {
+                        const li = document.createElement("li");
+                        li.className = "mb-2 d-flex align-items-center gap-2 small";
+                        li.innerHTML = `<i class="bi bi-patch-check-fill text-success"></i><span>${prog}</span>`;
+                        programsList.appendChild(li);
+                    });
+                }
+                
+                document.getElementById("dept-modal-total-students").textContent = deptData.studentsCount || 0;
+                document.getElementById("dept-modal-sections").textContent = `${deptData.sections || 0} Sections`;
+                
+                document.getElementById("dept-modal-tuition-fee").textContent = deptData.tuitionFee || "₹0";
+                document.getElementById("dept-modal-lab-fee").textContent = deptData.labFee || "₹0";
+                document.getElementById("dept-modal-exam-fee").textContent = deptData.examFee || "₹0";
+                document.getElementById("dept-modal-total-fee").textContent = deptData.totalFee || "₹0";
+                
+                document.getElementById("dept-modal-facilities").textContent = deptData.facilities || "No facilities specified.";
+                
+                // Show modal
+                departmentModalObj.show();
+            }
+        } catch (err) {
+            console.error("Error opening department details modal:", err);
+            showToast("Failed to load department details.", "danger");
         }
     };
 

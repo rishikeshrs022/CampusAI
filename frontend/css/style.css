@@ -849,4 +849,39 @@ body[data-theme="light"] .quick-access-tile:hover {
     background: rgba(0, 0, 0, 0.03);
 }
 
+/* Modal z-index and styling fallback overlays */
+#departmentModal, #noticeModal, #googleLoginModal {
+    z-index: 1060 !important;
+}
+.modal-backdrop {
+    z-index: 1040 !important;
+}
 
+/* Light mode department details modal color overrides */
+body[data-theme="light"] #departmentModal .modal-header {
+    background: #f8fafc !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+body[data-theme="light"] #departmentModal .modal-title {
+    color: #0f172a !important;
+}
+body[data-theme="light"] #departmentModal .btn-close {
+    filter: invert(1) grayscale(1) brightness(0) !important; /* Forces close button to stay black/grey */
+}
+body[data-theme="light"] #departmentModal .modal-body {
+    color: #334155 !important;
+}
+body[data-theme="light"] #departmentModal h4,
+body[data-theme="light"] #departmentModal h5,
+body[data-theme="light"] #departmentModal h6,
+body[data-theme="light"] #departmentModal b,
+body[data-theme="light"] #departmentModal span,
+body[data-theme="light"] #departmentModal td {
+    color: #0f172a !important;
+}
+body[data-theme="light"] #departmentModal .text-white {
+    color: #0f172a !important;
+}
+body[data-theme="light"] #departmentModal .text-secondary {
+    color: #475569 !important;
+}
