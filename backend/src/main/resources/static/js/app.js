@@ -1176,37 +1176,45 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------
     // CAREER PATH CONTROLLER
     // ----------------------------------------------------
-    careerSelect.addEventListener("change", (e) => {
-        selectedCareerKey = e.target.value;
-        renderCareerPathData();
-    });
+    if (careerSelect) {
+        careerSelect.addEventListener("change", (e) => {
+            selectedCareerKey = e.target.value;
+            renderCareerPathData();
+        });
+    }
 
     function renderCareerPathData() {
         const path = window.MockDB.getCareerPath(selectedCareerKey);
         if (!path) return;
 
-        careerTitle.textContent = path.title;
+        if (careerTitle) careerTitle.textContent = path.title;
         
-        careerSkills.innerHTML = "";
-        path.skills.forEach(skill => {
-            careerSkills.innerHTML += `<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 m-1 font-medium py-2 px-3">${skill}</span>`;
-        });
+        if (careerSkills) {
+            careerSkills.innerHTML = "";
+            path.skills.forEach(skill => {
+                careerSkills.innerHTML += `<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 m-1 font-medium py-2 px-3">${skill}</span>`;
+            });
+        }
 
-        careerCourses.innerHTML = "";
-        path.courses.forEach(course => {
-            careerCourses.innerHTML += `
-                <li class="d-flex align-items-center mb-2">
-                    <i class="bi bi-play-circle-fill text-purple me-2"></i>
-                    <span class="text-secondary small">${course}</span>
-                </li>
+        if (careerCourses) {
+            careerCourses.innerHTML = "";
+            path.courses.forEach(course => {
+                careerCourses.innerHTML += `
+                    <li class="d-flex align-items-center mb-2">
+                        <i class="bi bi-play-circle-fill text-purple me-2"></i>
+                        <span class="text-secondary small">${course}</span>
+                    </li>
+                `;
+            });
+        }
+
+        if (careerRoadmap) {
+            careerRoadmap.innerHTML = `
+                <div class="alert bg-purple bg-opacity-10 border border-purple border-opacity-20 text-purple small mb-0">
+                    <i class="bi bi-compass-fill me-2"></i><b>Recommended Path:</b> ${path.roadmap}
+                </div>
             `;
-        });
-
-        careerRoadmap.innerHTML = `
-            <div class="alert bg-purple bg-opacity-10 border border-purple border-opacity-20 text-purple small mb-0">
-                <i class="bi bi-compass-fill me-2"></i><b>Recommended Path:</b> ${path.roadmap}
-            </div>
-        `;
+        }
     }
 
     function renderStudentCareerPathData(careerKey = "webdev") {
