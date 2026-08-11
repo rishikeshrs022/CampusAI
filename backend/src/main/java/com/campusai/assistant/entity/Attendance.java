@@ -16,7 +16,7 @@ public class Attendance {
     @Column(nullable = false)
     private String department;
 
-    @Column(nullable = false)
+    @Column(name = "academic_year", nullable = false)
     private Integer year;
 
     @Column(name = "student_id", nullable = false)

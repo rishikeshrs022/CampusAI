@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS students (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     department VARCHAR(100) NOT NULL,
-    year INT NOT NULL,
+    academic_year INT NOT NULL,
     phone VARCHAR(20) NOT NULL,
     attendance DOUBLE NOT NULL DEFAULT 0.0,
     cgpa DOUBLE NOT NULL DEFAULT 0.0
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS attendance (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     date VARCHAR(10) NOT NULL,
     department VARCHAR(100) NOT NULL,
-    year INT NOT NULL,
+    academic_year INT NOT NULL,
     student_id VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL,
     FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
