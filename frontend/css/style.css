@@ -850,7 +850,7 @@ body[data-theme="light"] .quick-access-tile:hover {
 }
 
 /* Modal z-index and styling fallback overlays */
-#departmentModal, #noticeModal, #googleLoginModal {
+.modal {
     z-index: 1060 !important;
 }
 .modal-backdrop {

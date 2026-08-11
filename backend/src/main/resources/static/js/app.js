@@ -562,12 +562,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Show Modal
         googleLoginBtn.addEventListener("click", () => {
             // Reset to step 1
-            stepAccount.classList.remove("d-none");
-            stepRole.classList.add("d-none");
-            stepCustom.classList.add("d-none");
+            if (stepAccount) stepAccount.classList.remove("d-none");
+            if (stepRole) stepRole.classList.add("d-none");
+            if (stepCustom) stepCustom.classList.add("d-none");
             if (customNameInput) customNameInput.value = "";
             if (customEmailInput) customEmailInput.value = "";
-            googleLoginModal.show();
+            if (googleLoginModal) googleLoginModal.show();
         });
 
         // Helper function to log in dynamically based on active tab
