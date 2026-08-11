@@ -17,10 +17,21 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private com.campusai.assistant.repository.StudentRepository studentRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        java.util.Optional<User> userOpt = userRepository.findByUsername(username);
+        
+        if (!userOpt.isPresent()) {
+            java.util.Optional<com.campusai.assistant.entity.Student> studentOpt = studentRepository.findByEmail(username);
+            if (studentOpt.isPresent()) {
+                userOpt = userRepository.findByUsername(studentOpt.get().getId());
+            }
+        }
+
+        User user = userOpt.orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + username));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),

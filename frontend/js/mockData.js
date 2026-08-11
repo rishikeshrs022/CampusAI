@@ -471,11 +471,92 @@ function initDB() {
 // Invoke initialization
 initDB();
 
+const API_BASE = window.location.origin + "/api";
+let useBackend = false;
+
+// Auto-detect backend presence using a lightweight synchronous ping
+try {
+    const pingXhr = new XMLHttpRequest();
+    pingXhr.open("GET", API_BASE + "/departments", false);
+    pingXhr.send();
+    if (pingXhr.status === 200 || pingXhr.status === 401 || pingXhr.status === 403) {
+        useBackend = true;
+        console.log("CampusAI: Successfully connected to Spring Boot Backend API.");
+    }
+} catch (e) {
+    console.log("CampusAI: Running in Standalone (Local Storage Mock Mode).");
+}
+
+function apiRequest(method, url, body = null) {
+    if (!useBackend) return null;
+    try {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, API_BASE + url, false); // Synchronous API requests
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        // Basic authentication: read user session details
+        const storedUser = JSON.parse(localStorage.getItem("campusai_current_user") || "{}");
+        let username = "";
+        let password = "";
+        if (storedUser && storedUser.username) {
+            username = storedUser.username;
+            password = localStorage.getItem("campusai_saved_password") || "Student@123";
+        } else {
+            username = localStorage.getItem("campusai_saved_username");
+            password = localStorage.getItem("campusai_saved_password");
+        }
+
+        // Login endpoint parameter injection
+        if (url === "/login" && body) {
+            username = body.username;
+            password = body.password;
+        }
+
+        if (username && password) {
+            const authHeader = "Basic " + btoa(username + ":" + password);
+            xhr.setRequestHeader("Authorization", authHeader);
+        }
+
+        if (body) {
+            xhr.send(JSON.stringify(body));
+        } else {
+            xhr.send();
+        }
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+            return JSON.parse(xhr.responseText || "{}");
+        } else {
+            console.error("API Request failed:", method, url, xhr.status, xhr.responseText);
+            if (url === "/login" && xhr.status === 401) {
+                return { success: false, message: "Invalid username or password." };
+            }
+            return null;
+        }
+    } catch (e) {
+        console.error("API network request error:", e);
+        return null;
+    }
+}
+
 const MockDB = {
     // Student Methods
-    getStudents: () => JSON.parse(localStorage.getItem("campusai_students")),
-    getStudentById: (id) => MockDB.getStudents().find(s => s.id === id),
+    getStudents: () => {
+        if (useBackend) {
+            const list = apiRequest("GET", "/students");
+            return list || [];
+        }
+        return JSON.parse(localStorage.getItem("campusai_students"));
+    },
+    getStudentById: (id) => {
+        if (useBackend) {
+            return apiRequest("GET", "/students/" + id);
+        }
+        return MockDB.getStudents().find(s => s.id === id);
+    },
     saveStudent: (student) => {
+        if (useBackend) {
+            return apiRequest("POST", "/students", student);
+        }
         const students = MockDB.getStudents();
         const index = students.findIndex(s => s.id === student.id);
         if (index > -1) {
@@ -487,6 +568,10 @@ const MockDB = {
         return student;
     },
     deleteStudent: (id) => {
+        if (useBackend) {
+            apiRequest("DELETE", "/students/" + id);
+            return true;
+        }
         let students = MockDB.getStudents();
         students = students.filter(s => s.id !== id);
         localStorage.setItem("campusai_students", JSON.stringify(students));
@@ -498,8 +583,27 @@ const MockDB = {
     },
 
     // User Methods
-    getUsers: () => JSON.parse(localStorage.getItem("campusai_users")),
+    getUsers: () => {
+        if (useBackend) {
+            const list = apiRequest("GET", "/users");
+            return list || [];
+        }
+        return JSON.parse(localStorage.getItem("campusai_users"));
+    },
     authenticate: (username, password) => {
+        if (useBackend) {
+            const res = apiRequest("POST", "/login", { username, password });
+            if (res && res.success) {
+                return {
+                    success: true,
+                    username: res.username,
+                    role: res.role,
+                    refId: res.refId,
+                    name: res.name || (res.role === 'ROLE_STUDENT' ? MockDB.getStudentById(res.refId).name : "Admin User")
+                };
+            }
+            return { success: false, message: res ? res.message : "Authentication failed." };
+        }
         const users = MockDB.getUsers();
         const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
         if (user) {
@@ -514,6 +618,9 @@ const MockDB = {
         return { success: false, message: "Invalid username or password" };
     },
     saveUser: (user) => {
+        if (useBackend) {
+            return apiRequest("POST", "/users", user);
+        }
         const users = MockDB.getUsers();
         const index = users.findIndex(u => u.id === user.id);
         if (index > -1) {
@@ -526,8 +633,17 @@ const MockDB = {
     },
 
     // Notices Methods
-    getNotices: () => JSON.parse(localStorage.getItem("campusai_notices")),
+    getNotices: () => {
+        if (useBackend) {
+            const list = apiRequest("GET", "/notices");
+            return list || [];
+        }
+        return JSON.parse(localStorage.getItem("campusai_notices"));
+    },
     saveNotice: (notice) => {
+        if (useBackend) {
+            return apiRequest("POST", "/notices", notice);
+        }
         const notices = MockDB.getNotices();
         notices.unshift(notice); // Prepend new notice
         localStorage.setItem("campusai_notices", JSON.stringify(notices));
@@ -535,8 +651,17 @@ const MockDB = {
     },
 
     // Events Methods
-    getEvents: () => JSON.parse(localStorage.getItem("campusai_events")),
+    getEvents: () => {
+        if (useBackend) {
+            const list = apiRequest("GET", "/events");
+            return list || [];
+        }
+        return JSON.parse(localStorage.getItem("campusai_events"));
+    },
     saveEvent: (event) => {
+        if (useBackend) {
+            return apiRequest("POST", "/events", event);
+        }
         const events = MockDB.getEvents();
         events.push(event);
         localStorage.setItem("campusai_events", JSON.stringify(events));
@@ -545,11 +670,18 @@ const MockDB = {
 
     // Chat History Methods
     getChatHistory: (studentId) => {
+        if (useBackend) {
+            const list = studentId ? apiRequest("GET", "/chat/history/" + studentId) : apiRequest("GET", "/chat/history");
+            return list || [];
+        }
         const allHistory = JSON.parse(localStorage.getItem("campusai_chat_history")) || [];
         if (!studentId) return allHistory;
         return allHistory.filter(c => c.studentId === studentId);
     },
     saveChatMsg: (msg) => {
+        if (useBackend) {
+            return apiRequest("POST", "/chat", { studentId: msg.studentId, question: msg.question });
+        }
         const allHistory = JSON.parse(localStorage.getItem("campusai_chat_history")) || [];
         msg.id = "MSG" + Date.now();
         msg.timestamp = new Date().toISOString();
@@ -580,15 +712,21 @@ const MockDB = {
             if (!matched) stats.topics.other++;
 
             // Timeline
-            const dateStr = chat.timestamp.substring(0, 10);
-            stats.timeline[dateStr] = (stats.timeline[dateStr] || 0) + 1;
+            const dateStr = (chat.timestamp || "").substring(0, 10);
+            if (dateStr) {
+                stats.timeline[dateStr] = (stats.timeline[dateStr] || 0) + 1;
+            }
         });
 
         return stats;
     },
 
     // NLP Query Router
-    processQuery: (query) => {
+    processQuery: (query, studentId = null) => {
+        if (useBackend) {
+            const res = apiRequest("POST", "/chat", { studentId, question: query });
+            return res || { answer: "Error connecting to chatbot service.", topic: "other" };
+        }
         const q = query.toLowerCase();
         let answer = "";
         let topicKey = "";
@@ -643,55 +781,113 @@ const MockDB = {
     getCareerPath: (key) => CAREER_GUIDE[key],
     
     // Department Details Methods
-    getDepartments: () => JSON.parse(localStorage.getItem("campusai_departments")) || {},
+    getDepartments: () => {
+        if (useBackend) {
+            const deptsList = apiRequest("GET", "/departments");
+            if (deptsList) {
+                const deptsMap = {};
+                deptsList.forEach(d => {
+                    deptsMap[d.deptKey] = d;
+                });
+                return deptsMap;
+            }
+        }
+        return JSON.parse(localStorage.getItem("campusai_departments")) || {};
+    },
     getDepartmentDetails: (key) => MockDB.getDepartments()[key],
     saveDepartment: (key, dept) => {
+        if (useBackend) {
+            return apiRequest("POST", "/departments", dept);
+        }
         const depts = MockDB.getDepartments();
         depts[key] = dept;
         localStorage.setItem("campusai_departments", JSON.stringify(depts));
         return dept;
     },
     deleteDepartment: (key) => {
+        if (useBackend) {
+            apiRequest("DELETE", "/departments/" + key);
+            return;
+        }
         const depts = MockDB.getDepartments();
         delete depts[key];
         localStorage.setItem("campusai_departments", JSON.stringify(depts));
     },
 
     // Faculty Methods
-    getFaculty: () => JSON.parse(localStorage.getItem("campusai_faculty")) || [],
+    getFaculty: () => {
+        if (useBackend) {
+            const list = apiRequest("GET", "/faculty");
+            return list || [];
+        }
+        return JSON.parse(localStorage.getItem("campusai_faculty")) || [];
+    },
     saveFaculty: (faculty) => {
+        if (useBackend) {
+            return apiRequest("POST", "/faculty", faculty);
+        }
         const list = MockDB.getFaculty();
         list.push(faculty);
         localStorage.setItem("campusai_faculty", JSON.stringify(list));
         return faculty;
     },
     deleteFaculty: (id) => {
+        if (useBackend) {
+            apiRequest("DELETE", "/faculty/" + id);
+            return;
+        }
         const list = MockDB.getFaculty().filter(f => f.id !== id);
         localStorage.setItem("campusai_faculty", JSON.stringify(list));
     },
 
     // Course Methods
-    getCourses: () => JSON.parse(localStorage.getItem("campusai_courses")) || [],
+    getCourses: () => {
+        if (useBackend) {
+            const list = apiRequest("GET", "/courses");
+            return list || [];
+        }
+        return JSON.parse(localStorage.getItem("campusai_courses")) || [];
+    },
     saveCourse: (course) => {
+        if (useBackend) {
+            return apiRequest("POST", "/courses", course);
+        }
         const list = MockDB.getCourses();
         list.push(course);
         localStorage.setItem("campusai_courses", JSON.stringify(list));
         return course;
     },
     deleteCourse: (code) => {
+        if (useBackend) {
+            apiRequest("DELETE", "/courses/" + code);
+            return;
+        }
         const list = MockDB.getCourses().filter(c => c.code !== code);
         localStorage.setItem("campusai_courses", JSON.stringify(list));
     },
 
     // Library Methods
-    getLibrary: () => JSON.parse(localStorage.getItem("campusai_library")) || [],
+    getLibrary: () => {
+        if (useBackend) {
+            const list = apiRequest("GET", "/library/books");
+            return list || [];
+        }
+        return JSON.parse(localStorage.getItem("campusai_library")) || [];
+    },
     saveLibrary: (book) => {
+        if (useBackend) {
+            return apiRequest("POST", "/library/books", book);
+        }
         const list = MockDB.getLibrary();
         list.push(book);
         localStorage.setItem("campusai_library", JSON.stringify(list));
         return book;
     },
     deleteLibrary: (id) => {
+        if (useBackend) {
+            apiRequest("DELETE", "/library/books/" + id);
+            return;
+        }
         const list = MockDB.getLibrary().filter(b => b.id !== id);
         localStorage.setItem("campusai_library", JSON.stringify(list));
     }

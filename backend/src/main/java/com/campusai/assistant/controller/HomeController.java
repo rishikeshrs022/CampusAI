@@ -6,18 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping("/")
+    @GetMapping({"/", "/login", "/admin/dashboard", "/student/dashboard"})
     public String index() {
-        return "index.html"; // Spring Boot will serve this from static/ index.html
-    }
-
-    @GetMapping("/login-page")
-    public String login() {
-        return "index.html";
-    }
-
-    @GetMapping("/student-dashboard")
-    public String dashboard() {
-        return "index.html";
+        return "forward:/index.html";
     }
 }

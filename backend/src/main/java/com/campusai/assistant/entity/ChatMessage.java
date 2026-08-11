@@ -1,16 +1,10 @@
 package com.campusai.assistant.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "chat_history")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ChatMessage {
 
     @Id
@@ -37,4 +31,35 @@ public class ChatMessage {
             this.timestamp = LocalDateTime.now();
         }
     }
+
+    // Constructors
+    public ChatMessage() {}
+
+    public ChatMessage(String id, String studentId, String question, String answer, String topic, LocalDateTime timestamp) {
+        this.id = id;
+        this.studentId = studentId;
+        this.question = question;
+        this.answer = answer;
+        this.topic = topic;
+        this.timestamp = timestamp;
+    }
+
+    // Getters and Setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
+
+    public String getQuestion() { return question; }
+    public void setQuestion(String question) { this.question = question; }
+
+    public String getAnswer() { return answer; }
+    public void setAnswer(String answer) { this.answer = answer; }
+
+    public String getTopic() { return topic; }
+    public void setTopic(String topic) { this.topic = topic; }
+
+    public LocalDateTime getTimestamp() { return timestamp; }
+    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
 }

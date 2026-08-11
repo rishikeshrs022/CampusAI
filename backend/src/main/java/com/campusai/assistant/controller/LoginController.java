@@ -21,7 +21,23 @@ public class LoginController {
     private UserRepository userRepository;
 
     @Autowired
+    private com.campusai.assistant.repository.StudentRepository studentRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/users")
+    public ResponseEntity<java.util.List<User>> getAllUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<User> saveUser(@RequestBody User user) {
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$") && !user.getPassword().startsWith("$2b$")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        return ResponseEntity.ok(userRepository.save(user));
+    }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> credentials) {
@@ -36,6 +52,14 @@ public class LoginController {
         }
 
         Optional<User> userOpt = userRepository.findByUsername(username);
+
+        // Fallback: If username doesn't exist, check if it's an email linked to a student
+        if (!userOpt.isPresent()) {
+            Optional<com.campusai.assistant.entity.Student> studentOpt = studentRepository.findByEmail(username);
+            if (studentOpt.isPresent()) {
+                userOpt = userRepository.findByUsername(studentOpt.get().getId());
+            }
+        }
 
         if (userOpt.isPresent()) {
             User user = userOpt.get();

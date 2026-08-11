@@ -54,13 +54,28 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for REST testing simplicity
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints
-                .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/assets/**").permitAll()
+                .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/assets/**", "/images/**").permitAll()
                 .requestMatchers("/api/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/chat").permitAll()
+                .requestMatchers("/login", "/admin/**", "/student/**").permitAll()
                 
-                // Student & Admin endpoints
-                .requestMatchers("/api/students/**").hasAnyRole("STUDENT", "ADMIN")
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                // REST API GET checks
+                .requestMatchers(HttpMethod.GET, "/api/students/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/departments/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/faculty/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/courses/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/attendance/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/examinations/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/library/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/events/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/notices/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("STUDENT", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/users/**").hasAnyRole("STUDENT", "ADMIN")
+                
+                // Write actions restricted to Admin
+                .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
                 
                 .anyRequest().authenticated()
             )
