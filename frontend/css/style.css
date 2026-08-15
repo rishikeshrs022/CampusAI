@@ -885,3 +885,48 @@ body[data-theme="light"] #departmentModal .text-white {
 body[data-theme="light"] #departmentModal .text-secondary {
     color: #475569 !important;
 }
+
+/* Chat Header contrast adjustments */
+.chat-header,
+.chat-header *,
+.chat-header .text-white,
+.chat-header .text-light {
+    color: #ffffff !important;
+}
+
+/* Chat Send Icon contrast adjustment */
+#chat-send i {
+    color: #ffffff !important;
+}
+
+/* Quick replies container */
+.chat-quick-replies {
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--card-border);
+}
+body[data-theme="light"] .chat-quick-replies {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* Quick reply buttons */
+.quick-reply {
+    color: var(--text-primary) !important;
+    border: 1px solid var(--card-border) !important;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+.quick-reply:hover {
+    background: var(--hover-bg) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--text-primary) !important;
+}
+body[data-theme="light"] .quick-reply {
+    color: #475569 !important;
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+}
+body[data-theme="light"] .quick-reply:hover {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: var(--primary-color) !important;
+}

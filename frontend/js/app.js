@@ -828,7 +828,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Voice Synthesis Volume toggle
     chatVolume.addEventListener("click", () => {
         const isMuted = window.VoiceAssistant.toggleMute();
-        chatVolume.className = isMuted ? "bi bi-volume-mute-fill" : "bi bi-volume-up-fill text-primary";
+        const volIcon = chatVolume.querySelector("i");
+        if (volIcon) {
+            volIcon.className = isMuted ? "bi bi-volume-mute-fill" : "bi bi-volume-up-fill text-primary";
+        }
         showToast(isMuted ? "Text-to-speech voice output muted." : "Voice assistant output unmuted.", "info");
     });
 
@@ -843,11 +846,12 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     window.VoiceAssistant.onStatusChangeCallback = ({ status }) => {
+        const micIcon = chatMic.querySelector("i");
         if (status === "listening") {
-            chatMic.className = "bi bi-mic-fill text-danger pulse-effect";
+            if (micIcon) micIcon.className = "bi bi-mic-fill text-danger pulse-effect";
             chatInput.placeholder = "Listening...";
         } else {
-            chatMic.className = "bi bi-mic-fill text-primary";
+            if (micIcon) micIcon.className = "bi bi-mic-fill text-primary";
             chatInput.placeholder = "Ask anything about your college...";
         }
     };
