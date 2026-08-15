@@ -425,7 +425,7 @@ const DEFAULT_LIBRARY = [
 // Initialize DB in LocalStorage
 function initDB() {
     // Check version to auto-clear legacy engineering local storage structures
-    const DB_VERSION = "2.4";
+    const DB_VERSION = "2.5";
     if (localStorage.getItem("campusai_db_version") !== DB_VERSION) {
         localStorage.removeItem("campusai_students");
         localStorage.removeItem("campusai_users");

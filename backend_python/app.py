@@ -31,6 +31,110 @@ CHAT_ANSWERS = {
     "library": "Our library houses over 55,000 volumes, academic journals, and digital e-learning portals. Operating hours are 8:00 AM to 8:00 PM, and students can check out up to 3 books simultaneously."
 }
 
+def map_department(d):
+    if not d: return None
+    programs = d["programs"]
+    if isinstance(programs, str):
+        programs = [p.strip() for p in programs.split(",") if p.strip()]
+    return {
+        "deptKey": d["dept_key"],
+        "name": d["name"],
+        "icon": d["icon"],
+        "programs": programs,
+        "studentsCount": d["students_count"],
+        "sections": d["sections"],
+        "tuitionFee": d["tuition_fee"],
+        "labFee": d["lab_fee"],
+        "examFee": d["exam_fee"],
+        "totalFee": d["total_fee"],
+        "facilities": d["facilities"]
+    }
+
+def map_student(s):
+    if not s: return None
+    return {
+        "id": s["id"],
+        "name": s["name"],
+        "email": s["email"],
+        "password": s["password"],
+        "department": s["department"],
+        "year": s["academic_year"],
+        "phone": s["phone"],
+        "attendance": s["attendance"],
+        "cgpa": s["cgpa"]
+    }
+
+def map_user(u):
+    if not u: return None
+    return {
+        "id": u["id"],
+        "username": u["username"],
+        "password": u["password"],
+        "role": u["role"],
+        "refId": u["ref_id"]
+    }
+
+def map_attendance(a):
+    if not a: return None
+    return {
+        "id": a["id"],
+        "date": a["date"],
+        "department": a["department"],
+        "year": a["academic_year"],
+        "studentId": a["student_id"],
+        "status": a["status"]
+    }
+
+def map_examination(e):
+    if not e: return None
+    return {
+        "id": e["id"],
+        "examName": e["exam_name"],
+        "subject": e["subject"],
+        "department": e["department"],
+        "semester": e["semester"],
+        "date": e["date"],
+        "time": e["time"],
+        "room": e["room"],
+        "status": e["status"]
+    }
+
+def map_book(b):
+    if not b: return None
+    return {
+        "id": b["id"],
+        "title": b["title"],
+        "author": b["author"],
+        "isbn": b["isbn"],
+        "category": b["category"],
+        "quantity": b["quantity"],
+        "availableQuantity": b["available_quantity"]
+    }
+
+def map_notice(n):
+    if not n: return None
+    return {
+        "id": n["id"],
+        "title": n["title"],
+        "content": n["content"],
+        "summary": n["summary"],
+        "date": n["date"],
+        "category": n["category"],
+        "priority": n["priority"],
+        "createdBy": n["created_by"]
+    }
+
+def map_chat(c):
+    if not c: return None
+    return {
+        "id": c["id"],
+        "studentId": c["student_id"],
+        "question": c["question"],
+        "answer": c["answer"],
+        "topic": c["topic"],
+        "timestamp": c["timestamp"]
+    }
+
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -167,7 +271,7 @@ def get_users():
     cursor.execute("SELECT id, username, role, ref_id FROM users;")
     rows = cursor.fetchall()
     conn.close()
-    return jsonify([dict(r) for r in rows])
+    return jsonify([map_user(r) for r in rows])
 
 @app.route("/api/users", methods=["POST"])
 def save_user():
@@ -210,7 +314,7 @@ def get_students():
     cursor.execute("SELECT * FROM students;")
     rows = cursor.fetchall()
     conn.close()
-    return jsonify([dict(r) for r in rows])
+    return jsonify([map_student(r) for r in rows])
 
 @app.route("/api/students/<id>", methods=["GET"])
 def get_student_by_id(id):
@@ -223,7 +327,7 @@ def get_student_by_id(id):
     row = cursor.fetchone()
     conn.close()
     if row:
-        return jsonify(dict(row))
+        return jsonify(map_student(row))
     return jsonify({"message": "Student not found"}), 404
 
 @app.route("/api/students", methods=["POST"])
@@ -232,6 +336,7 @@ def save_student():
     if response: return response, code
     
     data = request.json or {}
+    academic_year = data.get("academic_year") or data.get("year")
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -243,7 +348,7 @@ def save_student():
         "email": data.get("email"),
         "password": data.get("password"),
         "department": data.get("department"),
-        "academic_year": data.get("academic_year"),
+        "academic_year": academic_year,
         "phone": data.get("phone"),
         "attendance": data.get("attendance"),
         "cgpa": data.get("cgpa")
@@ -275,7 +380,7 @@ def get_departments():
     cursor.execute("SELECT * FROM departments;")
     rows = cursor.fetchall()
     conn.close()
-    return jsonify([dict(r) for r in rows])
+    return jsonify([map_department(r) for r in rows])
 
 @app.route("/api/departments", methods=["POST"])
 def save_department():
@@ -283,6 +388,9 @@ def save_department():
     if response: return response, code
     
     data = request.json or {}
+    programs = data.get("programs")
+    if isinstance(programs, list):
+        programs = ", ".join(programs)
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -292,7 +400,7 @@ def save_department():
         "deptKey": data.get("deptKey"),
         "name": data.get("name"),
         "icon": data.get("icon"),
-        "programs": data.get("programs"),
+        "programs": programs,
         "studentsCount": data.get("studentsCount"),
         "sections": data.get("sections"),
         "tuitionFee": data.get("tuitionFee"),
@@ -429,7 +537,7 @@ def get_attendance():
     cursor.execute("SELECT * FROM attendance;")
     rows = cursor.fetchall()
     conn.close()
-    return jsonify([dict(r) for r in rows])
+    return jsonify([map_attendance(r) for r in rows])
 
 @app.route("/api/attendance", methods=["POST"])
 def save_attendance():
@@ -465,7 +573,7 @@ def get_examinations():
     cursor.execute("SELECT * FROM examinations;")
     rows = cursor.fetchall()
     conn.close()
-    return jsonify([dict(r) for r in rows])
+    return jsonify([map_examination(r) for r in rows])
 
 @app.route("/api/examinations", methods=["POST"])
 def save_examination():
@@ -505,7 +613,7 @@ def get_library_books():
     cursor.execute("SELECT * FROM books;")
     rows = cursor.fetchall()
     conn.close()
-    return jsonify([dict(r) for r in rows])
+    return jsonify([map_book(r) for r in rows])
 
 @app.route("/api/library/books", methods=["POST"])
 def save_library_book():
@@ -594,7 +702,7 @@ def get_notices():
     cursor.execute("SELECT * FROM notices;")
     rows = cursor.fetchall()
     conn.close()
-    return jsonify([dict(r) for r in rows])
+    return jsonify([map_notice(r) for r in rows])
 
 @app.route("/api/notices", methods=["POST"])
 def save_notice():
@@ -710,7 +818,7 @@ def chat_history(studentId=None):
         cursor.execute("SELECT * FROM chat_history ORDER BY timestamp ASC;")
     rows = cursor.fetchall()
     conn.close()
-    return jsonify([dict(r) for r in rows])
+    return jsonify([map_chat(r) for r in rows])
 
 
 if __name__ == "__main__":
