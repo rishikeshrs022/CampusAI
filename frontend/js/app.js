@@ -399,9 +399,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
             if (deptData && departmentModalObj) {
+                // Normalize programs to be an array
+                let programs = deptData.programs || [];
+                if (typeof programs === "string") {
+                    programs = programs.split(",").map(p => p.trim()).filter(Boolean);
+                }
+
                 // Populate Modal Elements
                 document.getElementById("dept-modal-title").textContent = deptData.name;
-                document.getElementById("dept-modal-subtitle").textContent = (deptData.programs || []).map(p => p.split(" (")[0]).join(", ");
+                document.getElementById("dept-modal-subtitle").textContent = programs.map(p => p.split(" (")[0]).join(", ");
                 
                 const iconContainer = document.getElementById("dept-modal-icon");
                 if (iconContainer) {
@@ -412,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const programsList = document.getElementById("dept-modal-programs");
                 if (programsList) {
                     programsList.innerHTML = "";
-                    (deptData.programs || []).forEach(prog => {
+                    programs.forEach(prog => {
                         const li = document.createElement("li");
                         li.className = "mb-2 d-flex align-items-center gap-2 small";
                         li.innerHTML = `<i class="bi bi-patch-check-fill text-success"></i><span>${prog}</span>`;
