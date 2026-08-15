@@ -727,11 +727,14 @@ const MockDB = {
             const res = apiRequest("POST", "/chat", { studentId, question: query });
             return res || { answer: "Error connecting to chatbot service.", topic: "other" };
         }
-        const q = query.toLowerCase();
+        const q = query.toLowerCase().strip ? query.toLowerCase().trim().replace(/[?!.]/g, "") : query.toLowerCase().trim();
         let answer = "";
         let topicKey = "";
 
-        if (q.includes("timing") || q.includes("hours") || q.includes("schedule") || q.includes("time")) {
+        if (q === "hello" || q === "hi" || q === "hey" || q === "greetings" || q.startsWith("hello ") || q.startsWith("hi ") || q.startsWith("hey ") || q.startsWith("greetings ")) {
+            answer = "Hello! How can I help you? I can assist you with details regarding: <b>College timings, Departments, Courses available, Admission process, Fee details, Exam dates, Placement details, Hostel facilities, Library timings, and Faculty profiles</b>.";
+            topicKey = "greetings";
+        } else if (q.includes("timing") || q.includes("hours") || q.includes("schedule") || q.includes("time")) {
             answer = CHAT_ANSWERS.timings;
             topicKey = "timings";
         } else if (q.includes("department") || q.includes("branch") || q.includes("stream")) {

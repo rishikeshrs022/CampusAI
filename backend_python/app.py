@@ -745,15 +745,19 @@ def chat():
     question = data.get("question", "")
     
     # Process NLP Query
-    q = question.lower()
+    q = question.lower().strip().strip("?").strip("!").strip(".")
     answer = "I'm sorry, I couldn't find a direct answer. CampusAI can help you with: <b>College timings, Departments, Courses available, Admission process, Fee details, Exam dates, Placement details, Hostel facilities, Library timings, and Faculty profiles</b>. Please try rephrasing your question!"
     topic = "other"
     
-    for key, value in CHAT_ANSWERS.items():
-        if key in q or (key == "timings" and ("hours" in q or "time" in q or "schedule" in q)):
-            answer = value
-            topic = key
-            break
+    if q in ["hello", "hi", "hey", "greetings"] or any(q.startswith(x) for x in ["hello ", "hi ", "hey ", "greetings "]):
+        answer = "Hello! How can I help you? I can assist you with details regarding: <b>College timings, Departments, Courses available, Admission process, Fee details, Exam dates, Placement details, Hostel facilities, Library timings, and Faculty profiles</b>."
+        topic = "greetings"
+    else:
+        for key, value in CHAT_ANSWERS.items():
+            if key in q or (key == "timings" and ("hours" in q or "time" in q or "schedule" in q)):
+                answer = value
+                topic = key
+                break
             
     # Fallback checks for departments/courses/faculty
     if topic == "other":
