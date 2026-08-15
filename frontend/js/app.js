@@ -58,7 +58,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const careerRoadmap = document.getElementById("career-roadmap");
 
     // Notice Analyzer Modal
-    const noticeModal = new bootstrap.Modal(document.getElementById("noticeModal"));
+    let noticeModal = null;
+    const noticeModalEl = document.getElementById("noticeModal");
+    if (noticeModalEl && typeof bootstrap !== "undefined") {
+        try {
+            noticeModal = new bootstrap.Modal(noticeModalEl);
+        } catch (e) {
+            console.warn("Bootstrap notice modal initialization delayed:", e);
+        }
+    }
     const noticeModalTitle = document.getElementById("noticeModalLabel");
     const noticeOriginalText = document.getElementById("notice-original-text");
     const noticeSummaryText = document.getElementById("notice-summary-text");
@@ -380,8 +388,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Dynamic Department Details Modal triggers & Dynamic Landing Cards
     const deptModalEl = document.getElementById("departmentModal");
     let departmentModalObj = null;
-    if (deptModalEl) {
-        departmentModalObj = new bootstrap.Modal(deptModalEl);
+    if (deptModalEl && typeof bootstrap !== "undefined") {
+        try {
+            departmentModalObj = new bootstrap.Modal(deptModalEl);
+        } catch (e) {
+            console.warn("Bootstrap modal initialization delayed:", e);
+        }
     }
     
     window.openDeptDetailsModal = function(deptKey) {
@@ -392,10 +404,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 showToast("Department details are currently unavailable.", "warning");
                 return;
             }
-            if (!departmentModalObj) {
+            if (!departmentModalObj && typeof bootstrap !== "undefined") {
                 const deptModalEl = document.getElementById("departmentModal");
                 if (deptModalEl) {
-                    departmentModalObj = bootstrap.Modal.getOrCreateInstance(deptModalEl);
+                    try {
+                        departmentModalObj = bootstrap.Modal.getOrCreateInstance(deptModalEl);
+                    } catch (e) {
+                        console.error("Failed to initialize Bootstrap Modal:", e);
+                    }
                 }
             }
             if (deptData && departmentModalObj) {
@@ -1122,7 +1138,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="small">AI analyzing and summarizing announcement contents...</div>
             </div>
         `;
-        noticeModal.show();
+        if (!noticeModal && typeof bootstrap !== "undefined") {
+            const noticeModalEl = document.getElementById("noticeModal");
+            if (noticeModalEl) {
+                try {
+                    noticeModal = bootstrap.Modal.getOrCreateInstance(noticeModalEl);
+                } catch (e) {
+                    console.error("Failed to initialize Notice Modal:", e);
+                }
+            }
+        }
+        if (noticeModal) {
+            noticeModal.show();
+        }
 
         // Simulate AI Summary Latency (1.5 seconds)
         setTimeout(() => {
