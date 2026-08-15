@@ -831,4 +831,4 @@ if __name__ == "__main__":
     init_db()
     
     print("CampusAI Backend: Launching Flask App on http://localhost:8080")
-    app.run(host="0.0.0.0", port=8080, debug=False)
+    app.run(host="0.0.0.0", port=8080, debug=True)
