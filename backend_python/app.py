@@ -260,6 +260,71 @@ def login():
     return jsonify({"success": False, "message": "Invalid username or password"}), 401
 
 
+@app.route("/api/google-login", methods=["POST"])
+def google_login_sync():
+    data = request.json or {}
+    email = data.get("email")
+    name = data.get("name")
+    uid = data.get("uid")
+    
+    if not email or not uid:
+        return jsonify({"success": False, "message": "Email and UID required"}), 400
+        
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # Check if student already exists by email
+    cursor.execute("SELECT * FROM students WHERE email = ?;", (email,))
+    student = cursor.fetchone()
+    
+    if not student:
+        # Create student profile
+        # Use UID as the student ID
+        student_id = f"STU_G_{uid[:8].upper()}"
+        
+        # Insert student record
+        cursor.execute("""
+            INSERT INTO students (id, name, email, password, department, academic_year, phone, attendance, cgpa)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """, (student_id, name or "Google Student", email, "GOOGLE_AUTH", "B.Sc Data Science", 1, "N/A", 100.0, 4.0))
+        
+        # Insert user record linked to student
+        cursor.execute("""
+            INSERT INTO users (id, username, password, role, ref_id)
+            VALUES (?, ?, ?, ?, ?);
+        """, (student_id, email, "GOOGLE_AUTH", "ROLE_STUDENT", student_id))
+        
+        conn.commit()
+        
+        # Fetch the newly created user
+        cursor.execute("SELECT * FROM users WHERE id = ?;", (student_id,))
+        user = cursor.fetchone()
+    else:
+        student_id = student["id"]
+        # Make sure there is a user row linked to this student
+        cursor.execute("SELECT * FROM users WHERE ref_id = ?;", (student_id,))
+        user = cursor.fetchone()
+        if not user:
+            # If user row doesn't exist for some reason, create it
+            cursor.execute("""
+                INSERT INTO users (id, username, password, role, ref_id)
+                VALUES (?, ?, ?, ?, ?);
+            """, (student_id, email, "GOOGLE_AUTH", "ROLE_STUDENT", student_id))
+            conn.commit()
+            cursor.execute("SELECT * FROM users WHERE id = ?;", (student_id,))
+            user = cursor.fetchone()
+            
+    conn.close()
+    
+    return jsonify({
+        "success": True,
+        "username": user["username"],
+        "role": user["role"],
+        "refId": user["ref_id"],
+        "name": name or student["name"]
+    })
+
+
 # Users Endpoints
 @app.route("/api/users", methods=["GET"])
 def get_users():

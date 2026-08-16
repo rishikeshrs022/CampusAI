@@ -631,6 +631,66 @@ const MockDB = {
         localStorage.setItem("campusai_users", JSON.stringify(users));
         return user;
     },
+    googleLogin: (name, email, uid) => {
+        if (useBackend) {
+            const res = apiRequest("POST", "/google-login", { name, email, uid });
+            if (res && res.success) {
+                return {
+                    success: true,
+                    username: res.username,
+                    role: res.role,
+                    refId: res.refId,
+                    name: res.name
+                };
+            }
+            return { success: false, message: res ? res.message : "Google authentication sync failed." };
+        }
+        
+        let students = MockDB.getStudents() || [];
+        let student = students.find(s => s.email.toLowerCase() === email.toLowerCase());
+        let studentId = "";
+        
+        if (!student) {
+            studentId = `STU_G_${uid.substring(0, 8).toUpperCase()}`;
+            student = {
+                id: studentId,
+                name: name || "Google Student",
+                email: email,
+                password: "GOOGLE_AUTH",
+                department: "B.Sc Data Science",
+                academicYear: 1,
+                phone: "N/A",
+                attendance: 100,
+                cgpa: 4.0
+            };
+            students.push(student);
+            localStorage.setItem("campusai_students", JSON.stringify(students));
+            
+            let users = MockDB.getUsers() || [];
+            users.push({
+                id: studentId,
+                username: email,
+                password: "GOOGLE_AUTH",
+                role: "ROLE_STUDENT",
+                refId: studentId,
+                name: name
+            });
+            localStorage.setItem("campusai_users", JSON.stringify(users));
+        } else {
+            studentId = student.id;
+        }
+        
+        const users = MockDB.getUsers() || [];
+        const user = users.find(u => u.refId === studentId);
+        
+        return {
+            success: true,
+            username: user ? user.username : email,
+            role: "ROLE_STUDENT",
+            refId: studentId,
+            name: name || student.name
+        };
+    },
 
     // Notices Methods
     getNotices: () => {

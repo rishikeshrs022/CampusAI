@@ -128,6 +128,26 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("remember-me").checked = true;
     }
 
+    // Auto-restore login session from localStorage on startup
+    const storedUserStr = localStorage.getItem("campusai_current_user");
+    if (storedUserStr) {
+        try {
+            const storedUser = JSON.parse(storedUserStr);
+            if (storedUser && storedUser.username) {
+                currentUser = storedUser;
+                adjustNavForRole(storedUser.role);
+                if (storedUser.role === "ROLE_STUDENT") {
+                    currentStudent = window.MockDB.getStudentById(storedUser.refId);
+                    navigateTo("student-dashboard");
+                } else if (storedUser.role === "ROLE_ADMIN") {
+                    navigateTo("admin-panel");
+                }
+            }
+        } catch (e) {
+            console.error("CampusAI: Failed to restore user session from localStorage:", e);
+        }
+    }
+
     // Role Tab Switcher Event Listeners
     if (tabStudent && tabAdmin) {
         tabStudent.addEventListener("click", () => {
@@ -557,221 +577,351 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Google Sign-In Handler
+    // Firebase Google Sign-In Handler
     const googleLoginBtn = document.getElementById("google-login-btn");
     const googleLoginModalEl = document.getElementById("googleLoginModal");
     let googleLoginModal = null;
-    if (googleLoginModalEl && googleLoginBtn) {
-        googleLoginModal = bootstrap.Modal.getOrCreateInstance(googleLoginModalEl);
-        
-        const stepAccount = document.getElementById("google-step-account");
-        const stepEmail = document.getElementById("google-step-email");
-        const stepPassword = document.getElementById("google-step-password");
-        
-        const useAnotherBtn = document.getElementById("google-use-another-btn");
-        const customEmailInput = document.getElementById("google-custom-email");
-        const emailBackBtn = document.getElementById("google-email-back-btn");
-        const emailNextBtn = document.getElementById("google-email-next-btn");
-        
-        const passwordAvatar = document.getElementById("google-password-avatar");
-        const passwordName = document.getElementById("google-password-name");
-        const passwordEmail = document.getElementById("google-password-email");
-        const passwordInput = document.getElementById("google-custom-password");
-        const passwordToggle = document.getElementById("google-password-toggle");
-        const passwordBackBtn = document.getElementById("google-password-back-btn");
-        const passwordNextBtn = document.getElementById("google-password-next-btn");
-
-        let selectedEmail = "";
-        let selectedName = "";
-        let previousStep = "account";
-
-        // Show Modal
-        googleLoginBtn.addEventListener("click", () => {
-            // Reset to step 1
-            if (stepAccount) stepAccount.classList.remove("d-none");
-            if (stepEmail) stepEmail.classList.add("d-none");
-            if (stepPassword) stepPassword.classList.add("d-none");
-            if (customEmailInput) customEmailInput.value = "";
-            if (passwordInput) {
-                passwordInput.value = "";
-                passwordInput.type = "password";
-            }
-            const eyeIcon = passwordToggle?.querySelector("i");
-            if (eyeIcon) eyeIcon.className = "bi bi-eye-slash";
-            
-            if (googleLoginModal) googleLoginModal.show();
-        });
-
-        // Helper function to log in dynamically based on active tab
-        function executeGoogleLogin(name, email) {
-            const users = window.MockDB.getUsers();
-            if (loginRole === "student") {
-                const matchedUser = users.find(u => u.username === "STU2025001");
-                if (matchedUser) {
-                    const student = window.MockDB.getStudentById("STU2025001");
-                    if (student) {
-                        student.name = name;
-                        student.email = email;
-                        window.MockDB.saveStudent(student);
-                    }
-
-                    const sessionUser = {
-                        success: true,
-                        username: matchedUser.username,
-                        role: matchedUser.role,
-                        refId: matchedUser.refId,
-                        name: name
-                    };
-                    currentUser = sessionUser;
-                    currentStudent = window.MockDB.getStudentById(sessionUser.refId);
-                    
-                    showToast(`Signed in via Google as ${name}!`, "success");
-                    adjustNavForRole(sessionUser.role);
-                    navigateTo("student-dashboard");
-                    googleLoginModal.hide();
-                }
-            } else {
-                // loginRole === "admin"
-                const matchedUser = users.find(u => u.username === "admin");
-                if (matchedUser) {
-                    matchedUser.email = email;
-                    matchedUser.name = name;
-                    window.MockDB.saveUser(matchedUser);
-
-                    const sessionUser = {
-                        success: true,
-                        username: matchedUser.username,
-                        role: matchedUser.role,
-                        refId: matchedUser.refId,
-                        name: name
-                    };
-                    currentUser = sessionUser;
-                    
-                    showToast(`Signed in via Google as ${name}!`, "success");
-                    adjustNavForRole(sessionUser.role);
-                    navigateTo("admin-panel");
-                    googleLoginModal.hide();
-                }
-            }
-        }
-
-        // Step 1: Click account row
-        const googleOAuthBtns = googleLoginModalEl.querySelectorAll(".google-oauth-btn");
-        googleOAuthBtns.forEach(btn => {
-            btn.addEventListener("click", () => {
-                selectedName = btn.getAttribute("data-name");
-                selectedEmail = btn.getAttribute("data-email");
-                previousStep = "account";
-
-                // Populate Password step details
-                if (passwordAvatar) {
-                    passwordAvatar.textContent = selectedName.charAt(0);
-                    passwordAvatar.style.background = selectedName.includes("RS") ? "#ea580c" : "#0f766e";
-                }
-                if (passwordName) passwordName.textContent = `Hi ${selectedName}`;
-                if (passwordEmail) passwordEmail.textContent = selectedEmail;
-
-                if (stepAccount) stepAccount.classList.add("d-none");
-                if (stepPassword) stepPassword.classList.remove("d-none");
-                if (passwordInput) passwordInput.focus();
-            });
-        });
-
-        // Step 1: Click "Use another account"
-        if (useAnotherBtn) {
-            useAnotherBtn.addEventListener("click", () => {
-                if (stepAccount) stepAccount.classList.add("d-none");
-                if (stepEmail) stepEmail.classList.remove("d-none");
-                if (customEmailInput) customEmailInput.focus();
-            });
-        }
-
-        // Step 2: Email Back Button
-        if (emailBackBtn) {
-            emailBackBtn.addEventListener("click", () => {
-                if (stepEmail) stepEmail.classList.add("d-none");
-                if (stepAccount) stepAccount.classList.remove("d-none");
-            });
-        }
-
-        // Step 2: Email Next Button
-        if (emailNextBtn) {
-            emailNextBtn.addEventListener("click", () => {
-                const emailVal = customEmailInput.value.trim();
-                if (!emailVal) {
-                    showToast("Please enter your Email or Phone", "warning");
-                    return;
-                }
-                // Quick validation
-                if (emailVal.includes("@") && !emailVal.includes(".")) {
-                    showToast("Please enter a valid email address", "warning");
-                    return;
-                }
-
-                selectedEmail = emailVal;
-                selectedName = emailVal.split("@")[0];
-                selectedName = selectedName.charAt(0).toUpperCase() + selectedName.slice(1);
-                previousStep = "email";
-
-                // Populate Password step details
-                if (passwordAvatar) {
-                    passwordAvatar.textContent = selectedName.charAt(0);
-                    passwordAvatar.style.background = "#2563eb"; // default Google blue
-                }
-                if (passwordName) passwordName.textContent = `Hi ${selectedName}`;
-                if (passwordEmail) passwordEmail.textContent = selectedEmail;
-
-                if (stepEmail) stepEmail.classList.add("d-none");
-                if (stepPassword) stepPassword.classList.remove("d-none");
-                if (passwordInput) passwordInput.focus();
-            });
-        }
-
-        // Step 3: Password Eye Toggle
-        if (passwordToggle && passwordInput) {
-            passwordToggle.addEventListener("click", () => {
-                const isPassword = passwordInput.type === "password";
-                passwordInput.type = isPassword ? "text" : "password";
-                const eyeIcon = passwordToggle.querySelector("i");
-                if (eyeIcon) {
-                    eyeIcon.className = isPassword ? "bi bi-eye" : "bi bi-eye-slash";
-                }
-            });
-        }
-
-        // Step 3: Password Back Button
-        if (passwordBackBtn) {
-            passwordBackBtn.addEventListener("click", () => {
-                if (stepPassword) stepPassword.classList.add("d-none");
-                if (previousStep === "account") {
-                    if (stepAccount) stepAccount.classList.remove("d-none");
-                } else {
-                    if (stepEmail) stepEmail.classList.remove("d-none");
-                    if (customEmailInput) customEmailInput.focus();
-                }
-            });
-        }
-
-        // Step 3: Password Next Button (Complete Sign In)
-        if (passwordNextBtn) {
-            passwordNextBtn.addEventListener("click", () => {
-                const passVal = passwordInput.value.trim();
-                if (!passVal) {
-                    showToast("Please enter your password", "warning");
-                    return;
-                }
-                if (passVal.length < 4) {
-                    showToast("Password must be at least 4 characters long", "warning");
-                    return;
-                }
-
-                // Log in dynamically based on selected tab role
-                executeGoogleLogin(selectedName, selectedEmail);
-            });
+    
+    // Initialize Bootstrap Modal reference for fallback
+    if (googleLoginModalEl && typeof bootstrap !== "undefined") {
+        try {
+            googleLoginModal = bootstrap.Modal.getOrCreateInstance(googleLoginModalEl);
+        } catch (e) {
+            console.warn("Bootstrap google modal initialization delayed:", e);
         }
     }
 
+    // Modal elements for Sandbox fallback
+    const stepAccount = document.getElementById("google-step-account");
+    const stepEmail = document.getElementById("google-step-email");
+    const stepPassword = document.getElementById("google-step-password");
+    const useAnotherBtn = document.getElementById("google-use-another-btn");
+    const customEmailInput = document.getElementById("google-custom-email");
+    const emailBackBtn = document.getElementById("google-email-back-btn");
+    const emailNextBtn = document.getElementById("google-email-next-btn");
+    const passwordAvatar = document.getElementById("google-password-avatar");
+    const passwordName = document.getElementById("google-password-name");
+    const passwordEmail = document.getElementById("google-password-email");
+    const passwordInput = document.getElementById("google-custom-password");
+    const passwordToggle = document.getElementById("google-password-toggle");
+    const passwordBackBtn = document.getElementById("google-password-back-btn");
+    const passwordNextBtn = document.getElementById("google-password-next-btn");
+
+    let selectedEmail = "";
+    let selectedName = "";
+    let previousStep = "account";
+
+    // ----------------------------------------------------
+    // FIREBASE INITIALIZATION & STATE LISTENERS
+    // ----------------------------------------------------
+    let auth = null;
+    let googleProvider = null;
+    
+    if (typeof firebase !== "undefined" && typeof isFirebaseConfigured !== "undefined" && isFirebaseConfigured) {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            googleProvider = new firebase.auth.GoogleAuthProvider();
+            googleProvider.setCustomParameters({
+                prompt: 'select_account'
+            });
+
+            // Handle redirect results on page load
+            auth.getRedirectResult()
+                .then((result) => {
+                    if (result && result.user) {
+                        const user = result.user;
+                        console.log("CampusAI: Redirect login resolved successfully:", user.email);
+                        handleFirebaseUserLogin(user);
+                    }
+                })
+                .catch((error) => {
+                    console.error("CampusAI: Redirect login failed:", error);
+                    handleFirebaseAuthError(error);
+                });
+
+            // Listen for auth state changes to auto-login (Persist Session)
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    console.log("CampusAI: Firebase Auth detected active user:", user.email);
+                    if (!currentUser) {
+                        handleFirebaseUserLogin(user, true); // silent reload
+                    }
+                }
+            });
+        } catch (e) {
+            console.error("CampusAI: Firebase initialization error:", e);
+        }
+    }
+
+    // Google Sign-In click listener
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener("click", () => {
+            setGoogleBtnLoading();
+
+            if (auth) {
+                // Real Google Auth popup flow
+                console.log("CampusAI: Launching Google popup sign-in...");
+                auth.signInWithPopup(googleProvider)
+                    .then((result) => {
+                        if (result.user) {
+                            googleLoginBtn.innerHTML = `<i class="bi bi-check-circle-fill me-2"></i>Login successful`;
+                            setTimeout(() => {
+                                handleFirebaseUserLogin(result.user);
+                            }, 600);
+                        }
+                    })
+                    .catch((error) => {
+                        console.warn("CampusAI: Popup sign-in blocked or failed. Retrying with redirect:", error);
+                        // If popup was blocked or closed, fallback to redirect-based login
+                        if (error.code === "auth/popup-blocked" || error.code === "auth/cancelled-popup-request" || error.code === "auth/popup-closed-by-user") {
+                            if (error.code === "auth/popup-closed-by-user") {
+                                handleFirebaseAuthError(error);
+                            } else {
+                                auth.signInWithRedirect(googleProvider).catch((redirectErr) => {
+                                    console.error("CampusAI: Redirect flow failed:", redirectErr);
+                                    handleFirebaseAuthError(redirectErr);
+                                });
+                            }
+                        } else {
+                            handleFirebaseAuthError(error);
+                        }
+                    });
+            } else {
+                // Firebase is not configured, fallback to Sandbox mockup
+                showToast("Firebase not configured. Using interactive Sandbox Google Login.", "info");
+                
+                // Reset to step 1
+                if (stepAccount) stepAccount.classList.remove("d-none");
+                if (stepEmail) stepEmail.classList.add("d-none");
+                if (stepPassword) stepPassword.classList.add("d-none");
+                if (customEmailInput) customEmailInput.value = "";
+                if (passwordInput) {
+                    passwordInput.value = "";
+                    passwordInput.type = "password";
+                }
+                const eyeIcon = passwordToggle?.querySelector("i");
+                if (eyeIcon) eyeIcon.className = "bi bi-eye-slash";
+                
+                if (googleLoginModal) googleLoginModal.show();
+                resetGoogleBtnState();
+            }
+        });
+    }
+
+    // --- Google/Firebase Auth Handlers ---
+    function handleFirebaseUserLogin(firebaseUser, isSilent = false) {
+        const name = firebaseUser.displayName || "Google User";
+        const email = firebaseUser.email;
+        const uid = firebaseUser.uid;
+        
+        // Sync with MockDB (points to python backend or local storage)
+        const loginResult = window.MockDB.googleLogin(name, email, uid);
+        
+        if (loginResult && loginResult.success) {
+            currentUser = loginResult;
+            currentStudent = window.MockDB.getStudentById(loginResult.refId);
+            
+            // Adjust navigation UI
+            adjustNavForRole(loginResult.role);
+            
+            // Save local user session to persist across page refreshes
+            localStorage.setItem("campusai_current_user", JSON.stringify(loginResult));
+            
+            if (!isSilent) {
+                showToast(`Welcome to CampusAI, ${name}!`, "success");
+            }
+            
+            // Redirect to Student Dashboard
+            navigateTo("student-dashboard");
+            if (googleLoginModal) googleLoginModal.hide();
+        } else {
+            console.error("Google sync login failed:", loginResult);
+            if (!isSilent) {
+                showToast("Unable to sync Google account with CampusAI database.", "danger");
+            }
+        }
+        resetGoogleBtnState();
+    }
+
+    function handleFirebaseAuthError(error) {
+        resetGoogleBtnState();
+        let message = "Unable to sign in with Google. Please try again.";
+        
+        switch (error.code) {
+            case "auth/popup-closed-by-user":
+                message = "Google sign-in was cancelled. Please try again.";
+                break;
+            case "auth/popup-blocked":
+                message = "Sign-in popup blocked by browser. Retrying with redirect...";
+                break;
+            case "auth/network-request-failed":
+                message = "Network error. Please check your internet connection.";
+                break;
+            case "auth/unauthorized-domain":
+                message = "This domain is not authorized for Google Sign-In in Firebase Console.";
+                break;
+            case "auth/operation-not-allowed":
+                message = "Google provider is not enabled in Firebase Console Settings.";
+                break;
+            default:
+                console.error("Firebase auth error details:", error);
+                break;
+        }
+        showToast(message, "danger");
+    }
+
+    function setGoogleBtnLoading() {
+        if (!googleLoginBtn) return;
+        googleLoginBtn.disabled = true;
+        googleLoginBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Signing in with Google...
+        `;
+    }
+
+    function resetGoogleBtnState() {
+        if (!googleLoginBtn) return;
+        googleLoginBtn.disabled = false;
+        googleLoginBtn.innerHTML = `
+            <svg class="me-2" width="18" height="18" viewBox="0 0 18 18">
+                <path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.47h4.84a4.14 4.14 0 0 1-1.8 2.71v2.26h2.91c1.7-1.56 2.69-3.86 2.69-6.6z"/>
+                <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.2l-2.91-2.26a5.64 5.64 0 0 1-8.52-3.04H.51v2.33A9 9 0 0 0 9 18z"/>
+                <path fill="#FBBC05" d="M3.53 10.5a5.41 5.41 0 0 1 0-3v-2.33H.51a9 9 0 0 0 0 7.66l3.02-2.33z"/>
+                <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35L15 2.4A9 9 0 0 0 .51 5.17l3.02 2.33A5.64 5.64 0 0 1 9 3.58z"/>
+            </svg>
+            Continue with Google
+        `;
+    }
+
+    // --- Sandbox Mock Fallback Transitions ---
+    // Step 1: Click account row
+    const googleOAuthBtns = googleLoginModalEl ? googleLoginModalEl.querySelectorAll(".google-oauth-btn") : [];
+    googleOAuthBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            selectedName = btn.getAttribute("data-name");
+            selectedEmail = btn.getAttribute("data-email");
+            previousStep = "account";
+
+            // Populate Password step details
+            if (passwordAvatar) {
+                passwordAvatar.textContent = selectedName.charAt(0);
+                passwordAvatar.style.background = selectedName.includes("RS") ? "#ea580c" : "#0f766e";
+            }
+            if (passwordName) passwordName.textContent = `Hi ${selectedName}`;
+            if (passwordEmail) passwordEmail.textContent = selectedEmail;
+
+            if (stepAccount) stepAccount.classList.add("d-none");
+            if (stepPassword) stepPassword.classList.remove("d-none");
+            if (passwordInput) passwordInput.focus();
+        });
+    });
+
+    // Step 1: Click "Use another account"
+    if (useAnotherBtn) {
+        useAnotherBtn.addEventListener("click", () => {
+            if (stepAccount) stepAccount.classList.add("d-none");
+            if (stepEmail) stepEmail.classList.remove("d-none");
+            if (customEmailInput) customEmailInput.focus();
+        });
+    }
+
+    // Step 2: Email Back Button
+    if (emailBackBtn) {
+        emailBackBtn.addEventListener("click", () => {
+            if (stepEmail) stepEmail.classList.add("d-none");
+            if (stepAccount) stepAccount.classList.remove("d-none");
+        });
+    }
+
+    // Step 2: Email Next Button
+    if (emailNextBtn) {
+        emailNextBtn.addEventListener("click", () => {
+            const emailVal = customEmailInput.value.trim();
+            if (!emailVal) {
+                showToast("Please enter your Email or Phone", "warning");
+                return;
+            }
+            if (emailVal.includes("@") && !emailVal.includes(".")) {
+                showToast("Please enter a valid email address", "warning");
+                return;
+            }
+
+            selectedEmail = emailVal;
+            selectedName = emailVal.split("@")[0];
+            selectedName = selectedName.charAt(0).toUpperCase() + selectedName.slice(1);
+            previousStep = "email";
+
+            if (passwordAvatar) {
+                passwordAvatar.textContent = selectedName.charAt(0);
+                passwordAvatar.style.background = "#2563eb";
+            }
+            if (passwordName) passwordName.textContent = `Hi ${selectedName}`;
+            if (passwordEmail) passwordEmail.textContent = selectedEmail;
+
+            if (stepEmail) stepEmail.classList.add("d-none");
+            if (stepPassword) stepPassword.classList.remove("d-none");
+            if (passwordInput) passwordInput.focus();
+        });
+    }
+
+    // Step 3: Password Eye Toggle
+    if (passwordToggle && passwordInput) {
+        passwordToggle.addEventListener("click", () => {
+            const isPassword = passwordInput.type === "password";
+            passwordInput.type = isPassword ? "text" : "password";
+            const eyeIcon = passwordToggle.querySelector("i");
+            if (eyeIcon) {
+                eyeIcon.className = isPassword ? "bi bi-eye" : "bi bi-eye-slash";
+            }
+        });
+    }
+
+    // Step 3: Password Back Button
+    if (passwordBackBtn) {
+        passwordBackBtn.addEventListener("click", () => {
+            if (stepPassword) stepPassword.classList.add("d-none");
+            if (previousStep === "account") {
+                if (stepAccount) stepAccount.classList.remove("d-none");
+            } else {
+                if (stepEmail) stepEmail.classList.remove("d-none");
+                if (customEmailInput) customEmailInput.focus();
+            }
+        });
+    }
+
+    // Step 3: Password Next Button (Complete Mock Sign In)
+    if (passwordNextBtn) {
+        passwordNextBtn.addEventListener("click", () => {
+            const passVal = passwordInput.value.trim();
+            if (!passVal) {
+                showToast("Please enter your password", "warning");
+                return;
+            }
+            if (passVal.length < 4) {
+                showToast("Password must be at least 4 characters long", "warning");
+                return;
+            }
+
+            // Mock login handler
+            const loginResult = window.MockDB.googleLogin(selectedName, selectedEmail, "SANDBOX_" + Math.random().toString(36).substring(7).toUpperCase());
+            if (loginResult && loginResult.success) {
+                currentUser = loginResult;
+                currentStudent = window.MockDB.getStudentById(loginResult.refId);
+                adjustNavForRole(loginResult.role);
+                localStorage.setItem("campusai_current_user", JSON.stringify(loginResult));
+                showToast(`Signed in via Google Sandbox as ${selectedName}!`, "success");
+                navigateTo("student-dashboard");
+                if (googleLoginModal) googleLoginModal.hide();
+            }
+        });
+    }
+
     function logout() {
+        if (auth) {
+            auth.signOut().catch(err => console.error("Firebase logout error:", err));
+        }
+        localStorage.removeItem("campusai_current_user");
         showToast("Logged out successfully.", "info");
         currentUser = null;
         currentStudent = null;
