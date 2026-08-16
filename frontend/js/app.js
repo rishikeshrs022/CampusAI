@@ -565,30 +565,40 @@ document.addEventListener("DOMContentLoaded", () => {
         googleLoginModal = bootstrap.Modal.getOrCreateInstance(googleLoginModalEl);
         
         const stepAccount = document.getElementById("google-step-account");
-        const stepRole = document.getElementById("google-step-role");
-        const stepCustom = document.getElementById("google-step-custom");
-        const selectedEmailDisplay = document.getElementById("google-selected-email-display");
-        const roleStudentBtn = document.getElementById("google-role-student-btn");
-        const roleAdminBtn = document.getElementById("google-role-admin-btn");
-        const roleBackBtn = document.getElementById("google-role-back-btn");
-
+        const stepEmail = document.getElementById("google-step-email");
+        const stepPassword = document.getElementById("google-step-password");
+        
         const useAnotherBtn = document.getElementById("google-use-another-btn");
-        const customNameInput = document.getElementById("google-custom-name");
         const customEmailInput = document.getElementById("google-custom-email");
-        const customContinueBtn = document.getElementById("google-custom-continue-btn");
-        const customBackBtn = document.getElementById("google-custom-back-btn");
+        const emailBackBtn = document.getElementById("google-email-back-btn");
+        const emailNextBtn = document.getElementById("google-email-next-btn");
+        
+        const passwordAvatar = document.getElementById("google-password-avatar");
+        const passwordName = document.getElementById("google-password-name");
+        const passwordEmail = document.getElementById("google-password-email");
+        const passwordInput = document.getElementById("google-custom-password");
+        const passwordToggle = document.getElementById("google-password-toggle");
+        const passwordBackBtn = document.getElementById("google-password-back-btn");
+        const passwordNextBtn = document.getElementById("google-password-next-btn");
 
         let selectedEmail = "";
         let selectedName = "";
+        let previousStep = "account";
 
         // Show Modal
         googleLoginBtn.addEventListener("click", () => {
             // Reset to step 1
             if (stepAccount) stepAccount.classList.remove("d-none");
-            if (stepRole) stepRole.classList.add("d-none");
-            if (stepCustom) stepCustom.classList.add("d-none");
-            if (customNameInput) customNameInput.value = "";
+            if (stepEmail) stepEmail.classList.add("d-none");
+            if (stepPassword) stepPassword.classList.add("d-none");
             if (customEmailInput) customEmailInput.value = "";
+            if (passwordInput) {
+                passwordInput.value = "";
+                passwordInput.type = "password";
+            }
+            const eyeIcon = passwordToggle?.querySelector("i");
+            if (eyeIcon) eyeIcon.className = "bi bi-eye-slash";
+            
             if (googleLoginModal) googleLoginModal.show();
         });
 
@@ -651,41 +661,112 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.addEventListener("click", () => {
                 selectedName = btn.getAttribute("data-name");
                 selectedEmail = btn.getAttribute("data-email");
+                previousStep = "account";
 
-                // Log in immediately based on selected tab role
-                executeGoogleLogin(selectedName, selectedEmail);
+                // Populate Password step details
+                if (passwordAvatar) {
+                    passwordAvatar.textContent = selectedName.charAt(0);
+                    passwordAvatar.style.background = selectedName.includes("RS") ? "#ea580c" : "#0f766e";
+                }
+                if (passwordName) passwordName.textContent = `Hi ${selectedName}`;
+                if (passwordEmail) passwordEmail.textContent = selectedEmail;
+
+                if (stepAccount) stepAccount.classList.add("d-none");
+                if (stepPassword) stepPassword.classList.remove("d-none");
+                if (passwordInput) passwordInput.focus();
             });
         });
 
         // Step 1: Click "Use another account"
         if (useAnotherBtn) {
             useAnotherBtn.addEventListener("click", () => {
-                stepAccount.classList.add("d-none");
-                stepCustom.classList.remove("d-none");
+                if (stepAccount) stepAccount.classList.add("d-none");
+                if (stepEmail) stepEmail.classList.remove("d-none");
+                if (customEmailInput) customEmailInput.focus();
             });
         }
 
-        // Step 3: Back button
-        if (customBackBtn) {
-            customBackBtn.addEventListener("click", () => {
-                stepAccount.classList.remove("d-none");
-                stepCustom.classList.add("d-none");
+        // Step 2: Email Back Button
+        if (emailBackBtn) {
+            emailBackBtn.addEventListener("click", () => {
+                if (stepEmail) stepEmail.classList.add("d-none");
+                if (stepAccount) stepAccount.classList.remove("d-none");
             });
         }
 
-        // Step 3: Continue button
-        if (customContinueBtn) {
-            customContinueBtn.addEventListener("click", () => {
-                const nameVal = customNameInput.value.trim();
+        // Step 2: Email Next Button
+        if (emailNextBtn) {
+            emailNextBtn.addEventListener("click", () => {
                 const emailVal = customEmailInput.value.trim();
-
-                if (!nameVal || !emailVal) {
-                    showToast("Please enter both Name and Email address", "warning");
+                if (!emailVal) {
+                    showToast("Please enter your Email or Phone", "warning");
+                    return;
+                }
+                // Quick validation
+                if (emailVal.includes("@") && !emailVal.includes(".")) {
+                    showToast("Please enter a valid email address", "warning");
                     return;
                 }
 
-                // Log in immediately based on selected tab role
-                executeGoogleLogin(nameVal, emailVal);
+                selectedEmail = emailVal;
+                selectedName = emailVal.split("@")[0];
+                selectedName = selectedName.charAt(0).toUpperCase() + selectedName.slice(1);
+                previousStep = "email";
+
+                // Populate Password step details
+                if (passwordAvatar) {
+                    passwordAvatar.textContent = selectedName.charAt(0);
+                    passwordAvatar.style.background = "#2563eb"; // default Google blue
+                }
+                if (passwordName) passwordName.textContent = `Hi ${selectedName}`;
+                if (passwordEmail) passwordEmail.textContent = selectedEmail;
+
+                if (stepEmail) stepEmail.classList.add("d-none");
+                if (stepPassword) stepPassword.classList.remove("d-none");
+                if (passwordInput) passwordInput.focus();
+            });
+        }
+
+        // Step 3: Password Eye Toggle
+        if (passwordToggle && passwordInput) {
+            passwordToggle.addEventListener("click", () => {
+                const isPassword = passwordInput.type === "password";
+                passwordInput.type = isPassword ? "text" : "password";
+                const eyeIcon = passwordToggle.querySelector("i");
+                if (eyeIcon) {
+                    eyeIcon.className = isPassword ? "bi bi-eye" : "bi bi-eye-slash";
+                }
+            });
+        }
+
+        // Step 3: Password Back Button
+        if (passwordBackBtn) {
+            passwordBackBtn.addEventListener("click", () => {
+                if (stepPassword) stepPassword.classList.add("d-none");
+                if (previousStep === "account") {
+                    if (stepAccount) stepAccount.classList.remove("d-none");
+                } else {
+                    if (stepEmail) stepEmail.classList.remove("d-none");
+                    if (customEmailInput) customEmailInput.focus();
+                }
+            });
+        }
+
+        // Step 3: Password Next Button (Complete Sign In)
+        if (passwordNextBtn) {
+            passwordNextBtn.addEventListener("click", () => {
+                const passVal = passwordInput.value.trim();
+                if (!passVal) {
+                    showToast("Please enter your password", "warning");
+                    return;
+                }
+                if (passVal.length < 4) {
+                    showToast("Password must be at least 4 characters long", "warning");
+                    return;
+                }
+
+                // Log in dynamically based on selected tab role
+                executeGoogleLogin(selectedName, selectedEmail);
             });
         }
     }

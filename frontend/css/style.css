@@ -625,13 +625,27 @@ body[data-theme="light"] .google-btn-custom:hover {
 .google-account-row:hover {
     background: rgba(255, 255, 255, 0.04) !important;
 }
-body[data-theme="light"] #googleLoginModal .modal-content {
+#googleLoginModal .modal-content {
     background: #ffffff !important;
-    border: 1px solid rgba(0,0,0,0.1) !important;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08) !important;
+    border: 1px solid #dadce0 !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1) !important;
 }
-body[data-theme="light"] .google-account-row:hover {
-    background: rgba(0, 0, 0, 0.02) !important;
+#googleLoginModal .google-account-row {
+    background: #ffffff !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    border-radius: 4px !important;
+}
+#googleLoginModal .google-account-row:hover {
+    background: #f1f3f4 !important;
+}
+#googleLoginModal .text-white,
+#googleLoginModal .text-dark,
+#googleLoginModal .fw-semibold {
+    color: #202124 !important;
+}
+#googleLoginModal .text-secondary {
+    color: #5f6368 !important;
 }
 
 /* Google Material Outline Input Box */
@@ -639,24 +653,24 @@ body[data-theme="light"] .google-account-row:hover {
     position: relative;
 }
 .google-material-input {
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border: 1px solid #dadce0 !important;
     outline: none !important;
     font-size: 0.95rem;
     transition: border-color 0.2s, box-shadow 0.2s;
     height: 56px;
 }
 .google-material-input:focus {
-    border-color: #8ab4f8 !important;
-    box-shadow: 0 0 0 1px #8ab4f8 !important;
+    border-color: #1a73e8 !important;
+    box-shadow: 0 0 0 1px #1a73e8 !important;
 }
 .google-material-label {
     position: absolute;
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    background: #0a0a0a;
+    background: #ffffff;
     padding: 0 6px;
-    color: #9ca3af;
+    color: #5f6368;
     font-size: 0.95rem;
     transition: 0.15s ease-all;
     pointer-events: none;
@@ -666,43 +680,21 @@ body[data-theme="light"] .google-account-row:hover {
 .google-material-input:not(:placeholder-shown) ~ .google-material-label {
     top: 0;
     font-size: 0.75rem;
-    color: #8ab4f8;
-}
-/* Light Theme support */
-body[data-theme="light"] .google-material-input {
-    border: 1px solid rgba(0, 0, 0, 0.23) !important;
-    color: #1f2937 !important;
-}
-body[data-theme="light"] .google-material-input:focus {
-    border-color: #1a73e8 !important;
-    box-shadow: 0 0 0 1px #1a73e8 !important;
-}
-body[data-theme="light"] .google-material-label {
-    background: #ffffff;
-    color: #5f6368;
-}
-body[data-theme="light"] .google-material-input:focus ~ .google-material-label,
-body[data-theme="light"] .google-material-input:not(:placeholder-shown) ~ .google-material-label {
     color: #1a73e8;
 }
 
 /* Google Pill Button */
 .google-pill-btn {
-    background: #8ab4f8 !important;
-    color: #202124 !important;
-    border-radius: 100px !important;
+    background: #1a73e8 !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
     border: none !important;
     font-size: 0.88rem;
+    padding: 8px 24px !important;
+    font-weight: 500 !important;
     transition: background 0.15s;
 }
 .google-pill-btn:hover {
-    background: #a8c7fa !important;
-}
-body[data-theme="light"] .google-pill-btn {
-    background: #1a73e8 !important;
-    color: #ffffff !important;
-}
-body[data-theme="light"] .google-pill-btn:hover {
     background: #1557b0 !important;
 }
 
