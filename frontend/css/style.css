@@ -922,3 +922,31 @@ body[data-theme="light"] .quick-reply:hover {
     color: #0f172a !important;
     border-color: var(--primary-color) !important;
 }
+
+/* Welcome Banner Styling with College Campus Image */
+.welcome-banner-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%) !important;
+}
+
+.welcome-banner-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 45%;
+    object-fit: cover;
+    opacity: 0.65;
+    z-index: 0;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
+}
+
+body[data-theme="light"] .welcome-banner-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%) !important;
+    border-color: rgba(37, 99, 235, 0.15) !important;
+}
+
+body[data-theme="light"] .welcome-banner-img {
+    opacity: 0.45;
+}
