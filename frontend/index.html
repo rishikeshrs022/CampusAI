@@ -9,7 +9,7 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom Glassmorphic Styles -->
-    <link rel="stylesheet" href="css/style.css?v=3.7">
+    <link rel="stylesheet" href="css/style.css?v=3.8">
 </head>
 <body data-theme="dark">
 
@@ -486,26 +486,32 @@
                                 <!-- College Campus Image Background Overlay -->
                                 <img src="images/college_campus.jpg" class="welcome-banner-img" alt="College Campus">
                                 <div class="row align-items-center">
-                                    <div class="col-lg-7 position-relative z-index-1">
+                                    <div class="col-lg-8 position-relative z-index-1">
                                         <h3 class="font-outfit fw-bold text-white mb-2">Welcome back, <span id="stud-welcome-name" class="text-primary">-</span>! 👋</h3>
                                         <p class="text-secondary mb-3">Here's what's happening in your campus today.</p>
-                                        <p class="fst-italic text-secondary small" style="max-width: 480px; line-height: 1.5;">
+                                        
+                                        <!-- Small Inline Date & Time Container below subtitle -->
+                                        <div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+                                            <!-- Date Element -->
+                                            <div class="d-flex align-items-center gap-2 text-secondary bg-dark bg-opacity-40 px-3 py-2 rounded-3 border border-secondary border-opacity-10">
+                                                <i class="bi bi-calendar3 text-primary fs-5"></i>
+                                                <span class="text-white small fw-semibold">
+                                                    <span id="stud-banner-day">-</span>, <span id="stud-banner-date">-</span>
+                                                </span>
+                                            </div>
+                                            <!-- Time Element -->
+                                            <div class="d-flex align-items-center gap-2 text-secondary bg-dark bg-opacity-40 px-3 py-2 rounded-3 border border-secondary border-opacity-10">
+                                                <i class="bi bi-clock text-purple fs-5"></i>
+                                                <span class="text-white small fw-semibold">
+                                                    <span id="stud-banner-time">-</span>
+                                                </span>
+                                                <small class="text-muted small ms-1">Current Time</small>
+                                            </div>
+                                        </div>
+
+                                        <p class="fst-italic text-secondary small mt-3 mb-0" style="max-width: 480px; line-height: 1.5; opacity: 0.85;">
                                             "Education is the passport to the future, for tomorrow belongs to those who prepare for it today."
                                         </p>
-                                    </div>
-                                    <div class="col-lg-5 mt-3 mt-lg-0 text-lg-end position-relative z-index-1 d-flex flex-wrap justify-content-lg-end gap-3">
-                                        <!-- Calendar Day Card -->
-                                        <div class="glass-card text-center p-3 m-0" style="min-width: 130px; background: rgba(15, 23, 42, 0.6);">
-                                            <i class="bi bi-calendar3 text-primary fs-3 mb-1 d-block"></i>
-                                            <span id="stud-banner-day" class="text-white font-bold d-block">-</span>
-                                            <small id="stud-banner-date" class="text-secondary font-medium">-</small>
-                                        </div>
-                                        <!-- Ticking Clock Card -->
-                                        <div class="glass-card text-center p-3 m-0" style="min-width: 140px; background: rgba(15, 23, 42, 0.6);">
-                                            <i class="bi bi-clock-fill text-purple fs-3 mb-1 d-block"></i>
-                                            <span id="stud-banner-time" class="text-white font-bold d-block">-</span>
-                                            <small class="text-secondary font-medium">Current Time</small>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2506,11 +2512,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <!-- Firebase Config -->
-    <script src="js/firebase-config.js?v=3.7"></script>
+    <script src="js/firebase-config.js?v=3.8"></script>
 
     <!-- Application Scripts -->
-    <script src="js/mockData.js?v=3.7"></script>
-    <script src="js/voice.js?v=3.7"></script>
-    <script src="js/app.js?v=3.7"></script>
+    <script src="js/mockData.js?v=3.8"></script>
+    <script src="js/voice.js?v=3.8"></script>
+    <script src="js/app.js?v=3.8"></script>
 </body>
 </html>
