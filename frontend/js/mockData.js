@@ -567,6 +567,28 @@ const MockDB = {
         localStorage.setItem("campusai_students", JSON.stringify(students));
         return student;
     },
+    updateStudent: (id, updatedFields) => {
+        if (useBackend) {
+            return apiRequest("PUT", "/students/" + id, updatedFields);
+        }
+        const students = MockDB.getStudents();
+        const index = students.findIndex(s => s.id === id);
+        if (index > -1) {
+            students[index] = { ...students[index], ...updatedFields };
+            localStorage.setItem("campusai_students", JSON.stringify(students));
+            
+            if (updatedFields.email) {
+                const users = MockDB.getUsers();
+                const uIndex = users.findIndex(u => u.refId === id);
+                if (uIndex > -1) {
+                    users[uIndex].username = updatedFields.email;
+                    localStorage.setItem("campusai_users", JSON.stringify(users));
+                }
+            }
+            return { success: true, student: students[index] };
+        }
+        return { success: false, message: "Student not found in mock database." };
+    },
     deleteStudent: (id) => {
         if (useBackend) {
             apiRequest("DELETE", "/students/" + id);

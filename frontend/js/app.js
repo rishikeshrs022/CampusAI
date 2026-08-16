@@ -937,6 +937,109 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // -------------------------------------------------------------
+    // Student Profile Editing & Avatar Upload Listener Handlers
+    // -------------------------------------------------------------
+    const editProfileBtn = document.getElementById("edit-profile-btn");
+    const cancelProfileBtn = document.getElementById("cancel-profile-btn");
+    const profileViewFields = document.getElementById("profile-view-fields");
+    const profileEditForm = document.getElementById("profile-edit-form");
+    const profilePicInput = document.getElementById("profile-pic-input");
+
+    if (editProfileBtn && cancelProfileBtn && profileViewFields && profileEditForm) {
+        editProfileBtn.addEventListener("click", () => {
+            if (!currentStudent) return;
+            // Populate form fields
+            document.getElementById("edit-stud-dept").value = currentStudent.department || "";
+            document.getElementById("edit-stud-year").value = currentStudent.year === 1 ? "I Year" : currentStudent.year === 2 ? "II Year" : currentStudent.year === 3 ? "III Year" : "IV Year";
+            document.getElementById("edit-stud-email").value = currentStudent.email || "";
+            document.getElementById("edit-stud-phone").value = currentStudent.phone || "";
+            document.getElementById("edit-stud-blood").value = currentStudent.bloodGroup || "O +ve";
+
+            // Switch visibility
+            profileViewFields.classList.add("d-none");
+            profileEditForm.classList.remove("d-none");
+            editProfileBtn.classList.add("d-none");
+        });
+
+        cancelProfileBtn.addEventListener("click", () => {
+            profileEditForm.classList.add("d-none");
+            profileViewFields.classList.remove("d-none");
+            editProfileBtn.classList.remove("d-none");
+        });
+
+        profileEditForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (!currentStudent) return;
+
+            const emailInput = document.getElementById("edit-stud-email");
+            const phoneInput = document.getElementById("edit-stud-phone");
+            const bloodInput = document.getElementById("edit-stud-blood");
+
+            const updatedFields = {
+                email: emailInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                bloodGroup: bloodInput.value
+            };
+
+            const result = window.MockDB.updateStudent(currentStudent.id, updatedFields);
+            if (result && result.success) {
+                showToast("Profile details updated successfully!", "success");
+                
+                // Update local storage session if email changed
+                const storedUserStr = localStorage.getItem("campusai_current_user");
+                if (storedUserStr) {
+                    const u = JSON.parse(storedUserStr);
+                    u.username = updatedFields.email;
+                    localStorage.setItem("campusai_current_user", JSON.stringify(u));
+                }
+
+                // Refresh state
+                currentStudent = window.MockDB.getStudentById(currentStudent.id);
+                loadStudentDashboardData();
+
+                // Revert to view mode
+                profileEditForm.classList.add("d-none");
+                profileViewFields.classList.remove("d-none");
+                editProfileBtn.classList.remove("d-none");
+            } else {
+                showToast(result.message || "Failed to update profile details.", "danger");
+            }
+        });
+    }
+
+    if (profilePicInput) {
+        profilePicInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file || !currentStudent) return;
+
+            // Simple client-side size check (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                showToast("File size too large. Please select an image under 2MB.", "warning");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64Data = reader.result;
+                const result = window.MockDB.updateStudent(currentStudent.id, { profilePic: base64Data });
+                if (result && result.success) {
+                    showToast("Profile picture updated successfully!", "success");
+                    
+                    // Refresh state
+                    currentStudent = window.MockDB.getStudentById(currentStudent.id);
+                    loadStudentDashboardData();
+                } else {
+                    showToast("Failed to update profile picture.", "danger");
+                }
+            };
+            reader.onerror = () => {
+                showToast("Failed to read selected image file.", "danger");
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
     function adjustNavForRole(role) {
         if (!role) {
             studentNavs.forEach(el => el.classList.add("d-none"));
@@ -1105,13 +1208,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (topbarDept) topbarDept.textContent = currentStudent.department;
         if (welcomeName) welcomeName.textContent = currentStudent.name.split(" ")[0];
 
-        // Personal Details Subview
+        // Personal Details Subview & Avatars
         const profName = document.getElementById("profile-stud-name");
         const profId = document.getElementById("profile-stud-id");
         const profDept = document.getElementById("profile-stud-dept");
         const profYear = document.getElementById("profile-stud-year");
         const profEmail = document.getElementById("profile-stud-email");
         const profPhone = document.getElementById("profile-stud-phone");
+        const profBlood = document.getElementById("profile-stud-blood");
 
         if (profName) profName.textContent = currentStudent.name;
         if (profId) profId.textContent = currentStudent.id;
@@ -1119,6 +1223,43 @@ document.addEventListener("DOMContentLoaded", () => {
         if (profYear) profYear.textContent = currentStudent.year === 1 ? "I Year" : currentStudent.year === 2 ? "II Year" : currentStudent.year === 3 ? "III Year" : "IV Year";
         if (profEmail) profEmail.textContent = currentStudent.email;
         if (profPhone) profPhone.textContent = currentStudent.phone;
+        if (profBlood) profBlood.textContent = currentStudent.bloodGroup || "O +ve";
+
+        // Dynamic Avatar Loader
+        const profileAvatarImg = document.getElementById("profile-avatar-img");
+        const profileAvatarPlaceholder = document.getElementById("profile-avatar-placeholder");
+        const topbarAvatarImg = document.getElementById("stud-topbar-avatar-img");
+        const topbarAvatarPlaceholder = document.getElementById("stud-topbar-avatar-placeholder");
+
+        if (currentStudent.profilePic) {
+            if (profileAvatarImg) {
+                profileAvatarImg.src = currentStudent.profilePic;
+                profileAvatarImg.classList.remove("d-none");
+            }
+            if (profileAvatarPlaceholder) {
+                profileAvatarPlaceholder.classList.add("d-none");
+            }
+            if (topbarAvatarImg) {
+                topbarAvatarImg.src = currentStudent.profilePic;
+                topbarAvatarImg.classList.remove("d-none");
+            }
+            if (topbarAvatarPlaceholder) {
+                topbarAvatarPlaceholder.classList.add("d-none");
+            }
+        } else {
+            if (profileAvatarImg) {
+                profileAvatarImg.classList.add("d-none");
+            }
+            if (profileAvatarPlaceholder) {
+                profileAvatarPlaceholder.classList.remove("d-none");
+            }
+            if (topbarAvatarImg) {
+                topbarAvatarImg.classList.add("d-none");
+            }
+            if (topbarAvatarPlaceholder) {
+                topbarAvatarPlaceholder.classList.remove("d-none");
+            }
+        }
 
         // 2. Attendance Percentages (SVG Radials)
         const percent = currentStudent.attendance;

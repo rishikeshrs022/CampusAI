@@ -9,7 +9,7 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom Glassmorphic Styles -->
-    <link rel="stylesheet" href="css/style.css?v=3.8">
+    <link rel="stylesheet" href="css/style.css?v=3.9">
 </head>
 <body data-theme="dark">
 
@@ -466,8 +466,9 @@
 
                             <!-- User Profile Info -->
                             <div class="d-flex align-items-center gap-2">
-                                <div class="rounded-circle border border-primary p-0.5" style="width: 38px; height: 38px; overflow: hidden; background: #3b82f6;">
-                                    <i class="bi bi-person-fill text-white fs-4 text-center d-block" style="margin-top: 1px;"></i>
+                                <div class="rounded-circle border border-primary p-0.5 position-relative" style="width: 38px; height: 38px; overflow: hidden; background: #3b82f6; display: flex; align-items: center; justify-content: center;">
+                                    <img id="stud-topbar-avatar-img" class="w-100 h-100 object-fit-cover rounded-circle d-none" src="" alt="Avatar">
+                                    <i id="stud-topbar-avatar-placeholder" class="bi bi-person-fill text-white fs-4 text-center d-block" style="margin-top: 1px;"></i>
                                 </div>
                                 <div class="lh-1 d-none d-sm-block text-start">
                                     <h6 id="stud-topbar-name" class="mb-0 text-white fw-bold small">-</h6>
@@ -713,17 +714,35 @@
                             <div class="row">
                                 <div class="col-md-4 mb-4">
                                     <div class="glass-card text-center">
-                                        <div class="position-relative d-inline-block mb-3 p-1 rounded-circle border border-primary" style="width: 110px; height: 110px; margin: 0 auto; overflow: hidden; background: rgba(255,255,255,0.05);">
-                                            <i class="bi bi-person-fill text-secondary" style="font-size: 5.5rem;"></i>
+                                        <!-- Editable Avatar Container -->
+                                        <div class="position-relative d-inline-block mb-3 profile-avatar-container" style="width: 110px; height: 110px; margin: 0 auto;">
+                                            <div class="rounded-circle border border-primary p-1 overflow-hidden" style="width: 110px; height: 110px; background: rgba(255,255,255,0.05); position: relative; display: flex; align-items: center; justify-content: center;">
+                                                <img id="profile-avatar-img" class="w-100 h-100 object-fit-cover rounded-circle d-none" src="" alt="Profile Picture">
+                                                <i id="profile-avatar-placeholder" class="bi bi-person-fill text-secondary" style="font-size: 5.5rem; line-height: 100px;"></i>
+                                                
+                                                <!-- Upload Camera Hover Overlay -->
+                                                <label for="profile-pic-input" class="profile-pic-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white bg-dark bg-opacity-75 transition" style="cursor: pointer; border-radius: 50%;">
+                                                    <i class="bi bi-camera-fill fs-4"></i>
+                                                    <small style="font-size: 0.65rem;">Change Photo</small>
+                                                </label>
+                                            </div>
+                                            <input type="file" id="profile-pic-input" accept="image/*" class="d-none">
                                         </div>
                                         <h4 id="profile-stud-name" class="text-white font-outfit fw-bold mb-1">-</h4>
                                         <p id="profile-stud-id" class="text-muted small mb-0">-</p>
                                     </div>
                                 </div>
                                 <div class="col-md-8 text-start">
-                                    <div class="glass-card">
-                                        <h5 class="text-white font-outfit fw-bold mb-3">Personal Details</h5>
-                                        <div class="row g-3 small">
+                                    <div class="glass-card position-relative" id="profile-details-card">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="text-white font-outfit fw-bold m-0">Personal Details</h5>
+                                            <button class="btn btn-outline-primary btn-sm px-3" id="edit-profile-btn">
+                                                <i class="bi bi-pencil-square me-1"></i>Edit Profile
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- View Mode Fields -->
+                                        <div id="profile-view-fields" class="row g-3 small">
                                             <div class="col-sm-6">
                                                 <span class="text-secondary d-block">Department</span>
                                                 <span id="profile-stud-dept" class="text-white font-semibold fs-6">-</span>
@@ -746,9 +765,51 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <span class="text-secondary d-block">Blood Group</span>
-                                                <span class="text-white font-semibold fs-6">O +ve</span>
+                                                <span id="profile-stud-blood" class="text-white font-semibold fs-6">O +ve</span>
                                             </div>
                                         </div>
+
+                                        <!-- Edit Mode Form (Hidden by default) -->
+                                        <form id="profile-edit-form" class="row g-3 small d-none">
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block mb-1">Department (Read-Only)</span>
+                                                <input type="text" id="edit-stud-dept" class="form-control form-control-sm bg-transparent text-white border-secondary border-opacity-30" disabled>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block mb-1">Academic Year (Read-Only)</span>
+                                                <input type="text" id="edit-stud-year" class="form-control form-control-sm bg-transparent text-white border-secondary border-opacity-30" disabled>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block mb-1">Email Address</span>
+                                                <input type="email" id="edit-stud-email" class="form-control form-control-sm bg-transparent text-white border-secondary border-opacity-40" required>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block mb-1">Contact Number</span>
+                                                <input type="text" id="edit-stud-phone" class="form-control form-control-sm bg-transparent text-white border-secondary border-opacity-40" required>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block mb-1">Admission Date (Read-Only)</span>
+                                                <input type="text" value="July 15, 2024" class="form-control form-control-sm bg-transparent text-white border-secondary border-opacity-30" disabled>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="text-secondary d-block mb-1">Blood Group</span>
+                                                <select id="edit-stud-blood" class="form-select form-select-sm bg-transparent text-white border-secondary border-opacity-40" style="color: inherit;">
+                                                    <option value="O +ve" class="bg-dark text-white">O +ve</option>
+                                                    <option value="O -ve" class="bg-dark text-white">O -ve</option>
+                                                    <option value="A +ve" class="bg-dark text-white">A +ve</option>
+                                                    <option value="A -ve" class="bg-dark text-white">A -ve</option>
+                                                    <option value="B +ve" class="bg-dark text-white">B +ve</option>
+                                                    <option value="B -ve" class="bg-dark text-white">B -ve</option>
+                                                    <option value="AB +ve" class="bg-dark text-white">AB +ve</option>
+                                                    <option value="AB -ve" class="bg-dark text-white">AB -ve</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                                                <button type="button" class="btn btn-link text-secondary text-decoration-none btn-sm" id="cancel-profile-btn">Cancel</button>
+                                                <button type="submit" class="btn btn-glow-primary btn-sm px-4" id="save-profile-btn">Save Changes</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -2512,11 +2573,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <!-- Firebase Config -->
-    <script src="js/firebase-config.js?v=3.8"></script>
+    <script src="js/firebase-config.js?v=3.9"></script>
 
     <!-- Application Scripts -->
-    <script src="js/mockData.js?v=3.8"></script>
-    <script src="js/voice.js?v=3.8"></script>
-    <script src="js/app.js?v=3.8"></script>
+    <script src="js/mockData.js?v=3.9"></script>
+    <script src="js/voice.js?v=3.9"></script>
+    <script src="js/app.js?v=3.9"></script>
 </body>
 </html>

@@ -950,3 +950,13 @@ body[data-theme="light"] .welcome-banner-card {
 body[data-theme="light"] .welcome-banner-img {
     opacity: 0.45;
 }
+
+/* Profile Picture Hover Upload Overlay */
+.profile-avatar-container .profile-pic-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+.profile-avatar-container:hover .profile-pic-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}

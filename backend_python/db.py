@@ -170,6 +170,16 @@ def init_db():
     );
     """)
 
+    # Ensure profile_pic and blood_group columns exist in students table
+    try:
+        cursor.execute("ALTER TABLE students ADD COLUMN profile_pic TEXT;")
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cursor.execute("ALTER TABLE students ADD COLUMN blood_group TEXT DEFAULT 'O +ve';")
+    except sqlite3.OperationalError:
+        pass
+
     conn.commit()
 
     # Seed check: if users table is empty, run seed data.sql

@@ -52,6 +52,7 @@ def map_department(d):
 
 def map_student(s):
     if not s: return None
+    keys = s.keys()
     return {
         "id": s["id"],
         "name": s["name"],
@@ -61,7 +62,9 @@ def map_student(s):
         "year": s["academic_year"],
         "phone": s["phone"],
         "attendance": s["attendance"],
-        "cgpa": s["cgpa"]
+        "cgpa": s["cgpa"],
+        "profilePic": s["profile_pic"] if "profile_pic" in keys else None,
+        "bloodGroup": s["blood_group"] if "blood_group" in keys else "O +ve"
     }
 
 def map_user(u):
@@ -394,6 +397,66 @@ def get_student_by_id(id):
     if row:
         return jsonify(map_student(row))
     return jsonify({"message": "Student not found"}), 404
+
+@app.route("/api/students/<id>", methods=["PUT"])
+def update_student(id):
+    user, response, code = require_role("ROLE_STUDENT", "ROLE_ADMIN")
+    if response: return response, code
+    
+    if user["role"] == "ROLE_STUDENT" and user["refId"] != id:
+        return jsonify({"message": "Access Denied"}), 403
+        
+    data = request.get_json() or {}
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    updates = []
+    params = []
+    
+    if "email" in data:
+        updates.append("email = ?")
+        params.append(data["email"])
+    if "phone" in data:
+        updates.append("phone = ?")
+        params.append(data["phone"])
+    if "bloodGroup" in data:
+        updates.append("blood_group = ?")
+        params.append(data["bloodGroup"])
+    if "profilePic" in data:
+        updates.append("profile_pic = ?")
+        params.append(data["profilePic"])
+        
+    if not updates:
+        conn.close()
+        return jsonify({"success": False, "message": "No fields to update"}), 400
+        
+    params.append(id)
+    query = f"UPDATE students SET {', '.join(updates)} WHERE id = ?;"
+    
+    try:
+        cursor.execute(query, tuple(params))
+        conn.commit()
+        
+        # Also update username in users if email changed
+        if "email" in data:
+            cursor.execute("UPDATE users SET username = ? WHERE ref_id = ?;", (data["email"], id))
+            conn.commit()
+            
+        cursor.execute("SELECT * FROM students WHERE id = ?;", (id,))
+        row = cursor.fetchone()
+        conn.close()
+        
+        if row:
+            return jsonify({"success": True, "student": map_student(row)})
+        return jsonify({"success": False, "message": "Student not found"}), 404
+        
+    except sqlite3.IntegrityError:
+        conn.close()
+        return jsonify({"success": False, "message": "Email already in use"}), 409
+    except Exception as e:
+        conn.close()
+        return jsonify({"success": False, "message": str(e)}), 500
 
 @app.route("/api/students", methods=["POST"])
 def save_student():
