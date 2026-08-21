@@ -734,7 +734,18 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // Redirect to Student Dashboard
             navigateTo("student-dashboard");
-            if (googleLoginModal) googleLoginModal.hide();
+            
+            const modalEl = document.getElementById("googleLoginModal");
+            if (modalEl && typeof bootstrap !== "undefined") {
+                const modalInst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                if (modalInst) modalInst.hide();
+            }
+            
+            // Clean up any remaining modal backdrops
+            document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+            document.body.classList.remove("modal-open");
+            document.body.style.overflow = "";
+            document.body.style.paddingRight = "";
         } else {
             console.error("Google sync login failed:", loginResult);
             if (!isSilent) {
@@ -912,7 +923,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("campusai_current_user", JSON.stringify(loginResult));
                 showToast(`Signed in via Google Sandbox as ${selectedName}!`, "success");
                 navigateTo("student-dashboard");
-                if (googleLoginModal) googleLoginModal.hide();
+                
+                const modalEl = document.getElementById("googleLoginModal");
+                if (modalEl && typeof bootstrap !== "undefined") {
+                    const modalInst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                    if (modalInst) modalInst.hide();
+                }
+                
+                // Clean up any remaining modal backdrops
+                document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+                document.body.classList.remove("modal-open");
+                document.body.style.overflow = "";
+                document.body.style.paddingRight = "";
             }
         });
     }
