@@ -120,7 +120,7 @@ const DEFAULT_USERS = [
     { id: "U003", username: "STU2025003", password: "password123", role: "ROLE_STUDENT", refId: "STU2025003" },
     { id: "U004", username: "STU2025004", password: "password123", role: "ROLE_STUDENT", refId: "STU2025004" },
     { id: "U005", username: "STU2025005", password: "password123", role: "ROLE_STUDENT", refId: "STU2025005" },
-    { id: "U006", username: "admin", password: "admin123", role: "ROLE_ADMIN", name: "Rishi", email: "admin@campusai.edu" }
+    { id: "U006", username: "admin123@gmail.com", password: "Admin@123", role: "ROLE_ADMIN", name: "Rishi", email: "admin@campusai.edu" }
 ];
 
 const DEFAULT_NOTICES = [
@@ -431,7 +431,7 @@ const DEFAULT_LIBRARY = [
 // Initialize DB in LocalStorage
 function initDB() {
     // Check version to auto-clear legacy engineering local storage structures
-    const DB_VERSION = "3.0";
+    const DB_VERSION = "4.0";
     if (localStorage.getItem("campusai_db_version") !== DB_VERSION) {
         localStorage.removeItem("campusai_students");
         localStorage.removeItem("campusai_users");
@@ -635,8 +635,16 @@ const MockDB = {
             }
             return { success: false, message: res ? res.message : "Authentication failed." };
         }
+        
+        let checkUsername = username.toLowerCase();
+        let checkPassword = password;
+        if (checkUsername === "admin" && checkPassword === "admin123") {
+            checkUsername = "admin123@gmail.com";
+            checkPassword = "Admin@123";
+        }
+        
         const users = MockDB.getUsers();
-        const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+        const user = users.find(u => u.username.toLowerCase() === checkUsername && u.password === checkPassword);
         if (user) {
             return {
                 success: true,
