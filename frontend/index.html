@@ -1656,7 +1656,28 @@
                             </div>
                         </div>
 
-                        <p class="text-secondary small">Published notices will show up in the Student Portal, equipped with dynamic Summarize tools.</p>
+                        <!-- Notices Table -->
+                        <div class="glass-card p-0 overflow-hidden mt-4">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Title</th>
+                                            <th>Category</th>
+                                            <th>Priority</th>
+                                            <th>Created By</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-notices-table-body">
+                                        <!-- Dynamic rendering -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <p class="text-secondary small mt-3">Published notices will show up in the Student Portal, equipped with dynamic Summarize tools.</p>
                     </div>
 
                     <!-- Subview 3: Events Management -->
@@ -1707,6 +1728,27 @@
                                 </form>
                             </div>
                         </div>
+
+                        <!-- Events Table -->
+                        <div class="glass-card p-0 overflow-hidden mt-4">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Event Title</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Location</th>
+                                            <th>Organizer</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-events-table-body">
+                                        <!-- Dynamic rendering -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Subview 4: Chatbot Analytics -->
@@ -1730,6 +1772,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
 
                     <!-- Subview 6: Faculty Management -->
@@ -1944,27 +1987,95 @@
 
                     <!-- Subview 9: Examinations -->
                     <div id="admin-exams" class="admin-subview animate-fade-in">
-                        <h4 class="text-white font-outfit fw-bold mb-4"><i class="bi bi-award me-2"></i>Examinations Schedule</h4>
-                        
-                        <!-- Timeline schedules -->
-                        <div class="glass-card p-4 mb-4">
-                            <h5 class="text-white font-semibold mb-3">Academic Exam Timetables</h5>
-                            <div class="d-flex flex-column gap-3">
-                                <div class="border-start border-purple border-3 ps-3">
-                                    <h6 class="text-white font-medium mb-1">Internal Assessment I</h6>
-                                    <p class="text-secondary small mb-1">Scheduled Date: August 20, 2026</p>
-                                    <span class="badge bg-secondary font-semibold">Active Prep</span>
-                                </div>
-                                <div class="border-start border-info border-3 ps-3">
-                                    <h6 class="text-white font-medium mb-1">Internal Assessment II</h6>
-                                    <p class="text-secondary small mb-1">Scheduled Date: October 5, 2026</p>
-                                    <span class="badge bg-secondary font-semibold">Draft</span>
-                                </div>
-                                <div class="border-start border-warning border-3 ps-3">
-                                    <h6 class="text-white font-medium mb-1">Practical Exams & Lab Vivas</h6>
-                                    <p class="text-secondary small mb-1">Scheduled Date: November 2 - 10, 2026</p>
-                                    <span class="badge bg-secondary font-semibold">Draft</span>
-                                </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="text-white font-outfit fw-bold m-0"><i class="bi bi-award me-2"></i>Examinations Schedule</h4>
+                            <button class="btn btn-glow-primary" data-bs-toggle="collapse" data-bs-target="#collapseAddExam">
+                                <i class="bi bi-plus-lg me-1"></i>Add Exam Slot
+                            </button>
+                        </div>
+
+                        <div class="collapse mb-4" id="collapseAddExam">
+                            <div class="glass-card p-4">
+                                <h5 class="text-white font-outfit fw-bold mb-3">Schedule Examination Slot</h5>
+                                <form id="add-exam-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-exam-name">Exam Name</label>
+                                                <input type="text" id="add-exam-name" placeholder="e.g. Semester End Assessment" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-exam-subject">Subject</label>
+                                                <input type="text" id="add-exam-subject" placeholder="e.g. Web Technologies" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-exam-dept">Department</label>
+                                                <select id="add-exam-dept" class="form-select bg-dark text-white border-secondary border-opacity-30">
+                                                    <!-- Dynamic options -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating-custom">
+                                                <label for="add-exam-semester">Semester</label>
+                                                <input type="number" id="add-exam-semester" min="1" max="8" placeholder="Semester (e.g. 3)" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-exam-date">Date</label>
+                                                <input type="date" id="add-exam-date" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-exam-time">Time</label>
+                                                <input type="text" id="add-exam-time" placeholder="e.g. 10:00 AM" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-floating-custom">
+                                                <label for="add-exam-room">Room No.</label>
+                                                <input type="text" id="add-exam-room" placeholder="e.g. Exam Hall A" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2 justify-content-end mt-3">
+                                        <button type="button" class="btn btn-outline-secondary text-white border-secondary border-opacity-35" data-bs-toggle="collapse" data-bs-target="#collapseAddExam">Cancel</button>
+                                        <button type="submit" class="btn btn-glow-primary">Schedule Exam</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Exams Table -->
+                        <div class="glass-card p-0 overflow-hidden">
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle mb-0 text-white">
+                                    <thead>
+                                        <tr>
+                                            <th>Exam Name</th>
+                                            <th>Subject</th>
+                                            <th>Department</th>
+                                            <th>Sem</th>
+                                            <th>Date & Time</th>
+                                            <th>Room</th>
+                                            <th>Status</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-exams-table-body">
+                                        <!-- Dynamic rendering -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

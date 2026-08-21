@@ -182,9 +182,24 @@ def init_db():
 
     conn.commit()
 
-    # Seed check: if users table is empty, run seed data.sql
-    cursor.execute("SELECT COUNT(*) FROM users;")
-    if cursor.fetchone()[0] == 0:
+    # Seed check: if users or departments table is empty, run seed data.sql
+    needs_seeding = False
+    try:
+        cursor.execute("SELECT COUNT(*) FROM users;")
+        if cursor.fetchone()[0] == 0:
+            needs_seeding = True
+    except sqlite3.OperationalError:
+        needs_seeding = True
+
+    if not needs_seeding:
+        try:
+            cursor.execute("SELECT COUNT(*) FROM departments;")
+            if cursor.fetchone()[0] == 0:
+                needs_seeding = True
+        except sqlite3.OperationalError:
+            needs_seeding = True
+
+    if needs_seeding:
         print("CampusAI DB: Seeding default database values...")
         if os.path.exists(DATA_SQL_PATH):
             with open(DATA_SQL_PATH, "r", encoding="utf-8") as f:

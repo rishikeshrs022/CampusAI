@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tabAdmin.classList.add("active-tab");
             tabStudent.classList.remove("active-tab");
             if (usernameLabel) usernameLabel.textContent = "Administrator Username";
-            loginUsername.placeholder = "Username or Student ID";
+            loginUsername.placeholder = "e.g. admin123@gmail.com";
             loginError.classList.add("d-none");
         });
     }
@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="fs-2 px-3 py-2 rounded-3 ${dept.icon}"></div>
                     <div>
                         <h6 class="mb-1 text-white font-semibold">${dept.name}</h6>
-                        <small class="text-muted text-truncate d-block" style="max-width: 220px;">${dept.programs.join(", ")}</small>
+                        <small class="text-muted text-truncate d-block" style="max-width: 220px;">${typeof dept.programs === 'string' ? dept.programs : (Array.isArray(dept.programs) ? dept.programs.join(", ") : "")}</small>
                     </div>
                 </div>
             `;
@@ -1783,6 +1783,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 drawAnalyticsCharts();
             } else if (subviewId === "admin-dashboard") {
                 drawDashboardCharts();
+            } else if (subviewId === "admin-notices") {
+                renderAdminNotices();
+            } else if (subviewId === "admin-events") {
+                renderAdminEvents();
+            } else if (subviewId === "admin-exams") {
+                renderAdminExams();
             }
         });
     });
@@ -1791,7 +1797,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // DEPARTMENT DROPDOWNS POPULATOR
     // ----------------------------------------------------
     function populateAllDeptSelects() {
-        const selects = ["add-stud-dept", "add-fac-dept", "add-course-dept", "add-bk-dept"];
+        const selects = ["add-stud-dept", "add-fac-dept", "add-course-dept", "add-bk-dept", "add-exam-dept"];
         const depts = window.MockDB.getDepartments();
         
         selects.forEach(id => {
@@ -1820,6 +1826,9 @@ document.addEventListener("DOMContentLoaded", () => {
         renderAdminAttendance();
         renderAdminLibrary();
         renderAdminUsers();
+        renderAdminNotices();
+        renderAdminEvents();
+        renderAdminExams();
         // Render dashboard charts on panel load
         drawDashboardCharts();
     }
@@ -1946,7 +1955,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span>${d.name}</span>
                     </div>
                 </td>
-                <td><span class="small">${d.programs.join(", ")}</span></td>
+                <td><span class="small">${typeof d.programs === 'string' ? d.programs : (Array.isArray(d.programs) ? d.programs.join(", ") : "")}</span></td>
                 <td>${d.studentsCount}</td>
                 <td>${d.totalFee || d.tuitionFee}</td>
                 <td>
@@ -2093,6 +2102,105 @@ document.addEventListener("DOMContentLoaded", () => {
             window.MockDB.deleteLibrary(id);
             renderAdminLibrary();
             showToast("Book deleted.", "success");
+        }
+    };
+
+    function renderAdminNotices() {
+        const tableBody = document.getElementById("admin-notices-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const list = window.MockDB.getNotices();
+        list.forEach(n => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="font-medium text-white">${n.date}</span></td>
+                <td>${n.title}</td>
+                <td><span class="badge bg-secondary font-medium">${n.category}</span></td>
+                <td><span class="badge bg-purple-glow text-purple font-medium">${n.priority || "Normal"}</span></td>
+                <td>${n.createdBy || "Administrator"}</td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-outline-danger border-danger border-opacity-35" onclick="deleteAdminNotice('${n.id}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    window.deleteAdminNotice = function(id) {
+        if (confirm("Are you sure you want to delete this notice?")) {
+            window.MockDB.deleteNotice(id);
+            renderAdminNotices();
+            showToast("Notice deleted successfully.", "success");
+        }
+    };
+
+    function renderAdminEvents() {
+        const tableBody = document.getElementById("admin-events-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const list = window.MockDB.getEvents();
+        list.forEach(ev => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="font-medium text-white">${ev.title}</span></td>
+                <td>${ev.date}</td>
+                <td>${ev.time}</td>
+                <td>${ev.location}</td>
+                <td>${ev.organizer || "Student Union"}</td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-outline-danger border-danger border-opacity-35" onclick="deleteAdminEvent('${ev.id}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    window.deleteAdminEvent = function(id) {
+        if (confirm("Are you sure you want to delete this event?")) {
+            window.MockDB.deleteEvent(id);
+            renderAdminEvents();
+            showToast("Event deleted successfully.", "success");
+        }
+    };
+
+    function renderAdminExams() {
+        const tableBody = document.getElementById("admin-exams-table-body");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+        
+        const list = window.MockDB.getExaminations();
+        list.forEach(ex => {
+            const statusBadge = ex.status === "Completed" ? "bg-success-glow text-success" : "bg-warning-glow text-warning";
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="font-medium text-white">${ex.examName}</span></td>
+                <td>${ex.subject}</td>
+                <td>${ex.department}</td>
+                <td>${ex.semester}</td>
+                <td>${ex.date} (${ex.time})</td>
+                <td>${ex.room}</td>
+                <td><span class="badge ${statusBadge}">${ex.status}</span></td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-outline-danger border-danger border-opacity-35" onclick="deleteAdminExam('${ex.id}')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    window.deleteAdminExam = function(id) {
+        if (confirm("Are you sure you want to delete this exam slot?")) {
+            window.MockDB.deleteExamination(id);
+            renderAdminExams();
+            showToast("Exam slot deleted successfully.", "success");
         }
     };
 
@@ -2365,6 +2473,12 @@ document.addEventListener("DOMContentLoaded", () => {
         window.MockDB.saveNotice(newNotice);
         showToast("Notice announcement published successfully!", "success");
         addNoticeForm.reset();
+        
+        const collapseEl = document.getElementById("collapseAddNotice");
+        if (collapseEl) {
+            const bsCollapse = bootstrap.Collapse.getInstance(collapseEl) || new bootstrap.Collapse(collapseEl, { toggle: false });
+            bsCollapse.hide();
+        }
 
         document.querySelector('[data-admin-target="admin-notices"]').click();
     });
@@ -2387,9 +2501,49 @@ document.addEventListener("DOMContentLoaded", () => {
         window.MockDB.saveEvent(newEvent);
         showToast("College event added to calendar!", "success");
         addEventForm.reset();
+        
+        const collapseEl = document.getElementById("collapseAddEvent");
+        if (collapseEl) {
+            const bsCollapse = bootstrap.Collapse.getInstance(collapseEl) || new bootstrap.Collapse(collapseEl, { toggle: false });
+            bsCollapse.hide();
+        }
 
         document.querySelector('[data-admin-target="admin-events"]').click();
     });
+
+    // Admin Add Exam submit
+    const addExamForm = document.getElementById("add-exam-form");
+    if (addExamForm) {
+        addExamForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const examName = document.getElementById("add-exam-name").value.trim();
+            const subject = document.getElementById("add-exam-subject").value.trim();
+            const department = document.getElementById("add-exam-dept").value;
+            const semester = parseInt(document.getElementById("add-exam-semester").value);
+            const date = document.getElementById("add-exam-date").value;
+            const time = document.getElementById("add-exam-time").value.trim();
+            const room = document.getElementById("add-exam-room").value.trim();
+
+            const newExam = {
+                id: "EXAM" + Date.now(),
+                examName, subject, department, semester, date, time, room,
+                status: "Upcoming"
+            };
+
+            window.MockDB.saveExamination(newExam);
+            showToast("Examination scheduled successfully!", "success");
+            addExamForm.reset();
+
+            const collapseEl = document.getElementById("collapseAddExam");
+            if (collapseEl) {
+                const bsCollapse = bootstrap.Collapse.getInstance(collapseEl) || new bootstrap.Collapse(collapseEl, { toggle: false });
+                bsCollapse.hide();
+            }
+
+            document.querySelector('[data-admin-target="admin-exams"]').click();
+        });
+    }
 
     // Admin Add Department submit
     const addDeptForm = document.getElementById("add-dept-form");

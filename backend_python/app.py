@@ -729,6 +729,18 @@ def save_examination():
     conn.close()
     return jsonify(data)
 
+@app.route("/api/examinations/<id>", methods=["DELETE"])
+def delete_examination(id):
+    user, response, code = require_role("ROLE_ADMIN")
+    if response: return response, code
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM examinations WHERE id = ?;", (id,))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "message": "Examination deleted successfully"})
+
 
 # Library Endpoints
 @app.route("/api/library/books", methods=["GET"])
@@ -818,6 +830,18 @@ def save_event():
     conn.close()
     return jsonify(data)
 
+@app.route("/api/events/<id>", methods=["DELETE"])
+def delete_event(id):
+    user, response, code = require_role("ROLE_ADMIN")
+    if response: return response, code
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM events WHERE id = ?;", (id,))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "message": "Event deleted successfully"})
+
 
 # Notices Endpoints
 @app.route("/api/notices", methods=["GET"])
@@ -863,6 +887,18 @@ def save_notice():
     conn.commit()
     conn.close()
     return jsonify(data)
+
+@app.route("/api/notices/<id>", methods=["DELETE"])
+def delete_notice(id):
+    user, response, code = require_role("ROLE_ADMIN")
+    if response: return response, code
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM notices WHERE id = ?;", (id,))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "message": "Notice deleted successfully"})
 
 
 # AI Chatbot Endpoints

@@ -176,6 +176,12 @@ const DEFAULT_EVENTS = [
     { id: "EVENT007", title: "Alumni Meet 2026", date: "2026-12-05", time: "10:30 AM", location: "Main Seminar Hall", desc: "Annual gathering of alumni from all graduated batches." }
 ];
 
+const DEFAULT_EXAMINATIONS = [
+    { id: "EXAM001", examName: "Semester End Assessment", subject: "Web Technologies", department: "B.Sc Information Technology (B.Sc IT)", semester: 3, date: "2026-11-18", time: "10:00 AM", room: "Exam Hall A", status: "Upcoming" },
+    { id: "EXAM002", examName: "Semester End Assessment", subject: "Networking Basics", department: "B.Sc Computer Science (B.Sc CS)", semester: 3, date: "2026-11-19", time: "10:00 AM", room: "Exam Hall B", status: "Upcoming" },
+    { id: "EXAM003", examName: "Continuous Assessment I", subject: "Discrete Mathematics", department: "B.Sc Mathematics", semester: 2, date: "2026-08-20", time: "09:30 AM", room: "Seminar Room 1", status: "Completed" }
+];
+
 const CHAT_ANSWERS = {
     timings: "College operating hours are from <b>8:30 AM to 3:30 PM</b>, Monday through Friday. Lunch break is from <b>12:15 PM to 1:15 PM</b>. The library and lab facilities remain open until <b>6:00 PM</b> for research and project work.",
     departments: "CampusAI features 6 premier Arts, Science, & Commerce departments:<br>1. <b>Computer Science & BCA</b><br>2. <b>English Literature</b><br>3. <b>Physics</b><br>4. <b>Chemistry</b><br>5. <b>Mathematics</b><br>6. <b>Commerce & BBA</b><br>All departments are NAAC A++ accredited.",
@@ -450,6 +456,9 @@ function initDB() {
     }
     if (!localStorage.getItem("campusai_events")) {
         localStorage.setItem("campusai_events", JSON.stringify(DEFAULT_EVENTS));
+    }
+    if (!localStorage.getItem("campusai_examinations")) {
+        localStorage.setItem("campusai_examinations", JSON.stringify(DEFAULT_EXAMINATIONS));
     }
     if (!localStorage.getItem("campusai_chat_history")) {
         localStorage.setItem("campusai_chat_history", JSON.stringify([]));
@@ -975,6 +984,52 @@ const MockDB = {
         }
         const list = MockDB.getLibrary().filter(b => b.id !== id);
         localStorage.setItem("campusai_library", JSON.stringify(list));
+    },
+
+    // Notices deletion
+    deleteNotice: (id) => {
+        if (useBackend) {
+            apiRequest("DELETE", "/notices/" + id);
+            return;
+        }
+        const list = MockDB.getNotices().filter(n => n.id !== id);
+        localStorage.setItem("campusai_notices", JSON.stringify(list));
+    },
+
+    // Events deletion
+    deleteEvent: (id) => {
+        if (useBackend) {
+            apiRequest("DELETE", "/events/" + id);
+            return;
+        }
+        const list = MockDB.getEvents().filter(e => e.id !== id);
+        localStorage.setItem("campusai_events", JSON.stringify(list));
+    },
+
+    // Examinations Methods
+    getExaminations: () => {
+        if (useBackend) {
+            const list = apiRequest("GET", "/examinations");
+            return list || [];
+        }
+        return JSON.parse(localStorage.getItem("campusai_examinations")) || [];
+    },
+    saveExamination: (exam) => {
+        if (useBackend) {
+            return apiRequest("POST", "/examinations", exam);
+        }
+        const list = MockDB.getExaminations();
+        list.push(exam);
+        localStorage.setItem("campusai_examinations", JSON.stringify(list));
+        return exam;
+    },
+    deleteExamination: (id) => {
+        if (useBackend) {
+            apiRequest("DELETE", "/examinations/" + id);
+            return;
+        }
+        const list = MockDB.getExaminations().filter(e => e.id !== id);
+        localStorage.setItem("campusai_examinations", JSON.stringify(list));
     }
 };
 
