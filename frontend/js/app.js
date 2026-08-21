@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tabAdmin.classList.add("active-tab");
             tabStudent.classList.remove("active-tab");
             if (usernameLabel) usernameLabel.textContent = "Administrator Username";
-            loginUsername.placeholder = "e.g. admin123@gmail.com";
+            loginUsername.placeholder = "Username or Admin ID";
             loginError.classList.add("d-none");
         });
     }
